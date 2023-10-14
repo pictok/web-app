@@ -1,4 +1,5 @@
 import Image from "next/image";
+import Link from "next/link";
 
 import PrimaryButton from "@/components/design/PrimaryButton";
 import SecondaryButton from "@/components/design/SecondaryButton";
@@ -33,19 +34,21 @@ export default function Home() {
               alt="Camera icon"
             />
           </div>
-          <div className="bg-primary-variant weird-circle absolute bottom-0 right-0 h-[100px] w-[100px] overflow-hidden rounded-br-3xl"></div>
+          <div className="weird-circle absolute bottom-0 right-0 h-[100px] w-[100px] overflow-hidden rounded-br-3xl bg-primary-variant"></div>
         </PrimaryButton>
-        <SecondaryButton className="flex h-auto w-full max-w-sm flex-col items-start justify-start gap-5 pb-3 pr-3 pt-10">
-          <h2 className="text-lg">Inbox</h2>
-          <div className="relative z-10 ml-auto mt-auto h-16 w-16 overflow-hidden">
-            <Image
-              src="/images/assets/inbox.png"
-              fill={true}
-              alt="Inbox icon"
-            />
-          </div>
-          <div className="bg-secondary-variant weird-circle absolute bottom-0 right-0 h-[100px] w-[100px] overflow-hidden"></div>
-        </SecondaryButton>
+        <Link href="/inbox">
+          <SecondaryButton className="flex h-auto w-full max-w-sm flex-col items-start justify-start gap-5 pb-3 pr-3 pt-10">
+            <h2 className="text-lg">Inbox</h2>
+            <div className="relative z-10 ml-auto mt-auto h-16 w-16 overflow-hidden">
+              <Image
+                src="/images/assets/inbox.png"
+                fill={true}
+                alt="Inbox icon"
+              />
+            </div>
+            <div className="weird-circle absolute bottom-0 right-0 h-[100px] w-[100px] overflow-hidden bg-secondary-variant"></div>
+          </SecondaryButton>
+        </Link>
       </div>
       <div className="space-y-5">
         <RegularButton className="flex h-auto w-full gap-10 pb-0 pl-5 pr-3 pt-5 text-left">
@@ -58,7 +61,7 @@ export default function Home() {
               className="z-10"
             />
           </div>
-          <div className="bg-primary-variant weird-circle2 absolute bottom-[-2px] right-[-2px] h-[100px] w-[100px] overflow-hidden rounded-tr-3xl"></div>
+          <div className="weird-circle2 absolute bottom-[-2px] right-[-2px] h-[100px] w-[100px] overflow-hidden rounded-tr-3xl bg-primary-variant"></div>
         </RegularButton>
         <RegularButton
           variant="right"
@@ -76,7 +79,7 @@ export default function Home() {
               className="z-10"
             />
           </div>
-          <div className="bg-secondary-variant weird-circle2 absolute bottom-[-2px] right-[-2px] h-[92px] w-[100px] overflow-hidden rounded-tr-3xl"></div>
+          <div className="weird-circle2 absolute bottom-[-2px] right-[-2px] h-[92px] w-[100px] overflow-hidden rounded-tr-3xl bg-secondary-variant"></div>
         </RegularButton>
       </div>
       <Navbar />
