@@ -8,7 +8,7 @@ interface RegularButtonProps
     VariantProps<typeof buttonVariants> {}
 
 const buttonVariants = cva(
-  "rounded-bl-2xl rounded-tr-2xl bg-white drop-shadow-xl border hover:bg-white/90",
+  "rounded-bl-2xl rounded-tr-2xl bg-white drop-shadow-xl border-2 border-white hover:bg-white/90 dark:bg-white/20 dark:text-white dark:border-2 dark:border-white/20",
   {
     variants: {
       variant: {
