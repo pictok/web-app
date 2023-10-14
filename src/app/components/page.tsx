@@ -2,7 +2,6 @@ import CancelIconButton from "@/components/design/CancelIconButton";
 import Navbar from "@/components/design/Navbar";
 import PrimaryButton from "@/components/design/PrimaryButton";
 import IconButton from "@/components/design/PrimaryIconButton";
-import PrimaryIconButton from "@/components/design/PrimaryIconButton";
 import RecordIconButton from "@/components/design/RecordIconButton";
 import RegularButton from "@/components/design/RegularButton";
 import SecondaryButton from "@/components/design/SecondaryButton";
@@ -12,7 +11,7 @@ import Image from "next/image";
 
 export default function ComponentPage() {
   return (
-    <main className="mx-auto max-w-sm space-y-10 bg-background p-5">
+    <main className="mx-auto max-w-sm space-y-10 p-5">
       <div className="flex flex-wrap gap-5">
         <PrimaryButton>Button</PrimaryButton>
         <SecondaryButton>Button</SecondaryButton>
