@@ -1,21 +1,23 @@
 import { cn } from "@/lib/utils";
 import { Button } from "../ui/button";
+import { Mic, X } from "lucide-react";
 
-interface PrimaryButtonProps
+interface RecordButtonProps
   extends React.ButtonHTMLAttributes<HTMLButtonElement> {}
 
-export default function PrimaryIconButton({
+export default function CancelIconButton({
   className,
   children,
   ...props
-}: PrimaryButtonProps) {
+}: RecordButtonProps) {
   return (
     <Button
       {...props}
-      className={cn("rounded-full text-white", className)}
+      className={cn("rounded-full", className)}
+      variant="destructive"
       size="icon"
     >
-      {children}
+      <X className="stroke-white" />
     </Button>
   );
 }
