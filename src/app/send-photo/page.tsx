@@ -19,7 +19,7 @@ export default function SendPhoto() {
         <Avatar className="mx-auto h-[163.7px] w-[163.7px] border-4 border-secondary">
           <AvatarImage
             className="object-cover"
-            src="/images/avatars/user.png"
+            src="/images/avatars/user2.png"
           />
           <AvatarFallback>Jane Doe</AvatarFallback>
         </Avatar>
