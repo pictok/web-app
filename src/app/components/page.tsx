@@ -11,7 +11,7 @@ import Image from "next/image";
 
 export default function ComponentPage() {
   return (
-    <main className="mx-auto max-w-sm space-y-5 bg-background p-5">
+    <main className="mx-auto max-w-sm space-y-10 bg-background p-5">
       <div className="flex flex-wrap gap-5">
         <PrimaryButton>Button</PrimaryButton>
         <SecondaryButton>Button</SecondaryButton>
@@ -30,30 +30,33 @@ export default function ComponentPage() {
         <CancelIconButton />
       </div>
       <div className="grid grid-cols-2 gap-2">
-        <PrimaryButton className="flex h-auto w-full max-w-sm flex-col items-start justify-start gap-5 pb-3 pr-3 pt-10">
+        <PrimaryButton className="relative flex h-auto w-full max-w-sm flex-col items-start justify-start gap-5 pb-3 pr-3 pt-10">
           <h2 className="text-lg">Take Photo</h2>
-          <div className="relative ml-auto mt-auto h-16 w-16 overflow-hidden">
+          <div className="relative z-10 ml-auto mt-auto h-16 w-16 overflow-hidden">
             <Image
               src="/images/assets/camera.png"
               fill={true}
               alt="Camera icon"
             />
           </div>
+          <div className="bg-primary-variant weird-circle absolute bottom-0 right-0 h-[100px] w-[100px] overflow-hidden rounded-br-3xl"></div>
         </PrimaryButton>
         <SecondaryButton className="flex h-auto w-full max-w-sm flex-col items-start justify-start gap-5 pb-3 pr-3 pt-10">
           <h2 className="text-lg">Inbox</h2>
-          <div className="relative ml-auto mt-auto h-16 w-16 overflow-hidden">
+          <div className="relative z-10 ml-auto mt-auto h-16 w-16 overflow-hidden">
             <Image
               src="/images/assets/inbox.png"
               fill={true}
               alt="Camera icon"
             />
           </div>
+          {/* <div className="bg-secondary-variant absolute bottom-0 right-0 h-[100px] w-[100px] overflow-hidden rounded-tl-[70px]"></div> */}
+          <div className="bg-secondary-variant weird-circle absolute bottom-0 right-0 h-[100px] w-[100px] overflow-hidden"></div>
         </SecondaryButton>
       </div>
       <div className="space-y-5">
-        <RegularButton className="flex h-auto w-full gap-10 pb-0 pl-5 pr-3 pt-10 text-left">
-          <h3 className="pb-10 text-lg">Experience your images with sound</h3>
+        <RegularButton className="flex h-auto w-full gap-10 pb-0 pl-5 pr-3 pt-5 text-left">
+          <h3 className="pb-5 text-lg">Experience your images with sound</h3>
           <div className="relative ml-auto mt-auto h-16 w-16  overflow-hidden">
             <Image
               src="/images/assets/sound.png"
@@ -64,9 +67,9 @@ export default function ComponentPage() {
         </RegularButton>
         <RegularButton
           variant="right"
-          className="flex h-auto w-full gap-10 pb-0 pl-5 pr-3 pt-10 text-left"
+          className="flex h-auto w-full gap-10 pb-0 pl-5 pr-3 pt-5 text-left"
         >
-          <div className="pb-10">
+          <div className="pb-5">
             <h3 className="text-lg">Tutorial</h3>
             <p>Learn how to use the app</p>
           </div>

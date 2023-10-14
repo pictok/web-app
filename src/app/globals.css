@@ -15,9 +15,11 @@
 
     --primary: 205 97% 54%;
     --primary-foreground: 240 5.9% 10%;
+    --primary-variant: 200 74% 86%;
 
     --secondary: 36 100% 63%;
     --secondary-foreground: 240 5.9% 10%;
+    --secondary-variant: 43, 75%, 86%;
 
     --muted: 240 4.8% 95.9%;
     --muted-foreground: 240 3.8% 46.1%;
@@ -47,9 +49,11 @@
 
     --primary: 58 100% 60%;
     --primary-foreground: 240 5.9% 10%;
+    --primary-variant: 58 72% 66%;
 
     --secondary: 222 87% 69%;
     --secondary-foreground: 240 5.9% 10%;
+    --secondary-variant: 222 61% 71%;
 
     --muted: 240 3.7% 15.9%;
     --muted-foreground: 240 5% 64.9%;
@@ -72,5 +76,10 @@
   }
   body {
     @apply bg-background text-foreground;
+  }
+  .weird-circle {
+    border-top-left-radius: 66% 76%;
+    border-top-right-radius: 34% 11%;
+    border-bottom-left-radius: 8% 23%;
   }
 }
