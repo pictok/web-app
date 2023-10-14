@@ -15,7 +15,7 @@ export default function PrimaryButton({
     <Button
       {...props}
       className={cn(
-        "rounded-bl-2xl rounded-br-2xl rounded-tl-none rounded-tr-2xl",
+        "rounded-bl-3xlxl rounded-br-3xl rounded-tl-none rounded-tr-3xl drop-shadow-xl",
         className,
       )}
     >
