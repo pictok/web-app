@@ -1,3 +1,4 @@
+"use client";
 import { cn } from "@/lib/utils";
 import { Button } from "../ui/button";
 import { Mic } from "lucide-react";
@@ -11,7 +12,11 @@ export default function RecordIconButton({
   ...props
 }: RecordButtonProps) {
   return (
-    <Button {...props} className={cn("rounded-full", className)} size="icon">
+    <Button
+      {...props}
+      className={cn("rounded-full dark:bg-secondary", className)}
+      size="icon"
+    >
       <Mic className="stroke-white" />
     </Button>
   );

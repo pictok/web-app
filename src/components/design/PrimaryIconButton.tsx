@@ -1,3 +1,4 @@
+"use client";
 import { cn } from "@/lib/utils";
 import { Button } from "../ui/button";
 
@@ -12,7 +13,7 @@ export default function PrimaryIconButton({
   return (
     <Button
       {...props}
-      className={cn("rounded-full text-white", className)}
+      className={cn("rounded-full text-white dark:bg-secondary", className)}
       size="icon"
     >
       {children}
