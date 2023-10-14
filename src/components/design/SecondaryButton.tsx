@@ -15,7 +15,7 @@ function SecondaryButton({
       {...props}
       variant="secondary"
       className={cn(
-        "rounded-bl-2xl rounded-br-none rounded-tl-2xl rounded-tr-2xl",
+        "rounded-bl-3xl rounded-br-none rounded-tl-3xl rounded-tr-3xl drop-shadow-xl",
         className,
       )}
     >

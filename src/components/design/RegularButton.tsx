@@ -8,12 +8,12 @@ interface RegularButtonProps
     VariantProps<typeof buttonVariants> {}
 
 const buttonVariants = cva(
-  "rounded-bl-2xl rounded-tr-2xl bg-white drop-shadow-xl border-2 border-white hover:bg-white/90 dark:bg-white/20 dark:text-white dark:border-2 dark:border-white/20",
+  "rounded-bl-3xl rounded-tr-3xl bg-white drop-shadow-xl border-2 border-white hover:bg-white/90 dark:bg-white/10 dark:text-white dark:border-2 dark:border-white/10",
   {
     variants: {
       variant: {
-        left: "rounded-tl-none rounded-br-2xl",
-        right: "rounded-br-none rounded-tl-2xl",
+        left: "rounded-tl-none rounded-br-3xl",
+        right: "rounded-br-none rounded-tl-3xl",
       },
     },
     defaultVariants: {

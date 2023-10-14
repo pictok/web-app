@@ -2,14 +2,14 @@
 import { cn } from "@/lib/utils";
 import { Button } from "../ui/button";
 
-interface PrimaryButtonProps
+interface IconButtonProps
   extends React.ButtonHTMLAttributes<HTMLButtonElement> {}
 
-export default function PrimaryIconButton({
+export default function IconButton({
   className,
   children,
   ...props
-}: PrimaryButtonProps) {
+}: IconButtonProps) {
   return (
     <Button
       {...props}
