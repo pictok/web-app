@@ -86,6 +86,9 @@
     border-top-left-radius: 66% 76%;
     border-bottom-left-radius: 8% 23%;
   }
+  .weird-circle3 {
+    border-radius: 50% 50% 8% 8% / 58% 58% 42% 42%;
+  }
 
   .navbar-gradient {
     background: linear-gradient(180deg, #feffc993 19%, #c5e1f598 100%);
