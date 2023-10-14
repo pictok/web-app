@@ -1,5 +1,9 @@
 import "./globals.css";
 import type { Metadata } from "next";
+import { ThemeProvider } from "@/components/theme-provider";
+import { Jost } from "next/font/google";
+
+const jost = Jost({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
   title: "Pictok",
@@ -14,7 +18,16 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body>{children}</body>
+      <body className={jost.className}>
+        <ThemeProvider
+          attribute="class"
+          defaultTheme="system"
+          enableSystem
+          disableTransitionOnChange
+        >
+          {children}
+        </ThemeProvider>
+      </body>
     </html>
   );
 }
