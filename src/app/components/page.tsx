@@ -1,4 +1,5 @@
 import CancelIconButton from "@/components/design/CancelIconButton";
+import Navbar from "@/components/design/Navbar";
 import PrimaryButton from "@/components/design/PrimaryButton";
 import IconButton from "@/components/design/PrimaryIconButton";
 import PrimaryIconButton from "@/components/design/PrimaryIconButton";
@@ -47,10 +48,9 @@ export default function ComponentPage() {
             <Image
               src="/images/assets/inbox.png"
               fill={true}
-              alt="Camera icon"
+              alt="Inbox icon"
             />
           </div>
-          {/* <div className="bg-secondary-variant absolute bottom-0 right-0 h-[100px] w-[100px] overflow-hidden rounded-tl-[70px]"></div> */}
           <div className="bg-secondary-variant weird-circle absolute bottom-0 right-0 h-[100px] w-[100px] overflow-hidden"></div>
         </SecondaryButton>
       </div>
@@ -61,9 +61,11 @@ export default function ComponentPage() {
             <Image
               src="/images/assets/sound.png"
               fill={true}
-              alt="Camera icon"
+              alt="Sound icon"
+              className="z-10"
             />
           </div>
+          <div className="bg-primary-variant weird-circle2 absolute bottom-[-2px] right-[-2px] h-[100px] w-[100px] overflow-hidden rounded-tr-3xl"></div>
         </RegularButton>
         <RegularButton
           variant="right"
@@ -77,11 +79,14 @@ export default function ComponentPage() {
             <Image
               src="/images/assets/computer.png"
               fill={true}
-              alt="Camera icon"
+              alt="Computer icon"
+              className="z-10"
             />
           </div>
+          <div className="bg-secondary-variant weird-circle2 absolute bottom-[-2px] right-[-2px] h-[92px] w-[100px] overflow-hidden rounded-tr-3xl"></div>
         </RegularButton>
       </div>
+      <Navbar />
     </main>
   );
 }
