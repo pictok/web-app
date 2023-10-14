@@ -1,4 +1,5 @@
 import PrimaryButton from "@/components/design/PrimaryButton";
+import RegularButton from "@/components/design/RegularButton";
 import SecondaryButton from "@/components/design/SecondaryButton";
 
 export default function ComponentPage() {
@@ -7,6 +8,8 @@ export default function ComponentPage() {
       <div className="flex gap-5">
         <PrimaryButton>Button</PrimaryButton>
         <SecondaryButton>Button</SecondaryButton>
+        <RegularButton>Button</RegularButton>
+        <RegularButton variant="right">Button</RegularButton>
       </div>
     </main>
   );
