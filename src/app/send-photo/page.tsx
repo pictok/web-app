@@ -29,7 +29,7 @@ export default function SendPhoto() {
           variant="right"
           className="navbar-gradient flex h-auto max-h-72 w-full max-w-sm flex-col items-start justify-start gap-5 space-y-10 border-none pb-0 pr-3 pt-10"
         >
-          <h2 className="mx-auto text-2xl font-normal">
+          <h2 className="mx-auto text-2xl font-normal tracking-wide">
             Send <span className="font-bold">Amy</span> a photo.
           </h2>
           <div className="relative bottom-0 left-1/2 z-10 mt-auto h-16 w-16 -translate-x-1/2 overflow-hidden">
