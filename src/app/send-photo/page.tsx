@@ -36,7 +36,7 @@ export default function SendPhoto() {
             <Image
               src="/images/assets/leftArrow3d.png"
               fill={true}
-              alt="Inbox icon"
+              alt="Left arrow icon"
             />
           </div>
           <div className="weird-circle3 absolute bottom-0 left-1/2 h-[80px] w-[110px] -translate-x-[47%] transform overflow-hidden bg-secondary"></div>
