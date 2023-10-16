@@ -3,6 +3,12 @@ import fs from "fs";
 import { join } from "path";
 import { promisify } from "util";
 
+export const config = {
+  api: {
+    bodyParser: false,
+  },
+};
+
 const writeFile = promisify(fs.writeFile);
 
 export default async function saveImage(
@@ -11,6 +17,7 @@ export default async function saveImage(
 ) {
   if (req.method === "POST") {
     try {
+      console.log("Endpoint!");
       const imageBuffer = Buffer.from(req.body.image.split(",")[1], "base64");
       const imagePath = join(
         process.cwd(),

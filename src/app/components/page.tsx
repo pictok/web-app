@@ -9,6 +9,7 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { ModeToggle } from "@/components/ui/mode-toggle";
 import Image from "next/image";
 
+
 export default function ComponentPage() {
   return (
     <main className="mx-auto max-w-sm space-y-10 p-5">

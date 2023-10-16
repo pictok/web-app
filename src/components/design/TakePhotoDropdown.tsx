@@ -11,7 +11,7 @@ import {
 } from "../ui/dropdown-menu";
 import PrimaryButton from "./PrimaryButton";
 import Link from "next/link";
-import FileInput from "./FileInput";
+import ImageUpload from "./ImageUpload";
 
 export default function TakePhotoDropdown() {
   // const [isOpen, setIsOpen] = useState(false);
@@ -19,7 +19,6 @@ export default function TakePhotoDropdown() {
   // const toggleDropdown = () => {
   //   setIsOpen(!isOpen);
   // };
-
   return (
     <DropdownMenu>
       <DropdownMenuTrigger>
@@ -41,7 +40,7 @@ export default function TakePhotoDropdown() {
           <Link href="/components">Take a photo with webcam</Link>
         </DropdownMenuItem>
         <DropdownMenuItem>
-          <FileInput />
+          <ImageUpload />
         </DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>

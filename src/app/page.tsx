@@ -73,6 +73,7 @@ export default function Home() {
           <div className="weird-circle2 absolute bottom-[-2px] right-[-2px] h-[92px] w-[100px] overflow-hidden rounded-tr-3xl bg-secondary-variant"></div>
         </RegularButton>
       </div>
+
       <Navbar />
     </main>
   );
