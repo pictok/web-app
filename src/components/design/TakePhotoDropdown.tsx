@@ -12,6 +12,7 @@ import {
 import PrimaryButton from "./PrimaryButton";
 import Link from "next/link";
 import ImageUpload from "./ImageUpload";
+import { writeFile } from "fs/promises";
 
 export default function TakePhotoDropdown() {
   // const [isOpen, setIsOpen] = useState(false);
