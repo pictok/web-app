@@ -90,7 +90,6 @@ export default function CameraComponent() {
         >
           Video stream not available.
         </video>
-        <Link href="/">Cancel</Link>
         <button
           id="startbutton"
           className="bg-grey-100 border-grey-500 text-grey-200 mx-auto mt-2 block rounded-full border px-4 py-2 text-sm shadow"
@@ -107,6 +106,7 @@ export default function CameraComponent() {
           </svg>
         </button>
       </div>
+      {/* //! {should be moved to photo-preview somehow} */}
       <div className="mb-4 h-auto w-auto">
         <canvas ref={canvasRef} id="canvas" className="hidden"></canvas>
         <div className="h-full w-full">
