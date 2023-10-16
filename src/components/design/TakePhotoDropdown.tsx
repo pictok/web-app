@@ -1,7 +1,5 @@
 "use client";
-import React, { useState } from "react";
-import { cn } from "@/lib/utils";
-import { Button } from "../ui/button";
+import React from "react";
 import Image from "next/image";
 import {
   DropdownMenu,
@@ -12,7 +10,6 @@ import {
 import PrimaryButton from "./PrimaryButton";
 import Link from "next/link";
 import ImageUpload from "./ImageUpload";
-import { writeFile } from "fs/promises";
 
 export default function TakePhotoDropdown() {
   // const [isOpen, setIsOpen] = useState(false);
