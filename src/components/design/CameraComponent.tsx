@@ -1,6 +1,7 @@
 "use client";
 import React, { useEffect, useRef } from "react";
 import Image from "next/image";
+import Link from "next/link";
 
 export default function CameraComponent() {
   let video: HTMLVideoElement | null = null;
@@ -81,7 +82,6 @@ export default function CameraComponent() {
 
   return (
     <>
-      <h2 className="mb-4 text-2xl font-bold">Webcam take photo demo</h2>
       <div className="mb-4 h-full w-full">
         <video
           ref={videoRef}
@@ -90,6 +90,7 @@ export default function CameraComponent() {
         >
           Video stream not available.
         </video>
+        <Link href="/">Cancel</Link>
         <button
           id="startbutton"
           className="bg-grey-100 border-grey-500 text-grey-200 mx-auto mt-2 block rounded-full border px-4 py-2 text-sm shadow"
