@@ -54,7 +54,7 @@ export default function CameraComponent() {
         photo.setAttribute("src", data);
         photo.setAttribute("width", String(width));
         photo.setAttribute("height", String(height));
-        //! next: save picture to local??
+        //! next: save picture to local?? then send to image to sound processor?
       }
     }
   };
