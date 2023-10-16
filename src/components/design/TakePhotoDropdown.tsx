@@ -38,7 +38,7 @@ export default function TakePhotoDropdown() {
 
       <DropdownMenuContent sideOffset={4}>
         <DropdownMenuItem>
-          <Link href="/components">Take a photo with webcam</Link>
+          <Link href="/webcam">Take a photo with webcam</Link>
         </DropdownMenuItem>
         <DropdownMenuItem>
           <ImageUpload />
