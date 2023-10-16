@@ -10,6 +10,8 @@ import {
   DropdownMenuContent,
 } from "../ui/dropdown-menu";
 import PrimaryButton from "./PrimaryButton";
+import Link from "next/link";
+import FileInput from "./FileInput";
 
 export default function TakePhotoDropdown() {
   // const [isOpen, setIsOpen] = useState(false);
@@ -36,10 +38,10 @@ export default function TakePhotoDropdown() {
 
       <DropdownMenuContent sideOffset={4}>
         <DropdownMenuItem>
-          <a href="/components">Take a photo with webcam</a>
+          <Link href="/components">Take a photo with webcam</Link>
         </DropdownMenuItem>
         <DropdownMenuItem>
-          <a href="/components">Drop a file or click to upload</a>
+          <FileInput />
         </DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>
