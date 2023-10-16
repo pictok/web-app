@@ -6,180 +6,118 @@ export default function CameraComponent() {
   let video: HTMLVideoElement | null = null;
   let canvas: HTMLCanvasElement | null = null;
   let photo: HTMLImageElement | null = null;
-  let startbutton: HTMLButtonElement | null = null;
+  //   let startbutton: HTMLButtonElement | null = null;
 
   const videoRef = useRef<HTMLVideoElement>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const photoRef = useRef<HTMLImageElement>(null);
-  const startbuttonRef = useRef<HTMLButtonElement>(null);
 
-  useEffect(() => {
-    (() => {
-      // the height will be calculated based on the aspect ratio of the input stream.
-      const width = 320; // photo width
-      let height = 0; // photo height
+  //   const startbuttonRef = useRef<HTMLButtonElement>(null);
 
-      let streaming = false;
-
-      function showViewLiveResultButton() {
-        if (typeof window !== "undefined" && window.self !== window.top) {
-          // Ensure that if our document is in a frame, we get the user
-          // to first open it in its own tab or window. Otherwise, it
-          // won't be able to request permission for camera access.
-          document.querySelector(".contentarea")?.remove();
-          const button = document.createElement("button");
-          button.textContent = "View live result of the example code above";
-          document.body.append(button);
-          button.addEventListener("click", () => window.open(location.href));
-          return true;
-        }
-        return false;
-      }
-
-      function startup() {
-        if (showViewLiveResultButton()) {
-          return;
-        }
-
-        video = videoRef.current;
-        canvas = canvasRef.current;
-        photo = photoRef.current;
-        startbutton = startbuttonRef.current;
-
-        navigator.mediaDevices
-          .getUserMedia({ video: true, audio: false })
-          .then((stream) => {
-            if (video) {
-              video.srcObject = stream;
-              video.play();
-            }
-          })
-          .catch((err) => {
-            console.error(`An error occurred: ${err}`);
-          });
+  const getUserCamera = () => {
+    navigator.mediaDevices
+      .getUserMedia({ video: true, audio: false })
+      .then((stream) => {
+        let video = videoRef.current;
 
         if (video) {
-          video.addEventListener(
-            "canplay",
-            (ev) => {
-              if (!streaming) {
-                if (video) {
-                  let height = video.videoHeight / (video.videoWidth / width);
-
-                  // Firefox currently has a bug where the height can't be read from
-                  // the video, so we will make assumptions if this happens.
-                  if (isNaN(height)) {
-                    height = width / (4 / 3);
-                  }
-
-                  video.setAttribute("width", width.toString());
-                  video.setAttribute("height", height.toString());
-                }
-                if (canvas) {
-                  canvas.setAttribute("width", width.toString());
-                  canvas.setAttribute("height", height.toString());
-                }
-
-                streaming = true;
-              }
-            },
-            false,
-          );
+          //attach the stream to the video tag
+          video.srcObject = stream;
+          video.play();
         }
+      })
+      .catch((err) => {
+        console.error(`An error occurred: ${err}`);
+      });
+  };
 
-        if (startbutton) {
-          startbutton.addEventListener(
-            "click",
-            (ev) => {
-              takepicture();
-              ev.preventDefault();
-            },
-            false,
-          );
-        }
+  //take picture of user
+  const takePicture = () => {
+    //width and height
+    let width = 494;
+    let height = 370;
 
-        clearphoto();
+    video = videoRef.current;
+    canvas = canvasRef.current;
+    photo = photoRef.current;
+
+    if (canvas && video && photo) {
+      //set the photo width and height
+      canvas.width = width;
+      canvas.height = height;
+
+      let context = canvas.getContext("2d"); //image doesn't have getContext(), use canvas
+      if (context) {
+        context.drawImage(video, 0, 0, canvas.width, canvas.height);
+        // convert canvas to image in png
+        const data = canvas.toDataURL("image/png");
+        photo.setAttribute("src", data);
+        photo.setAttribute("width", String(width));
+        photo.setAttribute("height", String(height));
+        //! next: save picture to local??
       }
+    }
+  };
 
-      // Fill the photo with an indication that none has been
-      // captured.
+  // clear photo
+  function clearphoto() {
+    if (canvas) {
+      const context = canvas.getContext("2d");
+      if (context) {
+        context.fillStyle = "#AAA";
+        context.fillRect(0, 0, canvas.width, canvas.height);
 
-      function clearphoto() {
-        if (canvas) {
-          const context = canvas.getContext("2d");
-          if (context) {
-            context.fillStyle = "#AAA";
-            context.fillRect(0, 0, canvas.width, canvas.height);
-
-            const data = canvas.toDataURL("image/png");
-            if (photo) {
-              photo.setAttribute("src", data);
-            }
-          }
+        const data = canvas.toDataURL("image/png");
+        if (photo) {
+          photo.setAttribute("src", data);
         }
       }
+    }
+  }
 
-      // Capture a photo by fetching the current contents of the video
-      // and drawing it into a canvas, then converting that to a PNG
-      // format data URL. By drawing it on an offscreen canvas and then
-      // drawing that to the screen, we can change its size and/or apply
-      // other changes before drawing it.
-
-      function takepicture() {
-        if (width && height && canvas && video && photo) {
-          canvas.width = width;
-          canvas.height = height;
-          const context = canvas.getContext("2d");
-          if (context) {
-            context.drawImage(video, 0, 0, width, height);
-
-            const data = canvas.toDataURL("image/png");
-            photo.setAttribute("src", data);
-          }
-        } else {
-          clearphoto();
-        }
-      }
-
-      // Set up our event listener to run the startup process
-      // once loading is complete.
-      window.addEventListener("load", startup, false);
-    })();
-  }, []);
+  useEffect(() => {
+    getUserCamera();
+  }, [videoRef]);
 
   return (
-    <div className="mx-auto max-w-xl p-8 font-sans text-base">
-      <h1 className="mb-4 text-2xl font-bold">
-        MDN - navigator.mediaDevices.getUserMedia() take photo demo
-      </h1>
-      <div className="mb-4">
+    <>
+      <h2 className="mb-4 text-2xl font-bold">Webcam take photo demo</h2>
+      <div className="mb-4 h-full w-full">
         <video
           ref={videoRef}
           id="video"
-          className="h-60 w-80 border border-black shadow"
-          autoPlay
+          className="h-full w-full border border-black shadow"
         >
           Video stream not available.
         </video>
         <button
           id="startbutton"
-          className="mx-auto mt-2 block border border-white bg-green-500 px-4 py-2 text-sm text-white shadow"
+          className="bg-grey-100 border-grey-500 text-grey-200 mx-auto mt-2 block rounded-full border px-4 py-2 text-sm shadow"
+          onClick={takePicture}
         >
-          Take photo
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            className="h-3.5 w-3.5"
+            viewBox="0 0 16 16"
+            fill="currentColor"
+          >
+            <circle data-name="ellipse" cx="8" cy="8" r="8"></circle>
+            <span>Take photo</span>
+          </svg>
         </button>
       </div>
-      <canvas ref={canvasRef} id="canvas" className="hidden"></canvas>
-      <div className="mb-4">
-        <Image
-          id="photo"
-          ref={photoRef}
-          src=""
-          alt="The screen capture will appear in this box."
-          className="border border-black shadow"
-          width={320}
-          height={240}
-        />
+      <div className="mb-4 h-auto w-auto">
+        <canvas ref={canvasRef} id="canvas" className="hidden"></canvas>
+        <div className="h-full w-full">
+          <Image
+            id="photo"
+            ref={photoRef}
+            src=""
+            alt="The screen capture will appear in this box."
+            className="border border-black shadow"
+          />
+        </div>
       </div>
-    </div>
+    </>
   );
 }
