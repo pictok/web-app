@@ -1,8 +1,8 @@
 import React from "react";
 
 export default function ImageUpload() {
-  async function handleFileChange(e: React.ChangeEvent<HTMLInputElement>) {
-    const file = e.target.files?.[0];
+  async function handleFileChange(event: React.ChangeEvent<HTMLInputElement>) {
+    const file = event.target.files?.[0];
     if (!file) return;
 
     const formData = new FormData();
@@ -14,7 +14,7 @@ export default function ImageUpload() {
     });
 
     const data = await response.json();
-    
+
     if (data.success) {
       console.log("Image uploaded successfully");
     } else {
