@@ -2,7 +2,7 @@
 
 import { supabase } from "@/db/supabase";
 import { useRouter } from "next/navigation";
-import React, { useCallback, useState } from "react";
+import { useCallback, useState } from "react";
 import { useDropzone } from "react-dropzone";
 
 export default function FileUploader() {
