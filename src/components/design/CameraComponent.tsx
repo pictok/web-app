@@ -12,7 +12,6 @@ export default function CameraComponent() {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const photoRef = useRef<HTMLImageElement>(null);
 
-
   const getUserCamera = () => {
     navigator.mediaDevices
       .getUserMedia({ video: true, audio: false })
@@ -53,7 +52,6 @@ export default function CameraComponent() {
         photo.setAttribute("src", data);
         photo.setAttribute("width", String(width));
         photo.setAttribute("height", String(height));
-        //! next: save picture to local?? then send to image to sound processor?
       }
     }
   };
