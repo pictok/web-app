@@ -12,11 +12,6 @@ import Link from "next/link";
 // import ImageUpload from "./ImageUpload";
 
 export default function TakePhotoDropdown() {
-  // const [isOpen, setIsOpen] = useState(false);
-
-  // const toggleDropdown = () => {
-  //   setIsOpen(!isOpen);
-  // };
   return (
     <DropdownMenu>
       <DropdownMenuTrigger>
@@ -38,8 +33,7 @@ export default function TakePhotoDropdown() {
           <Link href="/webcam">Take a photo with webcam</Link>
         </DropdownMenuItem>
         <DropdownMenuItem>
-          {/* <ImageUpload /> */}
-          <Link href="/imageUpload">Drop a file or click to upload</Link>
+          <Link href="/upload">Drop a file or click to upload</Link>
         </DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>

@@ -7,13 +7,11 @@ export default function CameraComponent() {
   let video: HTMLVideoElement | null = null;
   let canvas: HTMLCanvasElement | null = null;
   let photo: HTMLImageElement | null = null;
-  //   let startbutton: HTMLButtonElement | null = null;
 
   const videoRef = useRef<HTMLVideoElement>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const photoRef = useRef<HTMLImageElement>(null);
 
-  //   const startbuttonRef = useRef<HTMLButtonElement>(null);
 
   const getUserCamera = () => {
     navigator.mediaDevices
