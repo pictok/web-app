@@ -2,13 +2,17 @@
 
 import { useState } from "react";
 import ConvertButton from "./ConvertButton";
+import SendPhotoButton from "./SendPhotoButton";
 import { supabase } from "@/db/supabase";
 import { getCaption } from "@/lib/getCaption";
 import { getSound } from "@/lib/getSound";
+import { useRouter } from "next/navigation";
 
 export default function SoundPreview({ image }: { image: string }) {
+  const router = useRouter();
   const [sound, setSound] = useState("");
   const [isConverting, setIsConverting] = useState(false);
+  const [isSending, setIsSending] = useState(false);
 
   const handleConversionToSound = async () => {
     setIsConverting(true);
@@ -48,13 +52,29 @@ export default function SoundPreview({ image }: { image: string }) {
       .select();
     if (CreateImgAudioLinkError) console.log(CreateImgAudioLinkError);
   };
-  return (
+
+  const handleSendPhoto = async () => {
+    setIsSending(true);
+    // sending to user
+    router.push(`/send-photo/complete`);
+  };
+
+  return !sound ? (
     <div>
       <ConvertButton
         onClick={handleConversionToSound}
         isConverting={isConverting}
       />
       {isConverting && <p>Converting...</p>}
+      {!isConverting && sound.length > 0 && (
+        <audio controls className="mx-auto mt-5">
+          <source src={sound} />
+        </audio>
+      )}
+    </div>
+  ) : (
+    <div>
+      <SendPhotoButton onClick={handleSendPhoto} isSending={isSending} />
       {!isConverting && sound.length > 0 && (
         <audio controls className="mx-auto mt-5">
           <source src={sound} />
