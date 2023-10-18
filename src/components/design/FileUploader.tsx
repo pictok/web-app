@@ -67,9 +67,9 @@ export default function FileUploader() {
               disabled={isUploading}
               onClick={handleUpload}
               className={
-                " text-white p-5 rounded-xl " +
+                " rounded-xl p-5 text-white " +
                 (isUploading
-                  ? "bg-gray-600 opacity-50 cursor-not-allowed"
+                  ? "cursor-not-allowed bg-gray-600 opacity-50"
                   : "bg-blue-500")
               }
             >
