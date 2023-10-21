@@ -1,20 +1,17 @@
-"use client";
-import React from "react";
 import Image from "next/image";
 import {
   DropdownMenu,
   DropdownMenuTrigger,
   DropdownMenuItem,
   DropdownMenuContent,
-} from "../ui/dropdown-menu";
+} from "@/components/ui/dropdown-menu";
 import PrimaryButton from "./PrimaryButton";
 import Link from "next/link";
-// import ImageUpload from "./ImageUpload";
 
 export default function TakePhotoDropdown() {
   return (
     <DropdownMenu>
-      <DropdownMenuTrigger>
+      <DropdownMenuTrigger asChild>
         <PrimaryButton className="relative flex h-auto w-full max-w-sm flex-col items-start justify-start gap-5 pb-3 pr-3 pt-10">
           <h2 className="text-lg">Take Photo</h2>
           <div className="relative z-10 ml-auto mt-auto h-16 w-16 overflow-hidden">
