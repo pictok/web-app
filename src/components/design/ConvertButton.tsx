@@ -13,9 +13,9 @@ export default function ConvertButton({
       disabled={isConverting}
       {...props}
       className={
-        " text-white p-5 rounded-xl mb-5 " +
+        " mb-5 rounded-xl p-5 text-white " +
         (isConverting
-          ? "bg-gray-600 opacity-50 cursor-not-allowed"
+          ? "cursor-not-allowed bg-gray-600 opacity-50"
           : "bg-blue-500")
       }
     >

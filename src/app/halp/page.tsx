@@ -39,7 +39,7 @@ export default function ComponentPage() {
               alt="Camera icon"
             />
           </div>
-          <div className="bg-primary-variant weird-circle absolute bottom-0 right-0 h-[100px] w-[100px] overflow-hidden rounded-br-3xl"></div>
+          <div className="weird-circle absolute bottom-0 right-0 h-[100px] w-[100px] overflow-hidden rounded-br-3xl bg-primary-variant"></div>
         </PrimaryButton>
         <SecondaryButton className="flex h-auto w-full max-w-sm flex-col items-start justify-start gap-5 pb-3 pr-3 pt-10">
           <h2 className="text-lg">Inbox</h2>
@@ -50,7 +50,7 @@ export default function ComponentPage() {
               alt="Inbox icon"
             />
           </div>
-          <div className="bg-secondary-variant weird-circle absolute bottom-0 right-0 h-[100px] w-[100px] overflow-hidden"></div>
+          <div className="weird-circle absolute bottom-0 right-0 h-[100px] w-[100px] overflow-hidden bg-secondary-variant"></div>
         </SecondaryButton>
       </div>
       <div className="space-y-5">
@@ -64,7 +64,7 @@ export default function ComponentPage() {
               className="z-10"
             />
           </div>
-          <div className="bg-primary-variant weird-circle2 absolute bottom-[-2px] right-[-2px] h-[100px] w-[100px] overflow-hidden rounded-tr-3xl"></div>
+          <div className="weird-circle2 absolute bottom-[-2px] right-[-2px] h-[100px] w-[100px] overflow-hidden rounded-tr-3xl bg-primary-variant"></div>
         </RegularButton>
         <RegularButton
           variant="right"
@@ -82,7 +82,7 @@ export default function ComponentPage() {
               className="z-10"
             />
           </div>
-          <div className="bg-secondary-variant weird-circle2 absolute bottom-[-2px] right-[-2px] h-[92px] w-[100px] overflow-hidden rounded-tr-3xl"></div>
+          <div className="weird-circle2 absolute bottom-[-2px] right-[-2px] h-[92px] w-[100px] overflow-hidden rounded-tr-3xl bg-secondary-variant"></div>
         </RegularButton>
       </div>
       <Navbar />
