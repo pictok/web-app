@@ -1,7 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
 
-import PrimaryButton from "@/components/design/PrimaryButton";
 import TakePhotoDropdown from "@/components/design/TakePhotoDropdown";
 import SecondaryButton from "@/components/design/SecondaryButton";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
