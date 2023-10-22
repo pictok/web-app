@@ -25,6 +25,7 @@ export default function SoundPreview({ image }: { image: string }) {
     // get sound from caption
     const res2 = await getSound(caption);
     const { output } = await res2.json();
+
     setSound(output);
 
     const audio = new Audio(output);
