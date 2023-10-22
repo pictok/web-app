@@ -7,6 +7,7 @@ import { supabase } from "@/db/supabase";
 import { getCaption } from "@/lib/getCaption";
 import { getSound } from "@/lib/getSound";
 import { useRouter } from "next/navigation";
+import ShareButton from "./ShareButton";
 
 export default function SoundPreview({ image }: { image: string }) {
   const router = useRouter();
@@ -72,12 +73,12 @@ export default function SoundPreview({ image }: { image: string }) {
   ) : (
     <div>
       {/* <SendPhotoButton onClick={handleSendPhoto} isSending={isSending} /> */}
-
       {!isConverting && sound.length > 0 && (
         <audio controls className="mx-auto mt-5">
           <source src={sound} />
         </audio>
       )}
+      {shareUrl && <ShareButton shareUrl={shareUrl} />}
     </div>
   );
 }
