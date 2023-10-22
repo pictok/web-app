@@ -12,7 +12,8 @@ export default function SoundPreview({ image }: { image: string }) {
   const router = useRouter();
   const [sound, setSound] = useState("");
   const [isConverting, setIsConverting] = useState(false);
-  const [isSending, setIsSending] = useState(false);
+  const [shareUrl, setShareUrl] = useState("");
+  // const [isSending, setIsSending] = useState(false);
 
   const handleConversionToSound = async () => {
     setIsConverting(true);
@@ -29,7 +30,6 @@ export default function SoundPreview({ image }: { image: string }) {
 
     const audio = new Audio(output);
     await audio.play();
-
     setIsConverting(false);
 
     // upload sound to supabase storage
@@ -44,37 +44,35 @@ export default function SoundPreview({ image }: { image: string }) {
     // insert image and audio url to supabase
     const audioPath =
       "https://bmtbohuzvkdifffdwayv.supabase.co/storage/v1/object/public/audio/";
-    const { error: CreateImgAudioLinkError } = await supabase
+
+    const { data: result, error: CreateImgAudioLinkError } = await supabase
       .from("image_audio")
-      .insert([
-        { user_id: 1, image_url: image, audio_url: audioPath + audioName },
-      ])
-      .select();
+      .insert([{ image_url: image, audio_url: audioPath + audioName }])
+      .select()
+      .single();
     if (CreateImgAudioLinkError) console.log(CreateImgAudioLinkError);
+    if (result) {
+      setShareUrl(`${location.origin}/photo/${result.share_id}`);
+    }
   };
 
-  const handleSendPhoto = async () => {
-    setIsSending(true);
-    // sending to user
-    router.push(`/send-photo/complete`);
-  };
+  // const handleSendPhoto = async () => {
+  //   setIsSending(true);
+  //   // sending to user
+  //   router.push(`/send-photo/complete`);
+  // };
 
   return !sound ? (
-    <div>
+    <div className="flex justify-center">
       <ConvertButton
         onClick={handleConversionToSound}
         isConverting={isConverting}
       />
-      {isConverting && <p>Converting...</p>}
-      {!isConverting && sound.length > 0 && (
-        <audio controls className="mx-auto mt-5">
-          <source src={sound} />
-        </audio>
-      )}
     </div>
   ) : (
     <div>
-      <SendPhotoButton onClick={handleSendPhoto} isSending={isSending} />
+      {/* <SendPhotoButton onClick={handleSendPhoto} isSending={isSending} /> */}
+
       {!isConverting && sound.length > 0 && (
         <audio controls className="mx-auto mt-5">
           <source src={sound} />
