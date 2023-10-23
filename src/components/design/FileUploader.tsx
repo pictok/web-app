@@ -63,7 +63,9 @@ export default function FileUploader() {
       {image && (
         <aside className="mt-10 space-y-5">
           <h4>Preview</h4>
-          <img src={image} alt="preview" />
+          <div className="flex justify-center">
+            <img src={image} alt="preview" />
+          </div>
           <div className="flex justify-center">
             <Button
               variant="secondary"
