@@ -50,12 +50,13 @@ export default function FileUploader() {
     <section className="container p-10">
       <div
         {...getRootProps({
-          className: "dropzone border-dashed border bg-gray-100 text-gray-500",
+          className:
+            "dropzone border-dashed border-2 bg-white dark:border-2 dark:border-white/10 dark:bg-white/10 dark:text-white rounded-xl",
         })}
       >
         <input {...getInputProps()} />
         <p className="p-10">
-          Drag n drop some files here, or click to select files
+          Upload your image here, or click to select an image from your device.
         </p>
       </div>
       {image && (
