@@ -9,6 +9,7 @@ import { getSound } from "@/lib/getSound";
 import ShareButton from "./ShareButton";
 import { readCaption } from "@/lib/readCaption";
 import { formatCaption } from "@/lib/formatCaption";
+import { Button } from "../ui/button";
 
 export default function SoundPreview({ image }: { image: string }) {
   const [sound, setSound] = useState("");
@@ -80,10 +81,9 @@ export default function SoundPreview({ image }: { image: string }) {
       )}
       {!sound && (
         <div className="flex justify-center">
-          <ConvertButton
-            onClick={handleConversionToSound}
-            isConverting={isConverting}
-          />
+          <Button onClick={handleConversionToSound} disabled={isConverting}>
+            {isConverting ? "Converting..." : "Convert to sound"}
+          </Button>
         </div>
       )}
       {!isConverting && sound && shareUrl && (

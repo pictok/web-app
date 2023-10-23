@@ -4,6 +4,7 @@ import { supabase } from "@/db/supabase";
 import { useRouter } from "next/navigation";
 import { useCallback, useState } from "react";
 import { useDropzone } from "react-dropzone";
+import { Button } from "../ui/button";
 
 export default function FileUploader() {
   const router = useRouter();
@@ -64,18 +65,13 @@ export default function FileUploader() {
           <h4>Preview</h4>
           <img src={image} alt="preview" />
           <div className="flex justify-center">
-            <button
+            <Button
+              variant="secondary"
               disabled={isUploading}
               onClick={handleUpload}
-              className={
-                " rounded-xl p-5 text-white " +
-                (isUploading
-                  ? "cursor-not-allowed bg-gray-600 opacity-50"
-                  : "bg-blue-500")
-              }
             >
               {isUploading ? "Uploading..." : "Upload image"}
-            </button>
+            </Button>
           </div>
         </aside>
       )}
