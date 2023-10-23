@@ -12,6 +12,7 @@ export default function SoundPreview({ image }: { image: string }) {
   const [sound, setSound] = useState("");
   const [isConverting, setIsConverting] = useState(false);
   const [shareUrl, setShareUrl] = useState("");
+  const [caption, setCaption] = useState("");
   // const [isSending, setIsSending] = useState(false);
 
   const handleConversionToSound = async () => {
@@ -72,7 +73,7 @@ export default function SoundPreview({ image }: { image: string }) {
   ) : (
     <div>
       {/* <SendPhotoButton onClick={handleSendPhoto} isSending={isSending} /> */}
-      {!isConverting && sound.length > 0 && shareUrl && (
+      {!isConverting && sound && shareUrl && (
         <div className="flex items-center justify-center gap-5">
           <audio controls className="mx-auto">
             <source src={sound} />
