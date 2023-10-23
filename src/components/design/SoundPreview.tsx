@@ -30,7 +30,6 @@ export default function SoundPreview({ image }: { image: string }) {
 
     const audio = new Audio(output);
     await audio.play();
-    setIsConverting(false);
 
     // upload sound to supabase storage
     const res3 = await fetch(output);
@@ -53,6 +52,7 @@ export default function SoundPreview({ image }: { image: string }) {
     if (CreateImgAudioLinkError) console.log(CreateImgAudioLinkError);
     if (result) {
       setShareUrl(`${location.origin}/photo/${result.share_id}`);
+      setIsConverting(false);
     }
   };
 
