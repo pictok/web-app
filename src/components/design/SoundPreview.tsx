@@ -37,9 +37,6 @@ export default function SoundPreview({ image }: { image: string }) {
 
     setSound(output);
 
-    const audio = new Audio(output);
-    await audio.play();
-
     // upload sound to supabase storage
     const res3 = await fetch(output);
     const blob = await res3.blob();
@@ -62,6 +59,8 @@ export default function SoundPreview({ image }: { image: string }) {
     if (result) {
       setShareUrl(`${location.origin}/photo/${result.share_id}`);
       setIsConverting(false);
+      const audio = new Audio(output);
+      await audio.play();
     }
   };
 
