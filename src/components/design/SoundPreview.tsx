@@ -7,6 +7,8 @@ import { supabase } from "@/db/supabase";
 import { getCaption } from "@/lib/getCaption";
 import { getSound } from "@/lib/getSound";
 import ShareButton from "./ShareButton";
+import { readCaption } from "@/lib/readCaption";
+import { formatCaption } from "@/lib/formatCaption";
 
 export default function SoundPreview({ image }: { image: string }) {
   const [sound, setSound] = useState("");
@@ -21,7 +23,13 @@ export default function SoundPreview({ image }: { image: string }) {
     // get caption from image url
     const res1 = await getCaption(image);
     const data = await res1.json();
-    const caption = String(data.output);
+    const caption = formatCaption(String(data.output));
+    setCaption(caption);
+
+    //use speech to text web api to read caption to the user
+    "speechSynthesis" in window
+      ? readCaption(caption)
+      : console.error("SpeechSynthesis is not supported in this browser.");
 
     // get sound from caption
     const res2 = await getSound(caption);
@@ -63,16 +71,21 @@ export default function SoundPreview({ image }: { image: string }) {
   //   router.push(`/send-photo/complete`);
   // };
 
-  return !sound ? (
-    <div className="flex justify-center">
-      <ConvertButton
-        onClick={handleConversionToSound}
-        isConverting={isConverting}
-      />
-    </div>
-  ) : (
-    <div>
-      {/* <SendPhotoButton onClick={handleSendPhoto} isSending={isSending} /> */}
+  return (
+    <>
+      {caption && (
+        <div className="flex justify-center">
+          <p className="text-center text-xl font-bold">{caption}</p>
+        </div>
+      )}
+      {!sound && (
+        <div className="flex justify-center">
+          <ConvertButton
+            onClick={handleConversionToSound}
+            isConverting={isConverting}
+          />
+        </div>
+      )}
       {!isConverting && sound && shareUrl && (
         <div className="flex items-center justify-center gap-5">
           <audio controls className="mx-auto">
@@ -81,6 +94,7 @@ export default function SoundPreview({ image }: { image: string }) {
           <ShareButton shareUrl={shareUrl} />
         </div>
       )}
-    </div>
+      {/* <SendPhotoButton onClick={handleSendPhoto} isSending={isSending} /> */}
+    </>
   );
 }
