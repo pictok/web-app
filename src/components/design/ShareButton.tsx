@@ -9,26 +9,31 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
+import { useToast } from "@/components/ui/use-toast";
 
 export default function ShareButton({ shareUrl }: { shareUrl: string }) {
+  const { toast } = useToast();
   const copyToClipboard = () => {
     navigator.clipboard.writeText(shareUrl);
+    toast({
+      title: "Link copied to clipboard!",
+    });
   };
   return (
     <Dialog>
       <DialogTrigger asChild>
-        <Button>Share</Button>
+        <Button variant="secondary">Share</Button>
       </DialogTrigger>
-      <DialogContent className="sm:max-w-[425px]">
+      <DialogContent className="dark:bg-background sm:max-w-[425px]">
         <DialogHeader>
           <DialogTitle>Share photo</DialogTitle>
           <DialogDescription>
-            Share this link with your friends to send them the photo!
+            Share the visual and audio experience with your friends!
           </DialogDescription>
         </DialogHeader>
-        <Input value={shareUrl} />
+        <Input readOnly value={shareUrl} />
         <DialogFooter>
-          <Button variant="secondary" onClick={copyToClipboard}>
+          <Button variant="default" onClick={copyToClipboard}>
             Copy
           </Button>
         </DialogFooter>
