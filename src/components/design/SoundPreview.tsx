@@ -2,15 +2,13 @@
 
 import { useState } from "react";
 import ConvertButton from "./ConvertButton";
-import SendPhotoButton from "./SendPhotoButton";
+// import SendPhotoButton from "./SendPhotoButton";
 import { supabase } from "@/db/supabase";
 import { getCaption } from "@/lib/getCaption";
 import { getSound } from "@/lib/getSound";
-import { useRouter } from "next/navigation";
 import ShareButton from "./ShareButton";
 
 export default function SoundPreview({ image }: { image: string }) {
-  const router = useRouter();
   const [sound, setSound] = useState("");
   const [isConverting, setIsConverting] = useState(false);
   const [shareUrl, setShareUrl] = useState("");
