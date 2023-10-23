@@ -14,7 +14,9 @@ export default async function UploadSuccess({
       </h1>
       {image && (
         <>
-          <img src={image} alt="preview" />
+          <div className="flex justify-center">
+            <img src={image} alt="preview" />
+          </div>
           <SoundPreview image={image} />
         </>
       )}
