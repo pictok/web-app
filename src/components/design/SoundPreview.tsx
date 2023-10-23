@@ -1,7 +1,6 @@
 "use client";
 
 import { useState } from "react";
-import ConvertButton from "./ConvertButton";
 // import SendPhotoButton from "./SendPhotoButton";
 import { supabase } from "@/db/supabase";
 import { getCaption } from "@/lib/getCaption";
