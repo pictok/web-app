@@ -4,6 +4,7 @@ import { supabase } from "@/db/supabase";
 import { useRouter } from "next/navigation";
 import { useCallback, useState } from "react";
 import { useDropzone } from "react-dropzone";
+import { Button } from "../ui/button";
 
 export default function FileUploader() {
   const router = useRouter();
@@ -50,31 +51,29 @@ export default function FileUploader() {
     <section className="container p-10">
       <div
         {...getRootProps({
-          className: "dropzone border-dashed border bg-gray-100 text-gray-500",
+          className:
+            "dropzone border-dashed border-2 bg-white dark:border-2 dark:border-white/10 dark:bg-white/10 dark:text-white rounded-xl",
         })}
       >
         <input {...getInputProps()} />
         <p className="p-10">
-          Drag n drop some files here, or click to select files
+          Upload your image here, or click to select an image from your device.
         </p>
       </div>
       {image && (
         <aside className="mt-10 space-y-5">
-          <h4>Preview</h4>
-          <img src={image} alt="preview" />
+          <h2 className="text-3xl font-bold">Preview</h2>
           <div className="flex justify-center">
-            <button
+            <img src={image} alt="preview" />
+          </div>
+          <div className="flex justify-center">
+            <Button
+              variant="secondary"
               disabled={isUploading}
               onClick={handleUpload}
-              className={
-                " rounded-xl p-5 text-white " +
-                (isUploading
-                  ? "cursor-not-allowed bg-gray-600 opacity-50"
-                  : "bg-blue-500")
-              }
             >
               {isUploading ? "Uploading..." : "Upload image"}
-            </button>
+            </Button>
           </div>
         </aside>
       )}

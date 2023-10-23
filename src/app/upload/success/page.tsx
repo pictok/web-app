@@ -10,11 +10,13 @@ export default async function UploadSuccess({
   return (
     <div className="mx-auto max-w-xl space-y-5 p-10">
       <h1 className="text-center text-xl font-bold">
-        Image upload was successful!
+        Your image upload was successful!
       </h1>
       {image && (
         <>
-          <img src={image} alt="preview" />
+          <div className="flex justify-center">
+            <img src={image} alt="preview" />
+          </div>
           <SoundPreview image={image} />
         </>
       )}

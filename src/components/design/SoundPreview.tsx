@@ -1,19 +1,20 @@
 "use client";
 
 import { useState } from "react";
-import ConvertButton from "./ConvertButton";
-import SendPhotoButton from "./SendPhotoButton";
+// import SendPhotoButton from "./SendPhotoButton";
 import { supabase } from "@/db/supabase";
 import { getCaption } from "@/lib/getCaption";
 import { getSound } from "@/lib/getSound";
-import { useRouter } from "next/navigation";
 import ShareButton from "./ShareButton";
+import { readCaption } from "@/lib/readCaption";
+import { formatCaption } from "@/lib/formatCaption";
+import { Button } from "../ui/button";
 
 export default function SoundPreview({ image }: { image: string }) {
-  const router = useRouter();
   const [sound, setSound] = useState("");
   const [isConverting, setIsConverting] = useState(false);
   const [shareUrl, setShareUrl] = useState("");
+  const [caption, setCaption] = useState("");
   // const [isSending, setIsSending] = useState(false);
 
   const handleConversionToSound = async () => {
@@ -22,17 +23,19 @@ export default function SoundPreview({ image }: { image: string }) {
     // get caption from image url
     const res1 = await getCaption(image);
     const data = await res1.json();
-    const caption = String(data.output);
+    const caption = formatCaption(String(data.output));
+    setCaption(caption);
+
+    //use speech to text web api to read caption to the user
+    "speechSynthesis" in window
+      ? readCaption(caption)
+      : console.error("SpeechSynthesis is not supported in this browser.");
 
     // get sound from caption
     const res2 = await getSound(caption);
     const { output } = await res2.json();
 
     setSound(output);
-
-    const audio = new Audio(output);
-    await audio.play();
-    setIsConverting(false);
 
     // upload sound to supabase storage
     const res3 = await fetch(output);
@@ -55,6 +58,9 @@ export default function SoundPreview({ image }: { image: string }) {
     if (CreateImgAudioLinkError) console.log(CreateImgAudioLinkError);
     if (result) {
       setShareUrl(`${location.origin}/photo/${result.share_id}`);
+      setIsConverting(false);
+      const audio = new Audio(output);
+      await audio.play();
     }
   };
 
@@ -64,22 +70,33 @@ export default function SoundPreview({ image }: { image: string }) {
   //   router.push(`/send-photo/complete`);
   // };
 
-  return !sound ? (
-    <div className="flex justify-center">
-      <ConvertButton
-        onClick={handleConversionToSound}
-        isConverting={isConverting}
-      />
-    </div>
-  ) : (
-    <div>
-      {/* <SendPhotoButton onClick={handleSendPhoto} isSending={isSending} /> */}
-      {!isConverting && sound.length > 0 && (
-        <audio controls className="mx-auto mt-5">
-          <source src={sound} />
-        </audio>
+  return (
+    <>
+      {caption && (
+        <div className="flex justify-center">
+          <p className="text-center text-xl font-bold">{caption}</p>
+        </div>
       )}
-      {shareUrl && <ShareButton shareUrl={shareUrl} />}
-    </div>
+      {!sound && (
+        <div className="flex justify-center">
+          <Button
+            variant="secondary"
+            onClick={handleConversionToSound}
+            disabled={isConverting}
+          >
+            {isConverting ? "Converting..." : "Convert to sound"}
+          </Button>
+        </div>
+      )}
+      {!isConverting && sound && shareUrl && (
+        <div className="flex items-center justify-center gap-5">
+          <audio controls className="mx-auto">
+            <source src={sound} />
+          </audio>
+          <ShareButton shareUrl={shareUrl} />
+        </div>
+      )}
+      {/* <SendPhotoButton onClick={handleSendPhoto} isSending={isSending} /> */}
+    </>
   );
 }
