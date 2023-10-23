@@ -80,7 +80,11 @@ export default function SoundPreview({ image }: { image: string }) {
       )}
       {!sound && (
         <div className="flex justify-center">
-          <Button onClick={handleConversionToSound} disabled={isConverting}>
+          <Button
+            variant="secondary"
+            onClick={handleConversionToSound}
+            disabled={isConverting}
+          >
             {isConverting ? "Converting..." : "Convert to sound"}
           </Button>
         </div>
