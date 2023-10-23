@@ -72,12 +72,14 @@ export default function SoundPreview({ image }: { image: string }) {
   ) : (
     <div>
       {/* <SendPhotoButton onClick={handleSendPhoto} isSending={isSending} /> */}
-      {!isConverting && sound.length > 0 && (
-        <audio controls className="mx-auto mt-5">
-          <source src={sound} />
-        </audio>
+      {!isConverting && sound.length > 0 && shareUrl && (
+        <div className="flex items-center justify-center gap-5">
+          <audio controls className="mx-auto">
+            <source src={sound} />
+          </audio>
+          <ShareButton shareUrl={shareUrl} />
+        </div>
       )}
-      {shareUrl && <ShareButton shareUrl={shareUrl} />}
     </div>
   );
 }
