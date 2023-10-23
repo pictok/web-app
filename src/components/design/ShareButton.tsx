@@ -17,6 +17,9 @@ export default function ShareButton({ shareUrl }: { shareUrl: string }) {
     navigator.clipboard.writeText(shareUrl);
     toast({
       title: "Link copied to clipboard!",
+      duration: 2000,
+      className:
+        "border-2 border-white bg-white drop-shadow-md hover:bg-white/90 dark:border-2 dark:border-white/10 dark:bg-white/10 dark:text-white",
     });
   };
   return (
@@ -24,7 +27,7 @@ export default function ShareButton({ shareUrl }: { shareUrl: string }) {
       <DialogTrigger asChild>
         <Button variant="secondary">Share</Button>
       </DialogTrigger>
-      <DialogContent className="dark:bg-background sm:max-w-[425px]">
+      <DialogContent className=" border-2 border-white bg-white drop-shadow-md hover:bg-white/90 dark:border-2 dark:border-white/10 dark:bg-white/10 dark:text-white sm:max-w-[425px]">
         <DialogHeader>
           <DialogTitle>Share photo</DialogTitle>
           <DialogDescription>
