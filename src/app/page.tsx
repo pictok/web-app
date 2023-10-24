@@ -43,7 +43,7 @@ export default function Home() {
         }
         {/* <TakePhotoDropdown /> */}
         <Link href="/inbox">
-          <SecondaryButton className="flex h-auto w-full max-w-sm flex-col items-start justify-start gap-5 pb-3 pr-3 pt-10">
+          <SecondaryButton className="relative flex h-auto w-full max-w-sm flex-col items-start justify-start gap-5 pb-3 pr-3 pt-10">
             <h2 className="text-lg">Inbox</h2>
             <div className="relative z-10 ml-auto mt-auto h-16 w-16 overflow-hidden">
               <Image
@@ -57,7 +57,7 @@ export default function Home() {
         </Link>
       </div>
       <div className="space-y-5">
-        <RegularButton className="flex h-auto w-full gap-10 pb-0 pl-5 pr-3 pt-5 text-left">
+        <RegularButton className="relative flex h-auto w-full gap-10 pb-0 pl-5 pr-3 pt-5 text-left">
           <h3 className="pb-5 text-lg">Experience your images with sound</h3>
           <div className="relative ml-auto mt-auto h-16 w-16  overflow-hidden">
             <Image
@@ -71,7 +71,7 @@ export default function Home() {
         </RegularButton>
         <RegularButton
           variant="right"
-          className="flex h-auto w-full gap-10 pb-0 pl-5 pr-3 pt-5 text-left"
+          className="relative flex h-auto w-full gap-10 pb-0 pl-5 pr-3 pt-5 text-left"
         >
           <div className="pb-5">
             <h3 className="text-lg">Tutorial</h3>
