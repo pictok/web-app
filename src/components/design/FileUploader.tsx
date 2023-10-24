@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import { useCallback, useState } from "react";
 import { useDropzone } from "react-dropzone";
 import { Button } from "../ui/button";
+import Logo from "./Logo";
 
 export default function FileUploader() {
   const router = useRouter();
@@ -48,7 +49,10 @@ export default function FileUploader() {
   });
 
   return (
-    <section className="container p-10">
+    <section className="container p-5">
+      <div className="mb-5 mt-3 flex justify-center">
+        <Logo />
+      </div>
       <div
         {...getRootProps({
           className:
@@ -62,16 +66,12 @@ export default function FileUploader() {
       </div>
       {image && (
         <aside className="mt-10 space-y-5">
-          <h2 className="text-3xl font-bold">Preview</h2>
+          <h2 className="text-3xl font-semibold">Preview</h2>
           <div className="flex justify-center">
             <img src={image} alt="preview" />
           </div>
           <div className="flex justify-center">
-            <Button
-              variant="secondary"
-              disabled={isUploading}
-              onClick={handleUpload}
-            >
+            <Button disabled={isUploading} onClick={handleUpload}>
               {isUploading ? "Uploading..." : "Upload image"}
             </Button>
           </div>

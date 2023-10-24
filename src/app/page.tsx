@@ -1,27 +1,29 @@
 import Image from "next/image";
 import Link from "next/link";
 
-import TakePhotoDropdown from "@/components/design/TakePhotoDropdown";
+// import TakePhotoDropdown from "@/components/design/TakePhotoDropdown";
 import SecondaryButton from "@/components/design/SecondaryButton";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+// import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { ModeToggle } from "@/components/ui/mode-toggle";
 import RegularButton from "@/components/design/RegularButton";
 import Navbar from "@/components/design/Navbar";
 import PrimaryButton from "@/components/design/PrimaryButton";
+import Logo from "@/components/design/Logo";
 
 export default function Home() {
   return (
     <main className="mx-auto max-w-sm space-y-10 px-2 py-5">
       <div className="flex items-center justify-between px-5">
-        <Avatar className="h-[123px] w-[123px] border-4 border-secondary">
+        <Logo />
+        {/* <Avatar className="h-[123px] w-[123px] border-4 border-secondary">
           <AvatarImage
             className="object-cover"
             src="/images/avatars/user.png"
           />
           <AvatarFallback>Jane Doe</AvatarFallback>
-        </Avatar>
+        </Avatar> */}
         <div className="space-y-5">
-          <p className="text-xl font-semibold">Jane Doe</p>
+          {/* <p className="text-xl font-semibold">Jane Doe</p> */}
           <ModeToggle />
         </div>
       </div>

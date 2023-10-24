@@ -1,4 +1,5 @@
 import ImageWithSound from "@/components/design/ImageWithSound";
+import Logo from "@/components/design/Logo";
 import { supabase } from "@/db/supabase";
 import { notFound } from "next/navigation";
 
@@ -23,6 +24,10 @@ export default async function SinglePhotoPage({
         Tap the image to play sound.
       </h1>
       <ImageWithSound image_url={image_url} audio_url={audio_url} />
+      <div className="mt-10 flex items-end justify-center gap-5">
+        <span>Created with </span>
+        <Logo />
+      </div>
     </div>
   );
 }

@@ -1,3 +1,4 @@
+import Logo from "@/components/design/Logo";
 import SoundPreview from "@/components/design/SoundPreview";
 
 export default async function UploadSuccess({
@@ -9,6 +10,9 @@ export default async function UploadSuccess({
 
   return (
     <div className="mx-auto max-w-xl space-y-5 p-10">
+      <div className="flex justify-center">
+        <Logo />
+      </div>
       <h1 className="text-center text-xl font-bold">
         Your image upload was successful!
       </h1>
