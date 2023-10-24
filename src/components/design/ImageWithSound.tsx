@@ -13,5 +13,9 @@ export default function ImageWithSound({
   const playAudio = () => {
     audio.play();
   };
-  return <img onClick={playAudio} src={image_url} />;
+  return (
+    <div className="flex justify-center">
+      <img onClick={playAudio} src={image_url} />
+    </div>
+  );
 }
