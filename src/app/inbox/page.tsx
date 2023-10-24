@@ -1,8 +1,7 @@
 import Image from "next/image";
 
 import { ChevronLeft } from "lucide-react";
-import { AspectRatio } from "@/components/ui/aspect-ratio";
-import { ScrollArea } from "@/components/ui/scroll-area";
+
 import Link from "next/link";
 
 export default function Inbox() {
