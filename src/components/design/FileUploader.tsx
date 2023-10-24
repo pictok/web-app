@@ -50,7 +50,7 @@ export default function FileUploader() {
 
   return (
     <section className="container p-5">
-      <div className="mb-5">
+      <div className="mb-5 mt-3 flex justify-center">
         <Logo />
       </div>
       <div
@@ -71,11 +71,7 @@ export default function FileUploader() {
             <img src={image} alt="preview" />
           </div>
           <div className="flex justify-center">
-            <Button
-              variant="default"
-              disabled={isUploading}
-              onClick={handleUpload}
-            >
+            <Button disabled={isUploading} onClick={handleUpload}>
               {isUploading ? "Uploading..." : "Upload image"}
             </Button>
           </div>
