@@ -31,12 +31,12 @@ export default function Home() {
         {
           <Link href="/upload">
             <PrimaryButton className="relative flex h-auto w-full max-w-sm flex-col items-start justify-start gap-5 pb-3 pr-3 pt-10">
-              <h2 className="text-lg">Take Photo</h2>
+              <h2 className="text-lg">Upload Photo</h2>
               <div className="relative z-10 ml-auto mt-auto h-16 w-16 overflow-hidden">
                 <Image
-                  src="/images/assets/camera.png"
+                  src="/images/assets/image.png"
                   fill={true}
-                  alt="Camera icon"
+                  alt="Image icon"
                 />
               </div>
               <div className="weird-circle absolute bottom-0 right-0 h-[100px] w-[100px] overflow-hidden rounded-br-3xl bg-primary-variant"></div>
@@ -59,31 +59,34 @@ export default function Home() {
         </Link>
       </div>
       <div className="space-y-5">
-        <RegularButton className="relative flex h-auto w-full gap-10 pb-0 pl-5 pr-3 pt-5 text-left">
-          <h3 className="pb-5 text-lg">Experience your images with sound</h3>
-          <div className="relative ml-auto mt-auto h-16 w-16  overflow-hidden">
+        <RegularButton className="relative flex h-auto w-full justify-start pb-0 pl-5 pr-3 pt-5 text-left">
+          <div className="pb-5">
+            <h3 className="text-lg">Explore</h3>
+            <p className="font-normal">Explore photos with sounds</p>
+          </div>
+          <div className="absolute right-0 top-2 h-[90px] w-[90px]  overflow-hidden">
             <Image
-              src="/images/assets/sound.png"
+              src="/images/assets/headphone.png"
               fill={true}
-              alt="Sound icon"
+              alt="Headphone icon"
               className="z-10"
             />
           </div>
-          <div className="weird-circle2 absolute bottom-[-2px] right-[-2px] h-[100px] w-[100px] overflow-hidden rounded-tr-3xl bg-primary-variant"></div>
+          <div className="weird-circle2 absolute bottom-[-2px] right-[-2px] h-[92px] w-[100px] overflow-hidden rounded-tr-3xl bg-primary-variant"></div>
         </RegularButton>
         <RegularButton
           variant="right"
-          className="relative flex h-auto w-full gap-10 pb-0 pl-5 pr-3 pt-5 text-left"
+          className="relative flex h-auto w-full justify-start pb-0 pl-5 pr-3 pt-5 text-left"
         >
           <div className="pb-5">
             <h3 className="text-lg">Tutorial</h3>
-            <p>Learn how to use the app</p>
+            <p className="font-normal">Learn how to use the app</p>
           </div>
-          <div className="relative ml-auto mt-auto h-16 w-16 overflow-hidden">
+          <div className="absolute right-[-10px] top-[5px] h-[85px] w-[95px] overflow-hidden">
             <Image
-              src="/images/assets/computer.png"
+              src="/images/assets/lightbulb.png"
               fill={true}
-              alt="Computer icon"
+              alt="Lightbulb icon"
               className="z-10"
             />
           </div>
