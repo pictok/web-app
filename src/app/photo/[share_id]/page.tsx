@@ -25,7 +25,7 @@ export default async function SinglePhotoPage({
       </h1>
       <ImageWithSound image_url={image_url} audio_url={audio_url} />
       <div className="mt-5 flex items-end justify-center gap-3">
-        <span>Created with</span>
+        <span className="mb-4">Created with</span>
         <Logo />
       </div>
     </div>
