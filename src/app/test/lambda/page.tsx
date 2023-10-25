@@ -15,7 +15,7 @@ export default function LambdaTest() {
     console.log(output);
   };
   return (
-    <div className="container">
+    <div className="container p-5">
       <Button onClick={handleClick}>Test</Button>
     </div>
   );
