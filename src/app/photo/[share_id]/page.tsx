@@ -24,8 +24,8 @@ export default async function SinglePhotoPage({
         Tap the image to play sound.
       </h1>
       <ImageWithSound image_url={image_url} audio_url={audio_url} />
-      <div className="mt-5 flex items-end justify-center gap-5">
-        <span>Created with </span>
+      <div className="mt-5 flex items-end justify-center gap-3">
+        <span>Created with</span>
         <Logo />
       </div>
     </div>
