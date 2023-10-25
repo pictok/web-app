@@ -9,7 +9,7 @@ export default async function UploadSuccess({
   const { image } = searchParams;
 
   return (
-    <div className="mx-auto max-w-xl space-y-5 p-10">
+    <div className="mx-auto max-w-xl space-y-5 px-2 py-5">
       <div className="flex justify-center">
         <Logo />
       </div>

@@ -49,7 +49,7 @@ export default function FileUploader() {
   });
 
   return (
-    <section className="container p-5">
+    <section className="container px-5 py-2">
       <div className="mb-5 mt-3 flex justify-center">
         <Logo />
       </div>
