@@ -3,11 +3,13 @@
 type ImageWithSoundProps = {
   image_url: string;
   audio_url: string;
+  caption: string;
 };
 
 export default function ImageWithSound({
   image_url,
   audio_url,
+  caption,
 }: ImageWithSoundProps) {
   const audio = new Audio(audio_url);
   const playAudio = () => {
@@ -15,7 +17,7 @@ export default function ImageWithSound({
   };
   return (
     <div className="flex justify-center">
-      <img onClick={playAudio} src={image_url} />
+      <img onClick={playAudio} src={image_url} alt={caption} />
     </div>
   );
 }

@@ -17,13 +17,16 @@ export default async function SinglePhotoPage({
     .single();
   if (error || !data) return notFound();
 
-  const { image_url, audio_url } = data;
+  const { image_url, audio_url, caption } = data;
   return (
-    <div className="mx-auto my-10 max-w-xl">
-      <h1 className="mb-10 text-center text-3xl">
-        Tap the image to play sound.
-      </h1>
-      <ImageWithSound image_url={image_url} audio_url={audio_url} />
+    <div className="mx-auto max-w-xl px-2 py-10">
+      <h1 className="mb-3 text-center text-3xl">{caption}</h1>
+      <h2 className="mb-3 text-center">(Tap the image to hear the sound!)</h2>
+      <ImageWithSound
+        image_url={image_url}
+        audio_url={audio_url}
+        caption={caption}
+      />
       <div className="mt-5 flex items-end justify-center gap-3">
         <span className="mb-4">Created with</span>
         <Logo />
