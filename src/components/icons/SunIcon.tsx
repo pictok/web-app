@@ -1,6 +1,7 @@
-export default function SunIcon() {
+export default function SunIcon({ className }: { className?: string }) {
   return (
     <svg
+      className={className}
       width="34"
       height="34"
       viewBox="0 0 34 34"

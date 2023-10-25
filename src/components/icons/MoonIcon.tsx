@@ -1,6 +1,7 @@
-export default function MoonIcon() {
+export default function MoonIcon({ className }: { className?: string }) {
   return (
     <svg
+      className={className}
       width="31"
       height="30"
       viewBox="0 0 31 30"
