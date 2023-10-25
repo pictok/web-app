@@ -52,7 +52,7 @@ export default function SoundPreview({ image }: { image: string }) {
 
     const { data: result, error: CreateImgAudioLinkError } = await supabase
       .from("image_audio")
-      .insert([{ image_url: image, audio_url: audioPath + audioName }])
+      .insert([{ image_url: image, audio_url: audioPath + audioName, caption }])
       .select()
       .single();
     if (CreateImgAudioLinkError) console.log(CreateImgAudioLinkError);
