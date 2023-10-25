@@ -96,4 +96,76 @@
   .dark .navbar-gradient {
     background: linear-gradient(180deg, #f8f5f1a8 20%, #89a4e2bd 100%);
   }
+
+  #darkmode-toggle {
+    width: 0;
+    height: 0;
+    visibility: hidden;
+  }
+
+  #darkmode-toggle-label {
+    width: 100px;
+    height: 40px;
+    position: relative;
+    display: block;
+    background: linear-gradient(180deg, #feffc993 19%, #c5e1f598 100%);
+    border-radius: 200px;
+    box-shadow:
+      inset 0px 5px 15px rgba(0, 0, 0, 0.205),
+      inset 0px -5px 15px rgba(255, 255, 255, 0.082);
+    cursor: pointer;
+  }
+  #darkmode-toggle-label:after {
+    content: "";
+    width: 30px;
+    height: 30px;
+    position: absolute;
+    top: 5px;
+    right: 10px;
+    background: #199dfc;
+    border-radius: 180px;
+    box-shadow:
+      inset 0px 5px 15px rgba(0, 0, 0, 0.205),
+      inset 0px -5px 15px rgba(255, 255, 255, 0.082);
+  }
+
+  #darkmode-toggle:checked + #darkmode-toggle-label {
+    background: linear-gradient(180deg, #f8f5f1a8 20%, #89a4e2bd 100%);
+  }
+  #darkmode-toggle:checked + #darkmode-toggle-label:after {
+    left: 6px;
+    transform: translateX(10%);
+    background: #6c96f5;
+  }
+
+  #darkmode-toggle-label:active:after {
+    width: 80px;
+  }
+
+  #darkmode-toggle-label,
+  #darkmode-toggle-label:after {
+    transition: 0.3s;
+  }
+
+  #darkmode-toggle-label svg {
+    position: absolute;
+    width: 50px;
+    top: 10px;
+    z-index: 100;
+  }
+  #darkmode-toggle-label svg.sun {
+    left: 50px;
+    transition: 0.3s;
+  }
+  #darkmode-toggle-label svg.moon {
+    left: 0px;
+    transition: 0.3s;
+    visibility: hidden;
+  }
+  #darkmode-toggle:checked + #darkmode-toggle-label svg.sun {
+    visibility: hidden;
+  }
+  #darkmode-toggle:checked + #darkmode-toggle-label svg.moon {
+    visibility: visible;
+  }
 }

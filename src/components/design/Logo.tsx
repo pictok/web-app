@@ -1,22 +1,24 @@
 import Image from "next/image";
-import { Nunito } from "next/font/google";
+import { Baloo_2 } from "next/font/google";
 import Link from "next/link";
+import LogoIcon from "../icons/LogoIcon";
 
-const nunito = Nunito({ subsets: ["latin"] });
+const ballo2 = Baloo_2({ subsets: ["latin"] });
 
 export default function Logo() {
   return (
     <Link href="/" className="flex">
-      <span className={"mt-auto text-xl font-bold " + nunito.className}>
+      <span className={"mt-auto text-xl font-semibold " + ballo2.className}>
         PicTok
       </span>
-      <Image
+      <LogoIcon />
+      {/* <Image
         src="/images/assets/pictok.png"
         className="mb-5"
         alt="Pictok Logo"
         width={40}
         height={40}
-      />
+      /> */}
     </Link>
   );
 }
