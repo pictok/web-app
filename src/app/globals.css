@@ -134,7 +134,7 @@
   }
   #darkmode-toggle:checked + #darkmode-toggle-label:after {
     left: 6px;
-    transform: translateX(10%);
+    transform: translateX(5%);
     background: #6c96f5;
   }
 
@@ -158,7 +158,7 @@
     transition: 0.3s;
   }
   #darkmode-toggle-label svg.moon {
-    left: 0px;
+    left: -1px;
     transition: 0.3s;
     visibility: hidden;
   }
