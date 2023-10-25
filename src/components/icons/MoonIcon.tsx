@@ -2,8 +2,8 @@ export default function MoonIcon({ className }: { className?: string }) {
   return (
     <svg
       className={className}
-      width="31"
-      height="30"
+      width="21"
+      height="20"
       viewBox="0 0 31 30"
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
