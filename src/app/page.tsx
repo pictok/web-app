@@ -58,7 +58,7 @@ export default function Home() {
           </SecondaryButton>
         </Link>
       </div>
-      <div className="space-y-5">
+      {/* <div className="space-y-5">
         <RegularButton className="relative flex h-auto w-full justify-start pb-0 pl-5 pr-3 pt-5 text-left">
           <div className="pb-5">
             <h3 className="text-lg">Explore</h3>
@@ -92,7 +92,7 @@ export default function Home() {
           </div>
           <div className="weird-circle2 absolute bottom-[-2px] right-[-2px] h-[92px] w-[100px] overflow-hidden rounded-tr-3xl bg-secondary-variant"></div>
         </RegularButton>
-      </div>
+      </div> */}
 
       <Navbar />
     </main>
