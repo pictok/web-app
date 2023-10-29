@@ -1,11 +1,10 @@
 "use client";
 
-import { useRef, useState } from "react";
+import { useRef } from "react";
 import Image from "next/image";
 import PrimaryButton from "./PrimaryButton";
 import { supabase } from "@/db/supabase";
 import { randomImageName } from "@/lib/randomImageName";
-import { redirect } from "next/navigation";
 
 export default function TakePhotoButton() {
   const photoInputRef = useRef<HTMLInputElement>(null);
@@ -34,7 +33,6 @@ export default function TakePhotoButton() {
     const photoUrl = data?.path;
     console.log(photoUrl);
     //Redirect the user to the photo processing page.
-    redirect("/");
   };
   return (
     <>
