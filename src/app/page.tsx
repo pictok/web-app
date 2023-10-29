@@ -27,14 +27,20 @@ export default function Home() {
         <Link href="/inbox">
           <SecondaryButton className="relative flex h-auto w-full max-w-sm flex-col items-start justify-start gap-5 pb-3 pr-3 pt-10">
             <h2 className="text-lg">Inbox</h2>
-            <div className="relative z-10 ml-auto mt-auto h-16 w-16 overflow-hidden">
+            <div
+              aria-hidden
+              className="relative z-10 ml-auto mt-auto h-16 w-16 overflow-hidden"
+            >
               <Image
                 src="/images/assets/inbox.png"
                 fill={true}
                 alt="Inbox icon"
               />
             </div>
-            <div className="weird-circle absolute bottom-0 right-0 h-[100px] w-[100px] overflow-hidden bg-secondary-variant"></div>
+            <div
+              aria-hidden
+              className="weird-circle absolute bottom-0 right-0 h-[100px] w-[100px] overflow-hidden bg-secondary-variant"
+            ></div>
           </SecondaryButton>
         </Link>
       </div>
