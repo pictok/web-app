@@ -94,7 +94,7 @@ export default function Home() {
         </RegularButton>
       </div> */}
 
-      <Navbar />
+      {/* <Navbar /> */}
     </main>
   );
 }
