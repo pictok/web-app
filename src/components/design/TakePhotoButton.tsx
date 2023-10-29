@@ -12,12 +12,16 @@ export default function TakePhotoButton() {
   const handleClick = async () => {
     //Open the camera
     photoInputRef.current?.click();
+  };
+
+  const handlePhotoInput = async () => {
     //Get the photo
     const files = photoInputRef.current?.files;
     if (!files || files.length == 0) return;
     const photo = files[0];
     //Generate a random image name
-    const imageName = randomImageName() + photo.type.replace("image/", ".");
+    const imageName =
+      (await randomImageName()) + photo.type.replace("image/", ".");
     //Upload the photo to supabase storage
     const { data, error } = await supabase.storage
       .from("images")
@@ -53,6 +57,7 @@ export default function TakePhotoButton() {
 
       <input
         ref={photoInputRef}
+        onChange={handlePhotoInput}
         type="file"
         name="picture"
         id="picture"
