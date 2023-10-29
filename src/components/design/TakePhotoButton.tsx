@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef } from "react";
+import { useRef, useState } from "react";
 import Image from "next/image";
 import PrimaryButton from "./PrimaryButton";
 import { supabase } from "@/db/supabase";
