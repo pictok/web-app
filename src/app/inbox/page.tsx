@@ -1,26 +1,30 @@
+"use client";
 import Image from "next/image";
 import { ChevronLeft } from "lucide-react";
 import {supabase} from "@/db/supabase";
-import { notFound } from "next/navigation";
 
 
-Geist. 
 
 import Link from "next/link";
+import { useEffect, useState } from "react";
 
-export default async function Inbox({
-  params: { share_id }} 
-  : {
-    params: { share_id: string };
-  }) {
+export default  function Inbox() {
+  const [inbox, setInbox] = useState<any[]>([]);
 
-  if(!share_id) return notFound();
 
-  let {data, error } = await supabase.from("image_audio").select("*").eq("share_id", share_id)
+  useEffect(() => {
+    async function getInbox() {
+      let { data, error } = await supabase.from("image_audio").select('*')
+  if (!data) {
+  console.log(error);
+  return;
+    }
+    setInbox(data);
+  }
+  getInbox();
+    
+  }, []);
 
-  if(error ||!data) return notFound();
-
-  console.log(data);
 
   return (
     <main className="mx-auto max-h-screen max-w-lg overflow-hidden px-2">
@@ -32,9 +36,9 @@ export default async function Inbox({
       </div>
 
       <div className="h-[90vh] snap-y snap-mandatory overflow-y-scroll">
-        {data.map((item, index) => (
-          <div key={index} className="relative h-[90vh] w-full snap-center overflow-hidden bg-muted">
-            <Image 
+        {inbox.map((item) => (
+          <div key={item.id} className="relative h-[90vh] w-full snap-center overflow-hidden bg-muted">
+            <img 
             src={item.image_url}
             alt="Palm trees on a beach"
             className="object-cover"
