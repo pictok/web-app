@@ -1,10 +1,31 @@
+"use client";
 import Image from "next/image";
-
 import { ChevronLeft } from "lucide-react";
+import {supabase} from "@/db/supabase";
+
+
 
 import Link from "next/link";
+import { useEffect, useState } from "react";
 
-export default function Inbox() {
+export default  function Inbox() {
+  const [inbox, setInbox] = useState<any[]>([]);
+
+
+  useEffect(() => {
+    async function getInbox() {
+      let { data, error } = await supabase.from("image_audio").select('*')
+  if (!data) {
+  console.log(error);
+  return;
+    }
+    setInbox(data);
+  }
+  getInbox();
+    
+  }, []);
+
+
   return (
     <main className="mx-auto max-h-screen max-w-lg overflow-hidden px-2">
       <div className="relative flex items-center justify-center py-5">
@@ -15,22 +36,15 @@ export default function Inbox() {
       </div>
 
       <div className="h-[90vh] snap-y snap-mandatory overflow-y-scroll">
-        <div className="relative h-[90vh] w-full snap-center overflow-hidden bg-muted">
-          <Image
-            src="/images/photos/photo-1.jpg"
+        {inbox.map((item) => (
+          <div key={item.id} className="relative h-[90vh] w-full snap-center overflow-hidden bg-muted">
+            <img 
+            src={item.image_url}
             alt="Palm trees on a beach"
-            fill
             className="object-cover"
-          />
-        </div>
-        <div className="relative h-[90vh] w-full snap-center overflow-hidden bg-muted">
-          <Image
-            src="/images/photos/photo-2.png"
-            alt="Palm trees on a beach"
-            fill
-            className="object-cover"
-          />
-        </div>
+            />
+          </div>
+        ))}
       </div>
     </main>
   );
