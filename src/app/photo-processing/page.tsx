@@ -14,6 +14,7 @@ import { readCaption } from "@/lib/readCaption";
 import { getSound } from "@/lib/getSound";
 import { useSwipeable } from "react-swipeable";
 import { useRouter } from "next/navigation";
+import { cn } from "@/lib/utils";
 
 export default function PhotoProcessing({
   searchParams: { photoPublicUrl },
@@ -97,30 +98,37 @@ export default function PhotoProcessing({
         <h1 className="text-2xl font-bold">Photo</h1>
       </div>
 
-      <div className="relative h-[90vh]" {...handler}>
+      <div className="z-11 relative h-[90vh]">
         <div className="relative h-[90vh] w-full">
-          <Image
-            src={photoPublicUrl}
-            alt="Palm trees on a beach"
-            fill
-            className={`object-cover ${isConverting ? "opacity-70" : ""}`}
-          />
+          <div {...handler}>
+            <Image
+              src={photoPublicUrl}
+              alt="Palm trees on a beach"
+              fill
+              className={`object-cover`}
+            />
+          </div>
         </div>
         {isConverting && (
           <>
             <div className="absolute inset-0 flex items-center justify-center">
-              <LoadSpinnerSVG />
+              <div className="relative z-10">
+                <LoadSpinnerSVG />
+              </div>
+              <div className="z-5 absolute inset-0 bg-black opacity-60 dark:bg-white"></div>
             </div>
             <div className="absolute inset-0 flex items-center justify-center">
-              <h1 className="text-4xl">Processing</h1>
+              <h1 className="text-2xl text-background sm:text-4xl">
+                Processing
+              </h1>
             </div>
           </>
         )}
-        <div className="absolute inset-0 space-y-3">
+        {/* <div className="absolute inset-0 space-y-3 text-black">
           <p>{caption}</p>
           <p>Sound: {sound}</p>
           <p>ShareUrl: {shareUrl}</p>
-        </div>
+        </div> */}
       </div>
     </main>
   );
