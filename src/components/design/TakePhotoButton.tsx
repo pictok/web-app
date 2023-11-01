@@ -32,12 +32,19 @@ export default function TakePhotoButton() {
       console.error(error);
       return;
     }
-    //Get the photo url
-    const photoUrl = data?.path;
-    console.log(photoUrl);
+    //Get the photo url string
+    const photoString = data?.path;
+    console.log(photoString);
+
+    //Get the photo public url
+    const {
+      data: { publicUrl: photoPublicUrl },
+    } = await supabase.storage.from("images").getPublicUrl(photoString);
 
     //Redirect the user to the photo processing page.
-    router.push(`/photo-processing?photoUrl=${photoUrl}`);
+    router.push(
+      `/photo-processing?photoString=${photoString}&photoPublicUrl=${photoPublicUrl}`,
+    );
   };
   return (
     <>
