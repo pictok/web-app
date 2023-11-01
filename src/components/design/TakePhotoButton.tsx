@@ -42,9 +42,7 @@ export default function TakePhotoButton() {
     } = await supabase.storage.from("images").getPublicUrl(photoString);
 
     //Redirect the user to the photo processing page.
-    router.push(
-      `/photo-processing?photoString=${photoString}&photoPublicUrl=${photoPublicUrl}`,
-    );
+    router.push(`/photo-processing?photoPublicUrl=${photoPublicUrl}`);
   };
   return (
     <>
