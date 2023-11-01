@@ -15,7 +15,7 @@ export default function LoadSpinner() {
           <h1 className="text-2xl font-bold">Photo</h1>
         </div>
 
-        <div className="h-[90vh] snap-y snap-mandatory">
+        <div className="relative h-[90vh] snap-y snap-mandatory">
           <div className="relative h-[90vh] w-full snap-center ">
             <Image
               src="/images/photos/photo-2.png"
