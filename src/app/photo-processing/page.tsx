@@ -12,16 +12,26 @@ import { getCaption } from "@/lib/getCaption";
 import { formatCaption } from "@/lib/formatCaption";
 import { readCaption } from "@/lib/readCaption";
 import { getSound } from "@/lib/getSound";
+import { useSwipeable } from "react-swipeable";
+import { useRouter } from "next/navigation";
 
 export default function PhotoProcessing({
   searchParams: { photoPublicUrl },
 }: {
   searchParams: { photoPublicUrl: string };
 }) {
+  const router = useRouter();
   const [sound, setSound] = useState("");
   const [isConverting, setIsConverting] = useState(false);
   const [shareUrl, setShareUrl] = useState("");
   const [caption, setCaption] = useState("");
+
+  const handler = useSwipeable({
+    onSwipedRight: () => {
+      if (!isConverting) router.push("/send-photo");
+    },
+    trackMouse: true,
+  });
 
   useEffect(() => {
     const handleConversionToSound = async () => {
@@ -87,8 +97,8 @@ export default function PhotoProcessing({
         <h1 className="text-2xl font-bold">Photo</h1>
       </div>
 
-      <div className="relative h-[90vh] snap-y snap-mandatory">
-        <div className="relative h-[90vh] w-full snap-center ">
+      <div className="relative h-[90vh]" {...handler}>
+        <div className="relative h-[90vh] w-full">
           <Image
             src={photoPublicUrl}
             alt="Palm trees on a beach"

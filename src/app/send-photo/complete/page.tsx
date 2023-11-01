@@ -2,9 +2,6 @@ import { ChevronLeft } from "lucide-react";
 
 import Image from "next/image";
 import Link from "next/link";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import Navbar from "@/components/design/Navbar";
-import RegularButton from "@/components/design/RegularButton";
 
 export default function complete() {
   return (
@@ -33,7 +30,7 @@ export default function complete() {
         </p>
       </div>
 
-      <Navbar />
+      {/* <Navbar /> */}
     </main>
   );
 }

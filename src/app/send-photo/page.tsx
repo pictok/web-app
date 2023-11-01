@@ -45,7 +45,7 @@ export default function SendPhoto() {
         </Link>
       </div>
 
-      <Navbar />
+      {/* <Navbar /> */}
     </main>
   );
 }
