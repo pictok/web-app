@@ -4,12 +4,9 @@ import { useRouter } from "next/navigation";
 import { useRef } from "react";
 import Image from "next/image";
 import PrimaryButton from "./PrimaryButton";
-import { supabase } from "@/db/supabase";
-import { randomImageName } from "@/lib/randomImageName";
 
 export default function TakePhotoButton() {
   const router = useRouter();
-
   const photoInputRef = useRef<HTMLInputElement>(null);
   const handleClick = async () => {
     //Open the camera
@@ -21,28 +18,8 @@ export default function TakePhotoButton() {
     const files = photoInputRef.current?.files;
     if (!files || files.length == 0) return;
     const photo = files[0];
-    //Generate a random image name
-    const imageName =
-      (await randomImageName()) + photo.type.replace("image/", ".");
-    //Upload the photo to supabase storage
-    const { data, error } = await supabase.storage
-      .from("images")
-      .upload(imageName, photo);
-    if (error) {
-      console.error(error);
-      return;
-    }
-    //Get the photo url string
-    const photoString = data?.path;
-    console.log(photoString);
-
-    //Get the photo public url
-    const {
-      data: { publicUrl: photoPublicUrl },
-    } = await supabase.storage.from("images").getPublicUrl(photoString);
-
-    //Redirect the user to the photo processing page.
-    router.push(`/photo-processing?photoPublicUrl=${photoPublicUrl}`);
+    const photoBlobUrl = URL.createObjectURL(photo);
+    router.push(`/photo-processing?photoBlobUrl=${photoBlobUrl}`);
   };
   return (
     <>
