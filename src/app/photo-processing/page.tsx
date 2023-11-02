@@ -14,11 +14,12 @@ import { readCaption } from "@/lib/readCaption";
 import { getSound } from "@/lib/getSound";
 import { useSwipeable } from "react-swipeable";
 import { useRouter } from "next/navigation";
+import { randomImageName } from "@/lib/randomImageName";
 
 export default function PhotoProcessing({
-  searchParams: { photoPublicUrl },
+  searchParams: { photoBlobUrl },
 }: {
-  searchParams: { photoPublicUrl: string };
+  searchParams: { photoBlobUrl: string };
 }) {
   const router = useRouter();
   const [sound, setSound] = useState("");
@@ -37,10 +38,38 @@ export default function PhotoProcessing({
     const handleConversionToSound = async () => {
       setIsConverting(true);
 
-      // get caption from image url
+      const response = await fetch(photoBlobUrl);
+      // Blob object
+      const blobData = await response.blob();
+
+      //Generate a random image name that will be used
+      // to store the image in supabase storage
+      const imageName =
+        (await randomImageName()) + blobData.type.replace("image/", ".");
+
+      // Save the photo to supabase storage
+      const { data, error } = await supabase.storage
+        .from("images")
+        // We can upload imageName using either a Blob object or a File object
+        .upload(imageName, blobData);
+      if (error) {
+        console.error(error);
+        return;
+      }
+
+      //Get the photo url string
+      const photoString = data?.path;
+      console.log(photoString);
+
+      //Get the photo public url
+      const {
+        data: { publicUrl: photoPublicUrl },
+      } = await supabase.storage.from("images").getPublicUrl(photoString);
+
+      // get caption from photo public url
       const res1 = await getCaption(photoPublicUrl);
-      const data = await res1.json();
-      const caption = formatCaption(String(data.output));
+      const captionData = await res1.json();
+      const caption = formatCaption(String(captionData.output));
       setCaption(caption);
 
       //use speech to text web api to read caption to the user
@@ -86,7 +115,7 @@ export default function PhotoProcessing({
       }
     };
     handleConversionToSound();
-  }, [photoPublicUrl]);
+  }, [photoBlobUrl]);
 
   return (
     <main className="mx-auto max-h-screen max-w-lg overflow-hidden px-2">
@@ -100,7 +129,7 @@ export default function PhotoProcessing({
       <div className="relative h-[90vh]" {...handler}>
         <div className="relative h-[90vh] w-full">
           <Image
-            src={photoPublicUrl}
+            src={photoBlobUrl}
             alt="Palm trees on a beach"
             fill
             className={`object-cover ${isConverting ? "opacity-70" : ""}`}
