@@ -1,11 +1,9 @@
+import { supabase } from "@/db/supabase";
+
 export async function getSound(caption: string) {
-  return await fetch(
-    "https://tjv5dlrj1a.execute-api.us-west-2.amazonaws.com/default/pictok-text-to-sound",
-    {
-      method: "POST",
-      cache: "no-cache",
-      mode: "cors",
-      body: JSON.stringify({ caption }),
-    },
-  );
+  const { data, error } = await supabase.functions.invoke("caption-to-sound", {
+    body: { caption },
+  });
+  const output = data?.output;
+  return { output, error };
 }

@@ -32,8 +32,7 @@ export default function SoundPreview({ image }: { image: string }) {
       : console.error("SpeechSynthesis is not supported in this browser.");
 
     // get sound from caption
-    const res2 = await getSound(caption);
-    const { output } = await res2.json();
+    const { output } = await getSound(caption);
 
     setSound(output);
 

@@ -53,12 +53,18 @@ dependencies:
   '@supabase/supabase-js':
     specifier: ^2.38.1
     version: 2.38.1
+  '@types/easy-speech':
+    specifier: ^1.2.3
+    version: 1.2.3
   class-variance-authority:
     specifier: ^0.7.0
     version: 0.7.0
   clsx:
     specifier: ^2.0.0
     version: 2.0.0
+  easy-speech:
+    specifier: ^2.1.1
+    version: 2.1.1
   formidable:
     specifier: ^3.5.1
     version: 3.5.1
@@ -83,6 +89,9 @@ dependencies:
   react-hook-form:
     specifier: ^7.47.0
     version: 7.47.0(react@18.2.0)
+  react-swipeable:
+    specifier: ^7.0.1
+    version: 7.0.1(react@18.2.0)
   replicate:
     specifier: ^0.20.1
     version: 0.20.1
@@ -1288,6 +1297,10 @@ packages:
       tslib: 2.6.2
     dev: false
 
+  /@types/easy-speech@1.2.3:
+    resolution: {integrity: sha512-yKl/TO7Bi4PJp5w+42c3dn9GXA9IU+hLDIdRjumvMoqw5BYrvTeaFG9tX54AUFTFqCzqBduhWAEA/EnCTrshqA==}
+    dev: false
+
   /@types/json5@0.0.29:
     resolution: {integrity: sha512-dRLjCWHYg4oaA77cxO64oO+7JwCwnIzkZPdrrC71jQmQtlhM556pwKo5bUzqvZndkVbeFLIIi+9TC40JNF5hNQ==}
     dev: true
@@ -1826,6 +1839,11 @@ packages:
     dependencies:
       esutils: 2.0.3
     dev: true
+
+  /easy-speech@2.1.1:
+    resolution: {integrity: sha512-/Nh2SxkQc3aIdrCnagDbuaUAxuZuSVrEI00Jp1Kg8aQaD04socTjVDsyKZ/yw483q1nZC3CQ9IB7vMCnSY2LTQ==}
+    engines: {node: '>= 14.x'}
+    dev: false
 
   /electron-to-chromium@1.4.554:
     resolution: {integrity: sha512-Q0umzPJjfBrrj8unkONTgbKQXzXRrH7sVV7D9ea2yBV3Oaogz991yhbpfvo2LMNkJItmruXTEzVpP9cp7vaIiQ==}
@@ -3336,6 +3354,14 @@ packages:
       invariant: 2.2.4
       react: 18.2.0
       tslib: 2.6.2
+    dev: false
+
+  /react-swipeable@7.0.1(react@18.2.0):
+    resolution: {integrity: sha512-RKB17JdQzvECfnVj9yDZsiYn3vH0eyva/ZbrCZXZR0qp66PBRhtg4F9yJcJTWYT5Adadi+x4NoG53BxKHwIYLQ==}
+    peerDependencies:
+      react: ^16.8.3 || ^17 || ^18
+    dependencies:
+      react: 18.2.0
     dev: false
 
   /react@18.2.0:
