@@ -23,6 +23,7 @@ export default function Inbox() {
     getInbox();
   }, []);
 
+  //! handle audio play when user swipes and clicks
   let currentAudio: HTMLAudioElement | undefined;
 
   const playAudio = (audio_url: string) => {
@@ -52,12 +53,6 @@ export default function Inbox() {
             key={item.id}
             className="relative h-[90vh] w-full snap-center overflow-hidden bg-muted"
           >
-            {/* <ImageWithSound
-              image_url={item.image_url}
-              audio_url={item.audio_url}
-              caption={item.caption}
-              className="object-cover"
-            /> */}
             <img
               src={item.image_url}
               onClick={() => playAudio(item.audio_url)}
