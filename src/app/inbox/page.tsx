@@ -23,10 +23,19 @@ export default function Inbox() {
     getInbox();
   }, []);
 
-  // const playAudio = (audio_url: string) => {
-  //   const audio = new Audio(audio_url);
-  //   audio.play();
-  // };
+  let currentAudio: HTMLAudioElement | undefined;
+
+  const playAudio = (audio_url: string) => {
+    // If there's an audio currently playing, stop it
+    if (currentAudio) {
+      currentAudio.pause();
+      currentAudio.currentTime = 0;
+    }
+
+    // Create a new Audio object and play it
+    currentAudio = new Audio(audio_url);
+    currentAudio.play();
+  };
 
   return (
     <main className="mx-auto max-h-screen max-w-lg overflow-hidden px-2">
@@ -43,18 +52,18 @@ export default function Inbox() {
             key={item.id}
             className="relative h-[90vh] w-full snap-center overflow-hidden bg-muted"
           >
-            <ImageWithSound
+            {/* <ImageWithSound
               image_url={item.image_url}
               audio_url={item.audio_url}
               caption={item.caption}
               className="object-cover"
-            />
-            {/* <img
+            /> */}
+            <img
               src={item.image_url}
               onClick={() => playAudio(item.audio_url)}
               alt={item.caption}
               className="object-cover"
-            /> */}
+            />
           </div>
         ))}
       </div>
