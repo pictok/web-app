@@ -32,7 +32,7 @@ export default function FriendList() {
 
             
 
-          <div className="flex-grow pl-2">
+          <div className="flex-grow pl-4">
           <h2 className="text-stone-900 text-xl font-semibold">{friend}</h2>
           <p className="text-sm text-gray-500">Vancouver, BC</p>
         </div>
