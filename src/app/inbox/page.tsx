@@ -2,7 +2,6 @@
 import Image from "next/image";
 import { ChevronLeft } from "lucide-react";
 import { supabase } from "@/db/supabase";
-import ImageWithSound from "@/components/design/ImageWithSound";
 
 import Link from "next/link";
 import { useEffect, useState } from "react";
