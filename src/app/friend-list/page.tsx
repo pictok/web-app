@@ -1,13 +1,10 @@
 
 
-
-// create an array of friends in a array
-
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 
-// map over the array and display the friends
 
 const friendsList = ["Amy", "Lisa", "John", "Bob", "Sally"];
 
@@ -24,15 +21,22 @@ export default function FriendList() {
 
       {friendsList.map((friend) => (
         <div className="flex justify-center items-center py-4" key={friend}>
-          <div className="w-[350px] h-[90px] bg-white rounded-full shadow-lg flex items-center px-6">
+          <div className="w-[350px] h-[90px] bg-white rounded-full shadow-lg flex items-center px-3 pr-9">
+          <Avatar className="  h-[72px] w-[70px] border-4 border-secondary">
+          <AvatarImage
+            className="object-cover"
+            src="/images/avatars/user.png"
 
-            {/* {This should be the image profile of the friend} */}
+          />
+        </Avatar>
 
-          <div className="flex-grow">
+            
+
+          <div className="flex-grow pl-2">
           <h2 className="text-stone-900 text-xl font-semibold">{friend}</h2>
           <p className="text-sm text-gray-500">Vancouver, BC</p>
         </div>
-        
+
         <ChevronRight className="bg-black"/>
           </div>
         </div>
