@@ -45,13 +45,26 @@ export default function PhotoProcessing({
         router.push("/friends");
       }
     },
-    onTap: () => {
+    onTap: async () => {
       // turn off tap tutorial once user taps and turn on swipe right tutorial
       if (!isConverting && tapTutorialOn) {
-        // play audio
+        if ("speechSynthesis" in window) {
+          readCaption(caption);
+          // play audio
+          const audio = new Audio(sound);
+          await audio.play();
+          readCaption("Great! Swipe right to send to friends");
+        } else {
+          console.error("SpeechSynthesis is not supported in this browser.");
+        }
         setTapTutorialOn(false);
       } else if (!isConverting && !tapTutorialOn) {
-        // play audio
+        if ("speechSynthesis" in window) {
+          readCaption(caption);
+          // play audio
+          const audio = new Audio(sound);
+          await audio.play();
+        }
       }
     },
     trackMouse: true,
@@ -96,14 +109,14 @@ export default function PhotoProcessing({
       setCaption(caption);
 
       //use speech to text web api to read caption to the user
-      "speechSynthesis" in window
-        ? readCaption(caption)
-        : console.error("SpeechSynthesis is not supported in this browser.");
+      // "speechSynthesis" in window
+      //   ? readCaption(caption)
+      //   : console.error("SpeechSynthesis is not supported in this browser.");
 
       // get sound from caption
       const { output } = await getSound(caption);
 
-      setSound(output);
+      setSound(() => output);
 
       // upload sound to supabase storage
       const res3 = await fetch(output);
@@ -131,10 +144,14 @@ export default function PhotoProcessing({
         .single();
       if (CreateImgAudioLinkError) console.log(CreateImgAudioLinkError);
       if (result) {
+        "speechSynthesis" in window
+          ? readCaption("Image processing is complete. Tap to listen.")
+          : console.error("SpeechSynthesis is not supported in this browser.");
+
         setShareUrl(`${location.origin}/photo/${result.share_id}`);
         setIsConverting(false);
-        const audio = new Audio(output);
-        await audio.play();
+        // const audio = new Audio(output);
+        // await audio.play();
       }
     };
     handleConversionToSound();
