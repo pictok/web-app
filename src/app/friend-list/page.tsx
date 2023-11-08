@@ -1,5 +1,5 @@
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { ChevronLeft, ChevronRight } from "lucide-react";
+import { ChevronLeft, ChevronRight, Search } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 
@@ -15,8 +15,16 @@ export default function FriendList() {
         <h1 className="text-3xl font-bold">Friends</h1>
       </div>
 
-      <div>
-        <h1>This is the Search bar</h1>
+      <div className="flex items-center justify-center">
+        <div className="flex h-[90px] w-[350px] items-center rounded-full bg-white">
+          <Search className="ml-6 stroke-black" />
+
+          <input
+            type="text"
+            placeholder="Search"
+            className=" mx-4 text-lg text-stone-900"
+          />
+        </div>
       </div>
 
       {friendsList.map((friend) => (
@@ -34,7 +42,7 @@ export default function FriendList() {
               <p className="text-sm text-gray-500">Vancouver, BC</p>
             </div>
 
-            <ChevronRight className="bg-black" />
+            <ChevronRight className="stroke-gray-700" />
           </div>
         </div>
       ))}
