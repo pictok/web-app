@@ -27,96 +27,119 @@ export default function PhotoProcessing({
   const [isConverting, setIsConverting] = useState(false);
   const [shareUrl, setShareUrl] = useState("");
   const [caption, setCaption] = useState("");
+  const [tapTutorialOn, setTapTutorialOn] = useState(true);
+  const [swipeRightTutorialOn, setSwipeRightTutorialOn] = useState(true);
+
+  console.log("caption", caption);
+  console.log("sound", sound);
+  console.log("shareUrl", shareUrl);
 
   const handler = useSwipeable({
     onSwipedRight: () => {
-      if (!isConverting) router.push("/send-photo");
+      // prevents swipe right from working when tap tutorial is on
+      if (!isConverting && tapTutorialOn) return;
+      // turn off swipe right tutorial once user swipes right
+      if (!isConverting && swipeRightTutorialOn) {
+        setSwipeRightTutorialOn(false);
+      } else if (!isConverting) {
+        router.push("/send-photo");
+      }
+    },
+    onTap: () => {
+      // turn off tap tutorial once user taps and turn on swipe right tutorial
+      if (!isConverting && tapTutorialOn) {
+        // play audio
+        setTapTutorialOn(false);
+        setSwipeRightTutorialOn(true);
+      } else if (!isConverting && !tapTutorialOn) {
+        // play audio
+      }
     },
     trackMouse: true,
   });
 
-  // useEffect(() => {
-  //   const handleConversionToSound = async () => {
-  //     setIsConverting(true);
+  useEffect(() => {
+    const handleConversionToSound = async () => {
+      setIsConverting(true);
 
-  //     const response = await fetch(photoBlobUrl);
-  //     // Blob object
-  //     const blobData = await response.blob();
+      const response = await fetch(photoBlobUrl);
+      // Blob object
+      const blobData = await response.blob();
 
-  //     //Generate a random image name that will be used
-  //     // to store the image in supabase storage
-  //     const imageName =
-  //       (await randomImageName()) + blobData.type.replace("image/", ".");
+      //Generate a random image name that will be used
+      // to store the image in supabase storage
+      const imageName =
+        (await randomImageName()) + blobData.type.replace("image/", ".");
 
-  //     // Save the photo to supabase storage
-  //     const { data, error } = await supabase.storage
-  //       .from("images")
-  //       // We can upload imageName using either a Blob object or a File object
-  //       .upload(imageName, blobData);
-  //     if (error) {
-  //       console.error(error);
-  //       return;
-  //     }
+      // Save the photo to supabase storage
+      const { data, error } = await supabase.storage
+        .from("images")
+        // We can upload imageName using either a Blob object or a File object
+        .upload(imageName, blobData);
+      if (error) {
+        console.error(error);
+        return;
+      }
 
-  //     //Get the photo url string
-  //     const photoString = data?.path;
-  //     console.log(photoString);
+      //Get the photo url string
+      const photoString = data?.path;
+      console.log(photoString);
 
-  //     //Get the photo public url
-  //     const {
-  //       data: { publicUrl: photoPublicUrl },
-  //     } = await supabase.storage.from("images").getPublicUrl(photoString);
+      //Get the photo public url
+      const {
+        data: { publicUrl: photoPublicUrl },
+      } = await supabase.storage.from("images").getPublicUrl(photoString);
 
-  //     // get caption from photo public url
-  //     const res1 = await getCaption(photoPublicUrl);
-  //     const captionData = await res1.json();
-  //     const caption = formatCaption(String(captionData.output));
-  //     setCaption(caption);
+      // get caption from photo public url
+      const res1 = await getCaption(photoPublicUrl);
+      const captionData = await res1.json();
+      const caption = formatCaption(String(captionData.output));
+      setCaption(caption);
 
-  //     //use speech to text web api to read caption to the user
-  //     "speechSynthesis" in window
-  //       ? readCaption(caption)
-  //       : console.error("SpeechSynthesis is not supported in this browser.");
+      //use speech to text web api to read caption to the user
+      "speechSynthesis" in window
+        ? readCaption(caption)
+        : console.error("SpeechSynthesis is not supported in this browser.");
 
-  //     // get sound from caption
-  //     const { output } = await getSound(caption);
+      // get sound from caption
+      const { output } = await getSound(caption);
 
-  //     setSound(output);
+      setSound(output);
 
-  //     // upload sound to supabase storage
-  //     const res3 = await fetch(output);
-  //     const blob = await res3.blob();
-  //     const audioName = `${Math.random()}.mp3`.replace("/", "");
-  //     const { error: SoundUploadError } = await supabase.storage
-  //       .from("audio")
-  //       .upload(audioName, blob);
-  //     if (SoundUploadError) console.log(SoundUploadError);
+      // upload sound to supabase storage
+      const res3 = await fetch(output);
+      const blob = await res3.blob();
+      const audioName = `${Math.random()}.mp3`.replace("/", "");
+      const { error: SoundUploadError } = await supabase.storage
+        .from("audio")
+        .upload(audioName, blob);
+      if (SoundUploadError) console.log(SoundUploadError);
 
-  //     // insert image and audio url to supabase
-  //     const audioPath =
-  //       "https://bmtbohuzvkdifffdwayv.supabase.co/storage/v1/object/public/audio/";
+      // insert image and audio url to supabase
+      const audioPath =
+        "https://bmtbohuzvkdifffdwayv.supabase.co/storage/v1/object/public/audio/";
 
-  //     const { data: result, error: CreateImgAudioLinkError } = await supabase
-  //       .from("image_audio")
-  //       .insert([
-  //         {
-  //           image_url: photoPublicUrl,
-  //           audio_url: audioPath + audioName,
-  //           caption,
-  //         },
-  //       ])
-  //       .select()
-  //       .single();
-  //     if (CreateImgAudioLinkError) console.log(CreateImgAudioLinkError);
-  //     if (result) {
-  //       setShareUrl(`${location.origin}/photo/${result.share_id}`);
-  //       setIsConverting(false);
-  //       const audio = new Audio(output);
-  //       await audio.play();
-  //     }
-  //   };
-  //   handleConversionToSound();
-  // }, [photoBlobUrl]);
+      const { data: result, error: CreateImgAudioLinkError } = await supabase
+        .from("image_audio")
+        .insert([
+          {
+            image_url: photoPublicUrl,
+            audio_url: audioPath + audioName,
+            caption,
+          },
+        ])
+        .select()
+        .single();
+      if (CreateImgAudioLinkError) console.log(CreateImgAudioLinkError);
+      if (result) {
+        setShareUrl(`${location.origin}/photo/${result.share_id}`);
+        setIsConverting(false);
+        const audio = new Audio(output);
+        await audio.play();
+      }
+    };
+    handleConversionToSound();
+  }, [photoBlobUrl]);
 
   return (
     <main className="mx-auto max-h-screen max-w-lg overflow-hidden px-2">
@@ -130,15 +153,23 @@ export default function PhotoProcessing({
       <div className="relative h-[90vh]" {...handler}>
         <div className="relative h-[90vh] w-full">
           <Image
-            // src={photoBlobUrl}
-            src={"/images/photos/photo-2.png"}
+            src={photoBlobUrl}
             alt="Palm trees on a beach"
             fill
             className={`object-cover ${isConverting ? "opacity-70" : ""}`}
           />
-          {!isConverting && <Gesture message="Tap to listen" gifName="L-Tap" />}
+          {!isConverting && tapTutorialOn ? (
+            <Gesture message="Tap to listen" gifName="L-Tap" />
+          ) : !isConverting && swipeRightTutorialOn ? (
+            <Gesture
+              message="Swipe right to send to friends"
+              gifName="L-SwipeRight"
+            />
+          ) : (
+            ""
+          )}
         </div>
-        {!isConverting && (
+        {isConverting && (
           <>
             <div className="absolute inset-0 flex items-center justify-center">
               <div className="flex h-full w-full items-center justify-center bg-[#FEFFFF99] backdrop-blur">
@@ -150,11 +181,6 @@ export default function PhotoProcessing({
             </div>
           </>
         )}
-        <div className="absolute inset-0 space-y-3">
-          <p>{caption}</p>
-          <p>Sound: {sound}</p>
-          <p>ShareUrl: {shareUrl}</p>
-        </div>
       </div>
     </main>
   );
