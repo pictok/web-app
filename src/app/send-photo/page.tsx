@@ -28,7 +28,8 @@ export default function SendPhoto() {
         <Link href="/send-photo/complete">
           <RegularButton
             variant="right"
-            className="navbar-gradient relative flex h-auto max-h-72 w-full max-w-sm flex-col items-start justify-start gap-5 space-y-10 border-none pb-0 pr-3 pt-10"
+            className="navbar-gradient h- auto relative
+            flex max-h-72 w-full max-w-sm flex-col items-start justify-start gap-5 space-y-10 border-none pb-0 pr-3 pt-10"
           >
             <h2 className="mx-auto text-2xl font-normal tracking-wide">
               Send <span className="font-bold">Amy</span> a photo.
