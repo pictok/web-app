@@ -4,6 +4,7 @@ import Image from "next/image";
 import Link from "next/link";
 
 export default function complete() {
+
   return (
     <main className="mx-auto max-w-sm  px-2 py-5">
       <div className="relative flex items-center justify-center py-5">
