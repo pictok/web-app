@@ -3,8 +3,6 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import Link from "next/link";
 
-const friendsList = ["Amy", "Lisa", "John", "Bob", "Sally"];
-
 export default function FriendListPage() {
   return (
     <main className="mx-auto max-w-lg">
