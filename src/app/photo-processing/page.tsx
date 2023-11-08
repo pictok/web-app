@@ -50,7 +50,6 @@ export default function PhotoProcessing({
       if (!isConverting && tapTutorialOn) {
         // play audio
         setTapTutorialOn(false);
-        setSwipeRightTutorialOn(true);
       } else if (!isConverting && !tapTutorialOn) {
         // play audio
       }
