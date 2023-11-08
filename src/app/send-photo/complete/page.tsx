@@ -1,9 +1,17 @@
+"use client";
 import { ChevronLeft } from "lucide-react";
-
+import { useEffect } from "react";
 import Image from "next/image";
 import Link from "next/link";
 
-export default function complete() {
+export default function Complete() {
+  useEffect(() => {
+    const audio = new Audio(
+      "https://bmtbohuzvkdifffdwayv.supabase.co/storage/v1/object/public/audio/success-photo-sent.mp3",
+    );
+    audio.play();
+  }, []);
+
   return (
     <main className="mx-auto max-w-sm  px-2 py-5">
       <div className="relative flex items-center justify-center py-5">
