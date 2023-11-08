@@ -3,13 +3,11 @@ import { ChevronLeft } from "lucide-react";
 import { useEffect } from "react";
 import Image from "next/image";
 import Link from "next/link";
+import { readCaption } from "@/lib/readCaption";
 
 export default function Complete() {
   useEffect(() => {
-    const audio = new Audio(
-      "https://bmtbohuzvkdifffdwayv.supabase.co/storage/v1/object/public/audio/success-photo-sent.mp3",
-    );
-    audio.play();
+    readCaption("Your photo has been sent successfully.");
   }, []);
 
   return (
