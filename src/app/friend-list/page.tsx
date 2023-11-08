@@ -16,7 +16,7 @@ export default function FriendList() {
       </div>
 
       <div className="flex items-center justify-center">
-        <div className="flex h-[90px] w-[350px] items-center rounded-full bg-white">
+        <div className="flex h-[75px] w-[350px] items-center rounded-full bg-white">
           <Search className="ml-6 stroke-black" />
 
           <input
