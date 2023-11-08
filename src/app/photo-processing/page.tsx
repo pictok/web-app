@@ -15,6 +15,7 @@ import { getSound } from "@/lib/getSound";
 import { useSwipeable } from "react-swipeable";
 import { useRouter } from "next/navigation";
 import { randomImageName } from "@/lib/randomImageName";
+import Gesture from "@/components/design/Gesture";
 
 export default function PhotoProcessing({
   searchParams: { photoBlobUrl },
@@ -135,11 +136,10 @@ export default function PhotoProcessing({
             fill
             className={`object-cover ${isConverting ? "opacity-70" : ""}`}
           />
-          <div className="flex h-full w-full items-center justify-center bg-[#FEFFFF99] backdrop-blur">
-            <span className="w-1/2 text-center text-4xl text-white">
-              Gesture
-            </span>
-          </div>
+          <Gesture
+            message="Swipe right to send to friends"
+            gifName="L-SwipeRight"
+          />
         </div>
         {isConverting && (
           <>
