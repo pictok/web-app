@@ -10,7 +10,7 @@ export default function SendPhoto() {
   return (
     <main className="mx-auto max-w-sm space-y-10 px-2 py-5">
       <div className="relative flex items-center justify-center py-5">
-        <Link href="/" className="absolute left-0">
+        <Link href="/friends" className="absolute left-0">
           <ChevronLeft />
         </Link>
         <h1 className="text-3xl font-bold">Amy Smith</h1>
