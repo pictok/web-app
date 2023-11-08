@@ -1,17 +1,21 @@
+"use client";
+
 import { Search } from "lucide-react";
 
-export default function Searchbar() {
+export default function Searchbar({
+  searchFn,
+}: {
+  searchFn: (query: string) => void;
+}) {
   return (
-    <div className="flex items-center justify-center">
-      <div className="flex h-[75px] w-[350px] items-center rounded-full bg-white">
-        <Search className="ml-6 stroke-black" />
-
-        <input
-          type="text"
-          placeholder="Search"
-          className=" mx-4 text-lg text-stone-900"
-        />
-      </div>
+    <div className="relative px-5">
+      <Search className="absolute left-1 top-6 z-10 ml-10 stroke-foreground" />
+      <input
+        type="text"
+        onChange={(e) => searchFn(e.target.value)}
+        placeholder="Search"
+        className="w-full rounded-full border bg-card px-16 py-5 text-lg text-foreground drop-shadow-lg placeholder:text-foreground focus:outline-none"
+      />
     </div>
   );
 }
