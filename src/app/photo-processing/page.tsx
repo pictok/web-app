@@ -16,6 +16,7 @@ import { useSwipeable } from "react-swipeable";
 import { useRouter } from "next/navigation";
 import { randomImageName } from "@/lib/randomImageName";
 import Gesture from "@/components/design/Gesture";
+import { set } from "react-hook-form";
 
 export default function PhotoProcessing({
   searchParams: { photoBlobUrl },
@@ -53,8 +54,15 @@ export default function PhotoProcessing({
           // play audio
           const audio = new Audio(sound);
           await audio.play();
-          audio.onended = async () =>
-            await readCaption("Swipe right to send to friends");
+          audio.onended = async () => {
+            const speech = new SpeechSynthesisUtterance();
+            speech.text = "Swipe right to send to friends";
+
+            window.speechSynthesis.speak(speech);
+            speech.onend = () => {
+              setSwipeRightTutorialOn(false);
+            };
+          };
         } else {
           console.error("SpeechSynthesis is not supported in this browser.");
         }
@@ -76,7 +84,7 @@ export default function PhotoProcessing({
   useEffect(() => {
     const handleConversionToSound = async () => {
       setIsConverting(true);
-
+      await readCaption("Image processing is in progress. Please wait.");
       const response = await fetch(photoBlobUrl);
       // Blob object
       const blobData = await response.blob();
