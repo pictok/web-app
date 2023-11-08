@@ -42,7 +42,7 @@ export default function PhotoProcessing({
       if (!isConverting && swipeRightTutorialOn) {
         setSwipeRightTutorialOn(false);
       } else if (!isConverting) {
-        router.push("/send-photo");
+        router.push("/friends");
       }
     },
     onTap: () => {
