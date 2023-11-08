@@ -15,6 +15,7 @@ import { getSound } from "@/lib/getSound";
 import { useSwipeable } from "react-swipeable";
 import { useRouter } from "next/navigation";
 import { randomImageName } from "@/lib/randomImageName";
+import Gesture from "@/components/design/Gesture";
 
 export default function PhotoProcessing({
   searchParams: { photoBlobUrl },
@@ -26,10 +27,33 @@ export default function PhotoProcessing({
   const [isConverting, setIsConverting] = useState(false);
   const [shareUrl, setShareUrl] = useState("");
   const [caption, setCaption] = useState("");
+  const [tapTutorialOn, setTapTutorialOn] = useState(true);
+  const [swipeRightTutorialOn, setSwipeRightTutorialOn] = useState(true);
+
+  console.log("caption", caption);
+  console.log("sound", sound);
+  console.log("shareUrl", shareUrl);
 
   const handler = useSwipeable({
     onSwipedRight: () => {
-      if (!isConverting) router.push("/send-photo");
+      // prevents swipe right from working when tap tutorial is on
+      if (!isConverting && tapTutorialOn) return;
+      // turn off swipe right tutorial once user swipes right
+      if (!isConverting && swipeRightTutorialOn) {
+        setSwipeRightTutorialOn(false);
+      } else if (!isConverting) {
+        router.push("/send-photo");
+      }
+    },
+    onTap: () => {
+      // turn off tap tutorial once user taps and turn on swipe right tutorial
+      if (!isConverting && tapTutorialOn) {
+        // play audio
+        setTapTutorialOn(false);
+        setSwipeRightTutorialOn(true);
+      } else if (!isConverting && !tapTutorialOn) {
+        // play audio
+      }
     },
     trackMouse: true,
   });
@@ -134,22 +158,29 @@ export default function PhotoProcessing({
             fill
             className={`object-cover ${isConverting ? "opacity-70" : ""}`}
           />
+          {!isConverting && tapTutorialOn ? (
+            <Gesture message="Tap to listen" gifName="L-Tap" />
+          ) : !isConverting && swipeRightTutorialOn ? (
+            <Gesture
+              message="Swipe right to send to friends"
+              gifName="L-SwipeRight"
+            />
+          ) : (
+            ""
+          )}
         </div>
         {isConverting && (
           <>
             <div className="absolute inset-0 flex items-center justify-center">
-              <LoadSpinnerSVG />
+              <div className="flex h-full w-full items-center justify-center bg-[#FEFFFF99] backdrop-blur">
+                <LoadSpinnerSVG />
+              </div>
             </div>
             <div className="absolute inset-0 flex items-center justify-center">
               <h1 className="text-4xl">Processing</h1>
             </div>
           </>
         )}
-        <div className="absolute inset-0 space-y-3">
-          <p>{caption}</p>
-          <p>Sound: {sound}</p>
-          <p>ShareUrl: {shareUrl}</p>
-        </div>
       </div>
     </main>
   );
