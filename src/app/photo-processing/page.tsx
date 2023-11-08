@@ -136,15 +136,14 @@ export default function PhotoProcessing({
             fill
             className={`object-cover ${isConverting ? "opacity-70" : ""}`}
           />
-          <Gesture
-            message="Swipe right to send to friends"
-            gifName="L-SwipeRight"
-          />
+          {!isConverting && <Gesture message="Tap to listen" gifName="L-Tap" />}
         </div>
-        {isConverting && (
+        {!isConverting && (
           <>
             <div className="absolute inset-0 flex items-center justify-center">
-              <LoadSpinnerSVG />
+              <div className="flex h-full w-full items-center justify-center bg-[#FEFFFF99] backdrop-blur">
+                <LoadSpinnerSVG />
+              </div>
             </div>
             <div className="absolute inset-0 flex items-center justify-center">
               <h1 className="text-4xl">Processing</h1>
