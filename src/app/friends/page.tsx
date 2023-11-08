@@ -1,4 +1,5 @@
 import FriendList from "@/components/design/FriendList";
+import Searchbar from "@/components/design/Searchbar";
 import { ChevronLeft } from "lucide-react";
 import Link from "next/link";
 
@@ -12,7 +13,7 @@ export default function FriendsPage() {
         <h1 className="text-3xl font-bold">Friends</h1>
       </div>
 
-      <div>{/* This is the search bar */}</div>
+      <Searchbar />
       <FriendList />
     </main>
   );
