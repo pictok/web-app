@@ -1,9 +1,8 @@
 import FriendList from "@/components/design/FriendList";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { ChevronLeft, ChevronRight } from "lucide-react";
+import { ChevronLeft } from "lucide-react";
 import Link from "next/link";
 
-export default function FriendListPage() {
+export default function FriendsPage() {
   return (
     <main className="mx-auto max-w-lg">
       <div className="relative flex items-center justify-center py-5">
