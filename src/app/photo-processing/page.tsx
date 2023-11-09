@@ -16,7 +16,6 @@ import { useSwipeable } from "react-swipeable";
 import { useRouter } from "next/navigation";
 import { randomImageName } from "@/lib/randomImageName";
 import Gesture from "@/components/design/Gesture";
-import { set } from "react-hook-form";
 
 export default function PhotoProcessing({
   searchParams: { photoBlobUrl },
