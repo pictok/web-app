@@ -57,8 +57,13 @@ export default function Inbox() {
           window.speechSynthesis.cancel();
           audio.pause();
         }}
-        className="h-[90vh] snap-y snap-mandatory overflow-y-scroll"
+        className="h-[90vh] snap-y snap-mandatory overflow-y-auto"
       >
+        {inbox.length === 0 && (
+          <div className="relative flex h-[90vh] w-full">
+            <p className="text-2xl font-bold">No items in inbox</p>
+          </div>
+        )}
         {inbox.map((item) => (
           <div
             key={item.id}
@@ -68,7 +73,7 @@ export default function Inbox() {
               src={item.image_url}
               onClick={() => playAudio(item.audio_url, item.caption)}
               alt={item.caption}
-              className="object-cover"
+              className="h-full object-contain"
             />
           </div>
         ))}
