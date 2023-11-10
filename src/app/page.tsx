@@ -14,6 +14,7 @@ export default function Home() {
           <AvatarImage
             className="object-cover"
             src="/images/avatars/user.png"
+            alt="Jane Doe"
           />
           <AvatarFallback>Jane Doe</AvatarFallback>
         </Avatar>
@@ -32,6 +33,7 @@ export default function Home() {
               className="relative z-10 ml-auto mt-auto h-16 w-16 overflow-hidden"
             >
               <Image
+                aria-hidden
                 src="/images/assets/inbox.png"
                 fill={true}
                 alt="Inbox icon"
