@@ -16,7 +16,6 @@ import { useSwipeable } from "react-swipeable";
 import { useRouter } from "next/navigation";
 import { randomImageName } from "@/lib/randomImageName";
 import Gesture from "@/components/design/Gesture";
-import { set } from "react-hook-form";
 
 export default function PhotoProcessing({
   searchParams: { photoBlobUrl },
@@ -172,7 +171,7 @@ export default function PhotoProcessing({
     <main className="mx-auto max-h-screen max-w-lg overflow-hidden px-2">
       <div className="relative flex items-center justify-center py-5">
         <Link href="/" className="absolute left-2">
-          <ChevronLeft />
+          <ChevronLeft aria-label="Go back" />
         </Link>
         <h1 className="text-2xl font-bold">Photo</h1>
       </div>

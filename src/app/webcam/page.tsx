@@ -9,7 +9,7 @@ export default function page() {
     <main className="mx-auto max-h-screen max-w-lg overflow-hidden px-2">
       <div className="relative flex items-center justify-center py-5">
         <Link href="/" className="absolute left-0">
-          <ChevronLeft />
+          <ChevronLeft aria-label="Go back" />
         </Link>
         <h1 className="text-3xl font-bold">Take Photo using Webcam</h1>
       </div>
