@@ -131,7 +131,7 @@ export default function PhotoProcessing({
       // upload sound to supabase storage
       const res3 = await fetch(output);
       const blob = await res3.blob();
-      const audioName = `${Math.random()}.mp3`.replace("/", "");
+      const audioName = `${await randomImageName()}.mp3`.replace("/", "");
       const { error: SoundUploadError } = await supabase.storage
         .from("audio")
         .upload(audioName, blob);
@@ -165,6 +165,9 @@ export default function PhotoProcessing({
       }
     };
     handleConversionToSound();
+    return () => {
+      window.speechSynthesis.cancel();
+    };
   }, [photoBlobUrl]);
 
   return (
@@ -177,12 +180,14 @@ export default function PhotoProcessing({
       </div>
 
       <div className="relative h-[90vh]" {...handler}>
-        <div className="relative h-[90vh] w-full">
+        <div className="relative h-[90vh]">
           <Image
             src={photoBlobUrl}
             alt="Palm trees on a beach"
             fill
-            className={`object-cover ${isConverting ? "opacity-70" : ""}`}
+            className={`h-full object-contain ${
+              isConverting ? "opacity-70" : ""
+            }`}
           />
           {!isConverting && tapTutorialOn ? (
             <Gesture message="Tap to listen" gifName="L-Tap" />
