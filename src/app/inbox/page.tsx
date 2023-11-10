@@ -1,19 +1,29 @@
 "use client";
-import Image from "next/image";
+
 import { ChevronLeft } from "lucide-react";
 import { supabase } from "@/db/supabase";
 
 import Link from "next/link";
 import { useEffect, useState } from "react";
 
+const audio = new Audio();
+const speech = new SpeechSynthesisUtterance();
+
 export default function Inbox() {
   const [inbox, setInbox] = useState<any[]>([]);
 
   useEffect(() => {
     async function getInbox() {
-      let { data, error } = await supabase.from("image_audio").select("*");
+      let { data, error } = await supabase
+        .from("image_audio")
+        .select("*")
+        .order("created_at", { ascending: false });
+      if (error) {
+        console.log("Error getting inbox", error);
+        return;
+      }
       if (!data) {
-        console.log(error);
+        console.log("No data found");
         return;
       }
       setInbox(data);
@@ -22,19 +32,15 @@ export default function Inbox() {
     getInbox();
   }, []);
 
-  //! handle audio play when user swipes and clicks
-  let currentAudio: HTMLAudioElement | undefined;
-
-  const playAudio = (audio_url: string) => {
-    // If there's an audio currently playing, stop it
-    if (currentAudio) {
-      currentAudio.pause();
-      currentAudio.currentTime = 0;
-    }
-
-    // Create a new Audio object and play it
-    currentAudio = new Audio(audio_url);
-    currentAudio.play();
+  const playAudio = (audio_url: string, caption: string) => {
+    window.speechSynthesis.cancel();
+    audio.pause();
+    speech.text = caption;
+    window.speechSynthesis.speak(speech);
+    speech.onend = () => {
+      audio.src = audio_url;
+      audio.play();
+    };
   };
 
   return (
@@ -46,7 +52,13 @@ export default function Inbox() {
         <h1 className="text-3xl font-bold">Inbox</h1>
       </div>
 
-      <div className="h-[90vh] snap-y snap-mandatory overflow-y-scroll">
+      <div
+        onScroll={() => {
+          window.speechSynthesis.cancel();
+          audio.pause();
+        }}
+        className="h-[90vh] snap-y snap-mandatory overflow-y-scroll"
+      >
         {inbox.map((item) => (
           <div
             key={item.id}
@@ -54,7 +66,7 @@ export default function Inbox() {
           >
             <img
               src={item.image_url}
-              onClick={() => playAudio(item.audio_url)}
+              onClick={() => playAudio(item.audio_url, item.caption)}
               alt={item.caption}
               className="object-cover"
             />
