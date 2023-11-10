@@ -9,7 +9,10 @@ export default function Searchbar({
 }) {
   return (
     <div className="relative px-5">
-      <Search className="absolute left-1 top-6 z-10 ml-10 stroke-foreground" />
+      <Search
+        className="absolute left-1 top-6 z-10 ml-10 stroke-foreground"
+        arial-hidden
+      />
       <input
         type="text"
         onChange={(e) => searchFn(e.target.value)}

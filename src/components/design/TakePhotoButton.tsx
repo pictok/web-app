@@ -32,7 +32,12 @@ export default function TakePhotoButton() {
           aria-hidden
           className="relative z-10 ml-auto mt-auto h-16 w-16 overflow-hidden"
         >
-          <Image src="/images/assets/Camera.png" fill={true} alt="Image icon" />
+          <Image
+            aria-hidden
+            src="/images/assets/Camera.png"
+            fill={true}
+            alt="Camera icon"
+          />
         </div>
         <div
           aria-hidden

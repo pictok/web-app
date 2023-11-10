@@ -20,7 +20,7 @@ export default function FriendsPage() {
     <main className="mx-auto max-w-lg">
       <div className="relative flex items-center justify-center py-5">
         <Link href="/" className="absolute left-2">
-          <ChevronLeft />
+          <ChevronLeft aria-label="Go back" />
         </Link>
         <h1 className="text-3xl font-bold">Friends</h1>
       </div>

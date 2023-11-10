@@ -1,6 +1,6 @@
 import { cn } from "@/lib/utils";
 import { Button } from "../ui/button";
-import { Mic, X } from "lucide-react";
+import { X } from "lucide-react";
 
 interface RecordButtonProps
   extends React.ButtonHTMLAttributes<HTMLButtonElement> {}

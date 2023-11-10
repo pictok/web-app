@@ -16,8 +16,9 @@ export default function RecordIconButton({
       {...props}
       className={cn("rounded-full dark:bg-secondary", className)}
       size="icon"
+      aria-label="Record Voice"
     >
-      <Mic className="stroke-white" />
+      <Mic className="stroke-white" aria-label="Record Voice" />
     </Button>
   );
 }

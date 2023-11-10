@@ -14,7 +14,7 @@ export default function Complete() {
     <main className="mx-auto max-w-sm  px-2 py-5">
       <div className="relative flex items-center justify-center py-5">
         <Link href="/" className="absolute left-0">
-          <ChevronLeft />
+          <ChevronLeft aria-label="Go back" />
         </Link>
         <h1 className="text-3xl font-bold">Amy Smith</h1>
       </div>

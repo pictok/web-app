@@ -54,7 +54,7 @@ export default function FileUploader() {
     <section className="container">
       <div className="relative mb-5 mt-3 flex items-center justify-center">
         <Link href="/" className="absolute left-2">
-          <ChevronLeft />
+          <ChevronLeft aria-label="Go back" />
         </Link>
         <Logo />
       </div>
