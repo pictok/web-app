@@ -5,6 +5,7 @@ import { supabase } from "@/db/supabase";
 
 import Link from "next/link";
 import { useEffect, useState } from "react";
+import Image from "next/image";
 
 const audio = typeof Audio !== "undefined" ? new Audio() : null;
 const speech =
@@ -72,8 +73,9 @@ export default function Inbox() {
             key={item.id}
             className="relative h-[90vh] w-full snap-center overflow-hidden bg-muted"
           >
-            <img
+            <Image
               src={item.image_url}
+              fill
               onClick={() => playAudio(item.audio_url, item.caption)}
               alt={item.caption}
               className="h-full object-contain"
