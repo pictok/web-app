@@ -3,14 +3,13 @@
 import LoadSpinnerSVG from "@/components/icons/LoadSpinnerSVG";
 import { ChevronLeft } from "lucide-react";
 
-import { useEffect, useReducer, useRef, useState } from "react";
+import { useEffect, useReducer, useRef } from "react";
 import supabase from "@/db/supabase";
 import Link from "next/link";
 import Image from "next/image";
 
 import { getCaption } from "@/lib/getCaption";
 import { formatCaption } from "@/lib/formatCaption";
-import { readCaption } from "@/lib/readCaption";
 import { getSound } from "@/lib/getSound";
 import { useSwipeable } from "react-swipeable";
 import { useRouter } from "next/navigation";
