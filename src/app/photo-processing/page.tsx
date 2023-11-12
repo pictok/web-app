@@ -17,6 +17,7 @@ import { useRouter } from "next/navigation";
 import { randomName } from "@/lib/randomImageName";
 import Gesture from "@/components/design/Gesture";
 import { speak } from "@/lib/speak";
+import { useTheme } from "next-themes";
 
 type ReducerState = {
   status:
@@ -83,6 +84,7 @@ export default function PhotoProcessing({
   searchParams: { photoBlobUrl: string };
 }) {
   const router = useRouter();
+  const theme = useTheme();
   const [state, dispatch] = useReducer(photoProcessingReducer, initialState);
   const { status, caption } = state;
   const audioRef = useRef<HTMLAudioElement>(new Audio());
@@ -196,15 +198,24 @@ export default function PhotoProcessing({
             fill
             className={`h-full object-contain`}
           />
-          {status == "show tap gesture one" && (
-            <Gesture message="Tap to listen" gifName="L-Tap" />
-          )}
-          {status == "show swipe right gesture two" && (
-            <Gesture
-              message="Swipe right to send to friends"
-              gifName="L-SwipeRight"
-            />
-          )}
+          {status == "show tap gesture one" &&
+            (theme.theme == "dark" ? (
+              <Gesture message="Tap to listen" gifName="D-Tap" />
+            ) : (
+              <Gesture message="Tap to listen" gifName="L-Tap" />
+            ))}
+          {status == "show swipe right gesture two" &&
+            (theme.theme == "dark" ? (
+              <Gesture
+                message="Swipe right to send to friends"
+                gifName="D-SwipeRight"
+              />
+            ) : (
+              <Gesture
+                message="Swipe right to send to friends"
+                gifName="L-SwipeRight"
+              />
+            ))}
           {status == "processing photo" && (
             <>
               <div className="absolute inset-0 flex items-center justify-center">
