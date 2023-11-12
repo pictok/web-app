@@ -208,6 +208,8 @@ export default function PhotoProcessing({
             fill
             className={`h-full object-contain`}
           />
+          {/* Transparent overlay div */}
+          <div className="absolute left-0 top-0 h-full w-full bg-transparent"></div>
           {status == "show tap gesture one" &&
             (theme.theme == "dark" ? (
               <Gesture message="Tap to listen" gifName="D-Tap" />
