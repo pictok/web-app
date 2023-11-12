@@ -10,19 +10,24 @@ import Image from "next/image";
 
 import { getCaption } from "@/lib/getCaption";
 import { formatCaption } from "@/lib/formatCaption";
-// import { readCaption } from "@/lib/readCaption";
+import { readCaption } from "@/lib/readCaption";
 import { getSound } from "@/lib/getSound";
 import { useSwipeable } from "react-swipeable";
 import { useRouter } from "next/navigation";
-import { randomImageName } from "@/lib/randomImageName";
+import { randomName } from "@/lib/randomImageName";
 import Gesture from "@/components/design/Gesture";
+import { speak } from "@/lib/speak";
 
 type ReducerState = {
   status:
     | "processing photo"
     | "show tap gesture one"
-    | "show swipe right gesture two";
+    | "show swipe right gesture two"
+    | "finished processing";
+  caption: string;
+  sound: string;
 };
+
 type ReducerAction =
   | {
       type: "processing_photo";
@@ -31,41 +36,49 @@ type ReducerAction =
   | {
       type: "gesture_one";
       status: "show tap gesture one";
+      caption: string;
+      sound: string;
     }
   | {
       type: "gesture_two";
       status: "show swipe right gesture two";
+    }
+  | {
+      type: "finished_processing";
+      status: "finished processing";
     };
 
 const initialState: ReducerState = {
   status: "processing photo",
+  caption: "",
+  sound: "",
 };
 
-const photoProcessingReducer = (state: ReducerState, action: ReducerAction) => {
+const photoProcessingReducer = (
+  state: ReducerState,
+  action: ReducerAction,
+): ReducerState => {
   switch (action.type) {
     case "processing_photo":
       return { ...state, status: action.status };
 
     case "gesture_one":
-      return { ...state, status: action.status };
+      return {
+        ...state,
+        status: action.status,
+        caption: action.caption,
+        sound: action.sound,
+      };
 
     case "gesture_two":
+      return { ...state, status: action.status };
+
+    case "finished_processing":
       return { ...state, status: action.status };
 
     default:
       return state;
   }
-};
-
-const readCaption = async (caption: string) => {
-  return new Promise((resolve, reject) => {
-    const speech = new SpeechSynthesisUtterance();
-    speech.text = caption;
-    window.speechSynthesis.speak(speech);
-    speech.onend = () => {
-      resolve("Done");
-    };
-  });
 };
 
 export default function PhotoProcessing({
@@ -75,7 +88,7 @@ export default function PhotoProcessing({
 }) {
   const router = useRouter();
   const [state, dispatch] = useReducer(photoProcessingReducer, initialState);
-  const { status } = state;
+  const { status, caption, sound } = state;
   // const [sound, setSound] = useState("");
   // const [isConverting, setIsConverting] = useState(false);
   // const [shareUrl, setShareUrl] = useState("");
@@ -83,75 +96,98 @@ export default function PhotoProcessing({
   // const [tapTutorialOn, setTapTutorialOn] = useState(true);
   // const [swipeRightTutorialOn, setSwipeRightTutorialOn] = useState(true);
 
-  // const handler = useSwipeable({
-  //   onSwipedRight: handleSwipeRight,
-  //   onTap: handleTap,
-  //   trackMouse: true,
-  // });
+  const handler = useSwipeable({
+    onSwipedRight: handleSwipeRight,
+    onTap: handleTap,
+    trackMouse: true,
+  });
 
-  // async function handleTap() {
-  //   // turn off tap tutorial once user taps and turn on swipe right tutorial
-  //   if (!isConverting && tapTutorialOn) {
-  //     if ("speechSynthesis" in window) {
-  //       await readCaption(caption);
-  //       // play audio
-  //       const audio = new Audio(sound);
-  //       await audio.play();
-  //       audio.onended = async () => {
-  //         const speech = new SpeechSynthesisUtterance();
-  //         speech.text = "Swipe right to send to friends";
-
-  //         window.speechSynthesis.speak(speech);
-  //         speech.onend = () => {
-  //           setSwipeRightTutorialOn(false);
-  //         };
-  //       };
-  //     } else {
-  //       console.error("SpeechSynthesis is not supported in this browser.");
-  //     }
-  //     setTapTutorialOn(false);
-  //   } else if (!isConverting && !tapTutorialOn) {
-  //     if ("speechSynthesis" in window) {
-  //       await readCaption(caption);
-  //       // play audio
-  //       const audio = new Audio(sound);
-  //       await audio.play();
-  //     } else {
-  //       console.error("SpeechSynthesis is not supported in this browser.");
-  //     }
-  //   }
-  // }
-
-  // async function handleSwipeRight() {
-  //   // prevents swipe right from working when tap tutorial is on
-  //   if (!isConverting && tapTutorialOn) return;
-  //   // turn off swipe right tutorial once user swipes right
-  //   if (!isConverting && swipeRightTutorialOn) {
-  //     setSwipeRightTutorialOn(false);
-  //   } else if (!isConverting) {
-  //     router.push("/friends");
-  //   }
-  // }
-
-  useEffect(() => {
-    const handleConversionToSound = async () => {
-      await readCaption("Image processing is in progress. Please wait.");
-
-      // wait 3 seconds
-      await new Promise((resolve) => setTimeout(resolve, 3000));
-      dispatch({
-        type: "gesture_one",
-        status: "show tap gesture one",
-      });
-      await readCaption("Image processing is complete. Tap to listen.");
-      await new Promise((resolve) => setTimeout(resolve, 3000));
+  async function handleTap() {
+    if (
+      status == "processing photo" ||
+      status == "show swipe right gesture two"
+    )
+      return;
+    const audio = new Audio(sound);
+    speak(caption, () => {
+      audio.play();
+    });
+    audio.play();
+    if (status == "show tap gesture one") {
       dispatch({
         type: "gesture_two",
         status: "show swipe right gesture two",
       });
+      speak("Swipe right to send to friends", () => {
+        dispatch({
+          type: "finished_processing",
+          status: "finished processing",
+        });
+      });
+    }
+  }
+
+  async function handleSwipeRight() {
+    if (status == "finished processing") router.push("/friends");
+  }
+
+  useEffect(() => {
+    const handleConversionToSound = async () => {
+      speak("Image processing is in progress. Please wait.");
+      // wait 3 seconds
+      const response = await fetch(photoBlobUrl);
+      // Blob object
+      const blobData = await response.blob();
+      //Generate a random image name that will be used
+      // to store the image in supabase storage
+      const imageName =
+        (await randomName()) + blobData.type.replace("image/", ".");
+      //Save the photo to supabase storage
+      const { data, error: imageUploadError } = await supabase.storage
+        .from("images")
+        // We can upload imageName using either a Blob object or a File object
+        .upload(imageName, blobData);
+      if (imageUploadError) {
+        throw imageUploadError;
+      }
+      //Get the photo url string
+      const photoString = data?.path;
+      console.log({ photoString });
+      //Get the photo public url
+      const {
+        data: { publicUrl: photoPublicUrl },
+      } = await supabase.storage.from("images").getPublicUrl(photoString);
+      // get caption from photo public url
+      const res = await getCaption(photoPublicUrl);
+      const captionData: { output: string } = await res.json();
+      const caption = formatCaption(String(captionData.output));
+
+      // get sound from caption
+      const { output: sound } = await getSound(caption);
+      // upload sound to supabase storage
+      const res2 = await fetch(sound);
+      const soundBlob = await res2.blob();
+      const audioName = `${await randomName()}.mp3`.replace("/", "");
+      const { error: SoundUploadError } = await supabase.storage
+        .from("audio")
+        .upload(audioName, soundBlob);
+      if (SoundUploadError) {
+        throw SoundUploadError;
+      }
+      dispatch({
+        type: "gesture_one",
+        status: "show tap gesture one",
+        caption,
+        sound,
+      });
+      speak("Tap to listen");
     };
     handleConversionToSound();
-  }, []);
+    return () => {
+      // This function will be called when the component is unmounted
+      window.speechSynthesis.cancel();
+    };
+  }, [photoBlobUrl]);
 
   // useEffect(() => {
   //   const handleConversionToSound = async () => {
@@ -253,10 +289,10 @@ export default function PhotoProcessing({
       </div>
 
       <div>
-        <div className="relative h-[90vh]">
+        <div className="relative h-[90vh] bg-muted" {...handler}>
           <Image
-            // src={photoBlobUrl}
-            src="/images/photos/photo-1.jpg"
+            src={photoBlobUrl}
+            // src="/images/photos/photo-1.jpg"
             alt="Palm trees on a beach"
             fill
             className={`h-full object-contain`}
@@ -270,19 +306,19 @@ export default function PhotoProcessing({
               gifName="L-SwipeRight"
             />
           )}
-        </div>
-        {status == "processing photo" && (
-          <>
-            <div className="absolute inset-0 flex items-center justify-center">
-              <div className="flex h-full w-full items-center justify-center bg-[#FEFFFF99] backdrop-blur">
-                <LoadSpinnerSVG />
+          {status == "processing photo" && (
+            <>
+              <div className="absolute inset-0 flex items-center justify-center">
+                <div className="flex h-full w-full items-center justify-center bg-[#FEFFFF99] backdrop-blur">
+                  <LoadSpinnerSVG />
+                </div>
               </div>
-            </div>
-            <div className="absolute inset-0 flex items-center justify-center">
-              <h1 className="text-4xl text-black">Processing</h1>
-            </div>
-          </>
-        )}
+              <div className="absolute inset-0 flex items-center justify-center">
+                <h1 className="text-4xl text-black">Processing</h1>
+              </div>
+            </>
+          )}
+        </div>
       </div>
 
       {/* <div className="relative h-[90vh]" {...handler}>
