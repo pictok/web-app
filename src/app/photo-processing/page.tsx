@@ -100,6 +100,7 @@ export default function PhotoProcessing({
       )
         return;
       window.speechSynthesis.cancel();
+      audioRef.current.pause();
       speak(caption, async () => {
         await audioRef.current.play();
         audioRef.current.onended = () => {
@@ -122,6 +123,7 @@ export default function PhotoProcessing({
   });
 
   useEffect(() => {
+    const audio = audioRef.current;
     const handleConversionToSound = async () => {
       speak("Image processing is in progress. Please wait.");
       // // wait 3 seconds
@@ -171,13 +173,14 @@ export default function PhotoProcessing({
         status: "show tap gesture one",
         caption: "A little Scotty boy",
       });
-      audioRef.current.src = "/sound/sample.mp3";
+      audio.src = "/sound/sample.mp3";
       speak("Tap to listen");
     };
     handleConversionToSound();
     return () => {
       // This function will be called when the component is unmounted
       window.speechSynthesis.cancel();
+      audio.pause();
     };
   }, [photoBlobUrl]);
 
