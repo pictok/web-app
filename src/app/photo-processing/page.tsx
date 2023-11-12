@@ -10,7 +10,7 @@ import Image from "next/image";
 
 import { getCaption } from "@/lib/getCaption";
 import { formatCaption } from "@/lib/formatCaption";
-import { readCaption } from "@/lib/readCaption";
+// import { readCaption } from "@/lib/readCaption";
 import { getSound } from "@/lib/getSound";
 import { useSwipeable } from "react-swipeable";
 import { useRouter } from "next/navigation";
@@ -55,6 +55,17 @@ const photoProcessingReducer = (state: ReducerState, action: ReducerAction) => {
     default:
       return state;
   }
+};
+
+const readCaption = async (caption: string) => {
+  return new Promise((resolve, reject) => {
+    const speech = new SpeechSynthesisUtterance();
+    speech.text = caption;
+    window.speechSynthesis.speak(speech);
+    speech.onend = () => {
+      resolve("Done");
+    };
+  });
 };
 
 export default function PhotoProcessing({
@@ -124,12 +135,15 @@ export default function PhotoProcessing({
 
   useEffect(() => {
     const handleConversionToSound = async () => {
+      await readCaption("Image processing is in progress. Please wait.");
+
       // wait 3 seconds
       await new Promise((resolve) => setTimeout(resolve, 3000));
       dispatch({
         type: "gesture_one",
         status: "show tap gesture one",
       });
+      await readCaption("Image processing is complete. Tap to listen.");
       await new Promise((resolve) => setTimeout(resolve, 3000));
       dispatch({
         type: "gesture_two",
