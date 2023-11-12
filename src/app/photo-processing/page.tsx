@@ -97,6 +97,7 @@ export default function PhotoProcessing({
         status == "show swipe right gesture two"
       )
         return;
+      window.speechSynthesis.cancel();
       speak(caption, async () => {
         await audioRef.current.play();
         audioRef.current.onended = () => {
@@ -191,7 +192,7 @@ export default function PhotoProcessing({
         <div className="relative h-[90vh] bg-muted" {...handler}>
           <Image
             src={photoBlobUrl}
-            alt="Palm trees on a beach"
+            alt={caption || "Image to be processed"}
             fill
             className={`h-full object-contain`}
           />
@@ -207,12 +208,14 @@ export default function PhotoProcessing({
           {status == "processing photo" && (
             <>
               <div className="absolute inset-0 flex items-center justify-center">
-                <div className="flex h-full w-full items-center justify-center bg-[#FEFFFF99] backdrop-blur">
+                <div className="flex h-full w-full items-center justify-center bg-[#FEFFFF99] backdrop-blur dark:bg-[#00000091]">
                   <LoadSpinnerSVG />
                 </div>
               </div>
               <div className="absolute inset-0 flex items-center justify-center">
-                <h1 className="text-4xl text-black">Processing</h1>
+                <h1 className="text-4xl text-black dark:text-white">
+                  Processing
+                </h1>
               </div>
             </>
           )}

@@ -2,8 +2,8 @@ export default function LoadSpinnerSVG() {
   return (
     <svg
       version="1.1"
-      width="300"
-      height="300"
+      width="340"
+      height="340"
       viewBox="-7 -7 35 35"
       xmlns="http://www.w3.org/2000/svg"
     >
