@@ -19,6 +19,9 @@ import Gesture from "@/components/design/Gesture";
 import { speak } from "@/lib/speak";
 import { useTheme } from "next-themes";
 
+const storagePath =
+  "https://bmtbohuzvkdifffdwayv.supabase.co/storage/v1/object/public";
+
 type ReducerState = {
   status:
     | "processing photo"
@@ -126,54 +129,58 @@ export default function PhotoProcessing({
     const audio = audioRef.current;
     const handleConversionToSound = async () => {
       speak("Image processing is in progress. Please wait.");
-      // // wait 3 seconds
-      // const response = await fetch(photoBlobUrl);
-      // // Blob object
-      // const blobData = await response.blob();
-      // //Generate a random image name that will be used
-      // // to store the image in supabase storage
-      // const imageName =
-      //   (await randomName()) + blobData.type.replace("image/", ".");
-      // //Save the photo to supabase storage
-      // const { data, error: imageUploadError } = await supabase.storage
-      //   .from("images")
-      //   // We can upload imageName using either a Blob object or a File object
-      //   .upload(imageName, blobData);
-      // if (imageUploadError) {
-      //   throw imageUploadError;
-      // }
-      // //Get the photo url string
-      // const photoString = data?.path;
-      // console.log({ photoString });
-      // //Get the photo public url
-      // const {
-      //   data: { publicUrl: photoPublicUrl },
-      // } = await supabase.storage.from("images").getPublicUrl(photoString);
-      // // get caption from photo public url
-      // const res = await getCaption(photoPublicUrl);
-      // const captionData: { output: string } = await res.json();
-      // const caption = formatCaption(String(captionData.output));
-
-      // // get sound from caption
-      // const { output: sound } = await getSound(caption);
-      // // upload sound to supabase storage
-      // const res2 = await fetch(sound);
-      // const soundBlob = await res2.blob();
-      // const audioName = `${await randomName()}.mp3`.replace("/", "");
-      // const { error: SoundUploadError } = await supabase.storage
-      //   .from("audio")
-      //   .upload(audioName, soundBlob);
-      // if (SoundUploadError) {
-      //   throw SoundUploadError;
-      // }
       // wait 3 seconds
-      await new Promise((resolve) => setTimeout(resolve, 5000));
+      const response = await fetch(photoBlobUrl);
+      // Blob object
+      const blobData = await response.blob();
+      //Generate a random image name that will be used
+      // to store the image in supabase storage
+      const imageName =
+        (await randomName()) + blobData.type.replace("image/", ".");
+      //Save the photo to supabase storage
+      const { data, error: imageUploadError } = await supabase.storage
+        .from("images")
+        // We can upload imageName using either a Blob object or a File object
+        .upload(imageName, blobData);
+      if (imageUploadError) {
+        throw imageUploadError;
+      }
+      //Get the photo url string
+      const image_url = `${storagePath}/images/${data?.path}`;
+
+      // get caption from photo public url
+      const res = await getCaption(image_url);
+      const captionData: { output: string } = await res.json();
+      const caption = formatCaption(String(captionData.output));
+
+      // get sound from caption
+      const { output: sound } = await getSound(caption);
+      // upload sound to supabase storage
+      const res2 = await fetch(sound);
+      const soundBlob = await res2.blob();
+      const audioName = `${await randomName()}.mp3`.replace("/", "");
+      const { data: audioData, error: SoundUploadError } =
+        await supabase.storage.from("audio").upload(audioName, soundBlob);
+      if (SoundUploadError) {
+        throw SoundUploadError;
+      }
+      const audio_url = `${storagePath}/audio/${audioData?.path}`;
+
+      const { error: imageAudioError } = await supabase
+        .from("image_audio")
+        .insert([{ image_url, audio_url, caption }]);
+
+      if (imageAudioError) {
+        throw imageAudioError;
+      }
+      // // wait 3 seconds
+      // await new Promise((resolve) => setTimeout(resolve, 5000));
       dispatch({
         type: "gesture_one",
         status: "show tap gesture one",
-        caption: "A little Scotty boy",
+        caption,
       });
-      audio.src = "/sound/sample.mp3";
+      audio.src = sound;
       speak("Tap to listen");
     };
     handleConversionToSound();
