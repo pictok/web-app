@@ -27,7 +27,7 @@ export default function SoundPreview({ image }: { image: string }) {
     setCaption(caption);
 
     //use speech to text web api to read caption to the user
-    if (window) {
+    if (typeof window !== "undefined") {
       "speechSynthesis" in window
         ? readCaption(caption)
         : console.error("SpeechSynthesis is not supported in this browser.");
