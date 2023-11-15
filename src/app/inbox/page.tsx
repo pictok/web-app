@@ -7,6 +7,7 @@ import Link from "next/link";
 import { useEffect, useState } from "react";
 import Image from "next/image";
 
+const syth = window ? window.speechSynthesis : undefined;
 const audio = typeof Audio !== "undefined" ? new Audio() : null;
 const speech =
   typeof SpeechSynthesisUtterance !== "undefined"
@@ -37,10 +38,10 @@ export default function Inbox() {
 
   const playAudio = (audio_url: string, caption: string) => {
     if (!audio || !speech) return;
-    window.speechSynthesis.cancel();
+    syth?.cancel();
     audio.pause();
     speech.text = caption;
-    window.speechSynthesis.speak(speech);
+    syth?.speak(speech);
     speech.onend = () => {
       audio.src = audio_url;
       audio.play();
@@ -58,7 +59,7 @@ export default function Inbox() {
 
       <div
         onScroll={() => {
-          window.speechSynthesis.cancel();
+          syth?.cancel();
           audio?.pause();
         }}
         className="h-[90vh] snap-y snap-mandatory overflow-y-auto"
