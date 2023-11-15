@@ -17,7 +17,7 @@ export async function POST(req: NextRequest, res: NextResponse) {
         content: [
           {
             type: "text",
-            text: "Describe what's in the image in detail but keep it concise in one sentence.",
+            text: "Please identify all objects, discern the gender of any person present, recognize weather conditions, pinpoint the location if identifiable, and describe any observable motion within the image. Condense findings into a single, succinct sentence, avoiding the use of 'This image shows.'",
           },
           {
             type: "image_url",
