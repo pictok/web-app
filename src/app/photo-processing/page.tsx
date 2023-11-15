@@ -3,19 +3,82 @@
 import LoadSpinnerSVG from "@/components/icons/LoadSpinnerSVG";
 import { ChevronLeft } from "lucide-react";
 
-import { useEffect, useState } from "react";
+import { useEffect, useReducer, useRef } from "react";
 import supabase from "@/db/supabase";
 import Link from "next/link";
 import Image from "next/image";
 
 import { getCaption } from "@/lib/getCaption";
 import { formatCaption } from "@/lib/formatCaption";
-import { readCaption } from "@/lib/readCaption";
 import { getSound } from "@/lib/getSound";
 import { useSwipeable } from "react-swipeable";
 import { useRouter } from "next/navigation";
-import { randomImageName } from "@/lib/randomImageName";
+import { randomName } from "@/lib/randomImageName";
 import Gesture from "@/components/design/Gesture";
+import { speak } from "@/lib/speak";
+import { useTheme } from "next-themes";
+
+const storagePath =
+  "https://bmtbohuzvkdifffdwayv.supabase.co/storage/v1/object/public";
+
+type ReducerState = {
+  status:
+    | "processing photo"
+    | "show tap gesture one"
+    | "show swipe right gesture two"
+    | "finished processing";
+  caption: string;
+};
+
+type ReducerAction =
+  | {
+      type: "processing_photo";
+      status: "processing photo";
+    }
+  | {
+      type: "gesture_one";
+      status: "show tap gesture one";
+      caption: string;
+    }
+  | {
+      type: "gesture_two";
+      status: "show swipe right gesture two";
+    }
+  | {
+      type: "finished_processing";
+      status: "finished processing";
+    };
+
+const initialState: ReducerState = {
+  status: "processing photo",
+  caption: "",
+};
+
+const photoProcessingReducer = (
+  state: ReducerState,
+  action: ReducerAction,
+): ReducerState => {
+  switch (action.type) {
+    case "processing_photo":
+      return { ...state, status: action.status };
+
+    case "gesture_one":
+      return {
+        ...state,
+        status: action.status,
+        caption: action.caption,
+      };
+
+    case "gesture_two":
+      return { ...state, status: action.status };
+
+    case "finished_processing":
+      return { ...state, status: action.status };
+
+    default:
+      return state;
+  }
+};
 import { getImageAsBase64 } from "@/lib/getImageAsBase64";
 
 export default function PhotoProcessing({
@@ -24,157 +87,114 @@ export default function PhotoProcessing({
   searchParams: { photoBlobUrl: string };
 }) {
   const router = useRouter();
-  const [sound, setSound] = useState("");
-  const [isConverting, setIsConverting] = useState(false);
-  const [shareUrl, setShareUrl] = useState("");
-  const [caption, setCaption] = useState("");
-  const [tapTutorialOn, setTapTutorialOn] = useState(true);
-  const [swipeRightTutorialOn, setSwipeRightTutorialOn] = useState(true);
-
-  console.log("caption", caption);
-  console.log("sound", sound);
-  console.log("shareUrl", shareUrl);
+  const theme = useTheme();
+  const [state, dispatch] = useReducer(photoProcessingReducer, initialState);
+  const { status, caption } = state;
+  const audioRef = useRef<HTMLAudioElement>(new Audio());
 
   const handler = useSwipeable({
     onSwipedRight: () => {
-      // prevents swipe right from working when tap tutorial is on
-      if (!isConverting && tapTutorialOn) return;
-      // turn off swipe right tutorial once user swipes right
-      if (!isConverting && swipeRightTutorialOn) {
-        setSwipeRightTutorialOn(false);
-      } else if (!isConverting) {
-        router.push("/friends");
-      }
+      if (status == "finished processing") router.push("/friends");
     },
-    onTap: async () => {
-      // turn off tap tutorial once user taps and turn on swipe right tutorial
-      if (!isConverting && tapTutorialOn) {
-        if ("speechSynthesis" in window) {
-          await readCaption(caption);
-          // play audio
-          const audio = new Audio(sound);
-          await audio.play();
-          audio.onended = async () => {
-            const speech = new SpeechSynthesisUtterance();
-            speech.text = "Swipe right to send to friends";
-
-            window.speechSynthesis.speak(speech);
-            speech.onend = () => {
-              setSwipeRightTutorialOn(false);
-            };
-          };
-        } else {
-          console.error("SpeechSynthesis is not supported in this browser.");
-        }
-        setTapTutorialOn(false);
-      } else if (!isConverting && !tapTutorialOn) {
-        if ("speechSynthesis" in window) {
-          await readCaption(caption);
-          // play audio
-          const audio = new Audio(sound);
-          await audio.play();
-        } else {
-          console.error("SpeechSynthesis is not supported in this browser.");
-        }
-      }
+    onTap: () => {
+      if (
+        status == "processing photo" ||
+        status == "show swipe right gesture two"
+      )
+        return;
+      window.speechSynthesis.cancel();
+      audioRef.current.pause();
+      speak(caption, async () => {
+        await audioRef.current.play();
+        audioRef.current.onended = () => {
+          if (status == "show tap gesture one") {
+            dispatch({
+              type: "gesture_two",
+              status: "show swipe right gesture two",
+            });
+            speak("Swipe right to send to friends", () => {
+              dispatch({
+                type: "finished_processing",
+                status: "finished processing",
+              });
+            });
+          }
+        };
+      });
     },
     trackMouse: true,
   });
 
   useEffect(() => {
+    const audio = audioRef.current;
     const handleConversionToSound = async () => {
-      setIsConverting(true);
-      await readCaption("Image processing is in progress. Please wait.");
+      speak("Image processing is in progress. Please wait.");
+      // wait 3 seconds
       const response = await fetch(photoBlobUrl);
       // Blob object
       const blobData = await response.blob();
-
       //Generate a random image name that will be used
       // to store the image in supabase storage
       const imageName =
-        (await randomImageName()) + blobData.type.replace("image/", ".");
-
-      // Save the photo to supabase storage
-      const { data, error } = await supabase.storage
+        (await randomName()) + blobData.type.replace("image/", ".");
+      //Save the photo to supabase storage
+      const { data, error: imageUploadError } = await supabase.storage
         .from("images")
         // We can upload imageName using either a Blob object or a File object
         .upload(imageName, blobData);
-      if (error) {
-        console.error(error);
-        return;
+      if (imageUploadError) {
+        throw imageUploadError;
       }
 
       // convert blob to base64
       const base64Image = await getImageAsBase64(blobData);
 
-      if (typeof base64Image === "string") {
-        const res1 = await getCaption(base64Image);
-
-        const { data } = await res1.json();
-        const caption = data;
-        setCaption(caption);
-      } else {
+      if (typeof base64Image !== "string") {
         throw new Error("base64Image is not a string");
       }
 
+      const res1 = await getCaption(base64Image);
+
+      const { data: caption } = await res1.json();
+
       //Get the photo url string
-      const photoString = data?.path;
-      console.log(photoString);
-
-      //Get the photo public url
-      const {
-        data: { publicUrl: photoPublicUrl },
-      } = await supabase.storage.from("images").getPublicUrl(photoString);
-
-      //use speech to text web api to read caption to the user
-      // "speechSynthesis" in window
-      //   ? await readCaption(caption)
-      //   : console.error("SpeechSynthesis is not supported in this browser.");
+      const image_url = `${storagePath}/images/${data?.path}`;
 
       // get sound from caption
-      const { output } = await getSound(caption);
-
-      setSound(() => output);
-
+      const { output: sound } = await getSound(caption);
       // upload sound to supabase storage
-      const res3 = await fetch(output);
-      const blob = await res3.blob();
-      const audioName = `${await randomImageName()}.mp3`.replace("/", "");
-      const { error: SoundUploadError } = await supabase.storage
-        .from("audio")
-        .upload(audioName, blob);
-      if (SoundUploadError) console.log(SoundUploadError);
-
-      // insert image and audio url to supabase
-      const audioPath =
-        "https://bmtbohuzvkdifffdwayv.supabase.co/storage/v1/object/public/audio/";
-
-      const { data: result, error: CreateImgAudioLinkError } = await supabase
-        .from("image_audio")
-        .insert([
-          {
-            image_url: photoPublicUrl,
-            audio_url: audioPath + audioName,
-            caption,
-          },
-        ])
-        .select()
-        .single();
-      if (CreateImgAudioLinkError) console.log(CreateImgAudioLinkError);
-      if (result) {
-        "speechSynthesis" in window
-          ? await readCaption("Image processing is complete. Tap to listen.")
-          : console.error("SpeechSynthesis is not supported in this browser.");
-
-        setShareUrl(`${location.origin}/photo/${result.share_id}`);
-        setIsConverting(false);
-        // const audio = new Audio(output);
-        // await audio.play();
+      const res2 = await fetch(sound);
+      const soundBlob = await res2.blob();
+      const audioName = `${await randomName()}.mp3`.replace("/", "");
+      const { data: audioData, error: SoundUploadError } =
+        await supabase.storage.from("audio").upload(audioName, soundBlob);
+      if (SoundUploadError) {
+        throw SoundUploadError;
       }
+      const audio_url = `${storagePath}/audio/${audioData?.path}`;
+
+      const { error: imageAudioError } = await supabase
+        .from("image_audio")
+        .insert([{ image_url, audio_url, caption }]);
+
+      if (imageAudioError) {
+        throw imageAudioError;
+      }
+      // // wait 3 seconds
+      // await new Promise((resolve) => setTimeout(resolve, 5000));
+      dispatch({
+        type: "gesture_one",
+        status: "show tap gesture one",
+        caption,
+      });
+      audio.src = sound;
+      speak("Tap to listen");
     };
     handleConversionToSound();
     return () => {
+      // This function will be called when the component is unmounted
       window.speechSynthesis.cancel();
+      audio.pause();
     };
   }, [photoBlobUrl]);
 
@@ -187,39 +207,45 @@ export default function PhotoProcessing({
         <h1 className="text-2xl font-bold">Photo</h1>
       </div>
 
-      <div className="relative h-[90vh]" {...handler}>
-        <div className="relative h-[90vh]">
+      <div>
+        <div className="relative h-[90vh] bg-muted" {...handler}>
           <Image
             src={photoBlobUrl}
-            alt="Palm trees on a beach"
+            alt={caption || "Image to be processed"}
             fill
-            className={`h-full object-contain ${
-              isConverting ? "opacity-70" : ""
-            }`}
+            className={`h-full object-contain`}
           />
-          {!isConverting && tapTutorialOn ? (
-            <Gesture message="Tap to listen" gifName="L-Tap" />
-          ) : !isConverting && swipeRightTutorialOn ? (
+          {/* Transparent overlay div */}
+          <div className="absolute left-0 top-0 h-full w-full bg-transparent"></div>
+          {status == "show tap gesture one" && (
+            <Gesture
+              message="Tap to listen"
+              gifName={`${theme.theme == "dark" ? "D-Tap" : "L-Tap"}`}
+            />
+          )}
+          {status == "show swipe right gesture two" && (
             <Gesture
               message="Swipe right to send to friends"
-              gifName="L-SwipeRight"
+              gifName={`${
+                theme.theme == "dark" ? "D-SwipeRight" : "L-SwipeRight"
+              }`}
             />
-          ) : (
-            ""
+          )}
+          {status == "processing photo" && (
+            <>
+              <div className="absolute inset-0 flex items-center justify-center">
+                <div className="flex h-full w-full items-center justify-center bg-[#FEFFFF99] backdrop-blur dark:bg-[#00000091]">
+                  <LoadSpinnerSVG />
+                </div>
+              </div>
+              <div className="absolute inset-0 flex items-center justify-center">
+                <h1 className="text-4xl text-black dark:text-white">
+                  Processing
+                </h1>
+              </div>
+            </>
           )}
         </div>
-        {isConverting && (
-          <>
-            <div className="absolute inset-0 flex items-center justify-center">
-              <div className="flex h-full w-full items-center justify-center bg-[#FEFFFF99] backdrop-blur">
-                <LoadSpinnerSVG />
-              </div>
-            </div>
-            <div className="absolute inset-0 flex items-center justify-center">
-              <h1 className="text-4xl text-black">Processing</h1>
-            </div>
-          </>
-        )}
       </div>
     </main>
   );

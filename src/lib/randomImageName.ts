@@ -2,5 +2,5 @@
 
 import crypto from "crypto";
 
-export const randomImageName = (bytes = 32) =>
+export const randomName = (bytes = 32) =>
   crypto.randomBytes(bytes).toString("hex");
