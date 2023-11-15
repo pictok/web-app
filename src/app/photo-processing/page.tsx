@@ -17,7 +17,7 @@ import Gesture from "@/components/design/Gesture";
 import { speak } from "@/lib/speak";
 import { useTheme } from "next-themes";
 
-const dynamic = "force-dynamic";
+export const dynamic = "force-dynamic";
 
 const storagePath =
   "https://bmtbohuzvkdifffdwayv.supabase.co/storage/v1/object/public";
