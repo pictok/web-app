@@ -160,11 +160,6 @@ export default function PhotoProcessing({
       //Get the photo url string
       const image_url = `${storagePath}/images/${data?.path}`;
 
-      // get caption from photo public url
-      // const res = await getCaption(image_url);
-      // const captionData: { output: string } = await res.json();
-      // const caption = formatCaption(String(captionData.output));
-
       // get sound from caption
       const { output: sound } = await getSound(caption);
       // upload sound to supabase storage
