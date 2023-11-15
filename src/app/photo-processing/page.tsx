@@ -90,6 +90,9 @@ export default function PhotoProcessing({
   const [state, dispatch] = useReducer(photoProcessingReducer, initialState);
   const { status, caption } = state;
   const audioRef = useRef<HTMLAudioElement>(new Audio());
+  const bgmAudioRef = useRef<HTMLAudioElement>(
+    new Audio("/sound/image-processing-bgm.mp3"),
+  );
 
   console.log({
     status,
@@ -131,7 +134,7 @@ export default function PhotoProcessing({
 
   useEffect(() => {
     const audio = audioRef.current;
-    const bgm = new Audio("/sound/image-processing-bgm.mp3");
+    const bgm = bgmAudioRef.current;
 
     const handleConversionToSound = async () => {
       speak("Image processing is in progress. Please wait.", () => bgm.play());
@@ -188,20 +191,22 @@ export default function PhotoProcessing({
       }
       // // wait 3 seconds
       // await new Promise((resolve) => setTimeout(resolve, 5000));
+
+      bgm.pause();
       dispatch({
         type: "gesture_one",
         status: "show tap gesture one",
         caption,
       });
-      audio.src = sound;
-      bgm.pause();
       speak("Tap to listen");
+      audio.src = sound;
     };
     handleConversionToSound();
     return () => {
       // This function will be called when the component is unmounted
       synth?.cancel();
       audio.pause();
+      bgm.pause();
     };
   }, [photoBlobUrl]);
 
