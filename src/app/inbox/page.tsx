@@ -6,8 +6,8 @@ import { supabase } from "@/db/supabase";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import Image from "next/image";
+import { synth } from "@/lib/speak";
 
-const syth = window ? window.speechSynthesis : undefined;
 const audio = typeof Audio !== "undefined" ? new Audio() : null;
 const speech =
   typeof SpeechSynthesisUtterance !== "undefined"
@@ -38,10 +38,10 @@ export default function Inbox() {
 
   const playAudio = (audio_url: string, caption: string) => {
     if (!audio || !speech) return;
-    syth?.cancel();
+    synth?.cancel();
     audio.pause();
     speech.text = caption;
-    syth?.speak(speech);
+    synth?.speak(speech);
     speech.onend = () => {
       audio.src = audio_url;
       audio.play();
@@ -59,7 +59,7 @@ export default function Inbox() {
 
       <div
         onScroll={() => {
-          syth?.cancel();
+          synth?.cancel();
           audio?.pause();
         }}
         className="h-[90vh] snap-y snap-mandatory overflow-y-auto"
