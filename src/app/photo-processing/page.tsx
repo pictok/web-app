@@ -131,8 +131,10 @@ export default function PhotoProcessing({
 
   useEffect(() => {
     const audio = audioRef.current;
+    const bgm = new Audio("/sound/image-processing-bgm.mp3");
+
     const handleConversionToSound = async () => {
-      speak("Image processing is in progress. Please wait.");
+      speak("Image processing is in progress. Please wait.", () => bgm.play());
       // wait 3 seconds
       const response = await fetch(photoBlobUrl);
       // Blob object
@@ -192,6 +194,7 @@ export default function PhotoProcessing({
         caption,
       });
       audio.src = sound;
+      bgm.pause();
       speak("Tap to listen");
     };
     handleConversionToSound();
