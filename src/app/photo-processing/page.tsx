@@ -9,7 +9,6 @@ import Link from "next/link";
 import Image from "next/image";
 
 import { getCaption } from "@/lib/getCaption";
-import { formatCaption } from "@/lib/formatCaption";
 import { getSound } from "@/lib/getSound";
 import { useSwipeable } from "react-swipeable";
 import { useRouter } from "next/navigation";
@@ -17,6 +16,8 @@ import { randomName } from "@/lib/randomImageName";
 import Gesture from "@/components/design/Gesture";
 import { speak } from "@/lib/speak";
 import { useTheme } from "next-themes";
+
+const dynamic = "force-dynamic";
 
 const storagePath =
   "https://bmtbohuzvkdifffdwayv.supabase.co/storage/v1/object/public";
