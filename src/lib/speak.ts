@@ -1,4 +1,4 @@
-const synth = window.speechSynthesis ? window.speechSynthesis : undefined;
+export const synth = window ? window.speechSynthesis : undefined;
 
 export function speak(text: string, cb?: () => void) {
   const utterance = new SpeechSynthesisUtterance(text);

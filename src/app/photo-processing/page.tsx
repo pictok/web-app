@@ -14,7 +14,7 @@ import { useSwipeable } from "react-swipeable";
 import { useRouter } from "next/navigation";
 import { randomName } from "@/lib/randomImageName";
 import Gesture from "@/components/design/Gesture";
-import { speak } from "@/lib/speak";
+import { speak, synth } from "@/lib/speak";
 import { useTheme } from "next-themes";
 
 const storagePath =
@@ -106,7 +106,7 @@ export default function PhotoProcessing({
         status == "show swipe right gesture two"
       )
         return;
-      window.speechSynthesis.cancel();
+      synth?.cancel();
       audioRef.current.pause();
       speak(caption, async () => {
         await audioRef.current.play();
@@ -197,7 +197,7 @@ export default function PhotoProcessing({
     handleConversionToSound();
     return () => {
       // This function will be called when the component is unmounted
-      window.speechSynthesis.cancel();
+      synth?.cancel();
       audio.pause();
     };
   }, [photoBlobUrl]);
