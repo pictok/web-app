@@ -34,6 +34,10 @@ export default function Inbox() {
     }
 
     getInbox();
+    return () => {
+      synth?.cancel();
+      audio?.pause();
+    };
   }, []);
 
   const playAudio = (audio_url: string, caption: string) => {
