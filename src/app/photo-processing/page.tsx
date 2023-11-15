@@ -162,9 +162,8 @@ export default function PhotoProcessing({
         throw new Error("base64Image is not a string");
       }
 
-      const res1 = await getCaption(base64Image);
-
-      const { data: caption } = await res1.json();
+      const { caption, test } = await getCaption(base64Image);
+      console.log({ test });
 
       //Get the photo url string
       const image_url = `${storagePath}/images/${data?.path}`;
