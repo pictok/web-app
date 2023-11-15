@@ -108,14 +108,10 @@ export default function PhotoProcessing({
       const base64Image = await getImageAsBase64(blobData);
 
       if (typeof base64Image === "string") {
-        // get caption from photo public url
-        console.log("base64Image: ", base64Image);
         const res1 = await getCaption(base64Image);
-        console.log("res1: ", res1);
-        const { captionData } = await res1.json();
-        const caption = captionData;
-        // const caption = formatCaption(String(captionData.output));
-        console.log("caption from vision!!!!: ", caption);
+
+        const { data } = await res1.json();
+        const caption = data;
         setCaption(caption);
       } else {
         throw new Error("base64Image is not a string");
