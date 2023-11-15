@@ -3,7 +3,7 @@
 import LoadSpinnerSVG from "@/components/icons/LoadSpinnerSVG";
 import { ChevronLeft } from "lucide-react";
 
-import { useEffect, useReducer, useRef, useState } from "react";
+import { useEffect, useReducer, useRef } from "react";
 import supabase from "@/db/supabase";
 import Link from "next/link";
 import Image from "next/image";
@@ -220,24 +220,22 @@ export default function PhotoProcessing({
             fill
             className={`h-full object-contain`}
           />
-          {status == "show tap gesture one" &&
-            (theme.theme == "dark" ? (
-              <Gesture message="Tap to listen" gifName="D-Tap" />
-            ) : (
-              <Gesture message="Tap to listen" gifName="L-Tap" />
-            ))}
-          {status == "show swipe right gesture two" &&
-            (theme.theme == "dark" ? (
-              <Gesture
-                message="Swipe right to send to friends"
-                gifName="D-SwipeRight"
-              />
-            ) : (
-              <Gesture
-                message="Swipe right to send to friends"
-                gifName="L-SwipeRight"
-              />
-            ))}
+          {/* Transparent overlay div */}
+          <div className="absolute left-0 top-0 h-full w-full bg-transparent"></div>
+          {status == "show tap gesture one" && (
+            <Gesture
+              message="Tap to listen"
+              gifName={`${theme.theme == "dark" ? "D-Tap" : "L-Tap"}`}
+            />
+          )}
+          {status == "show swipe right gesture two" && (
+            <Gesture
+              message="Swipe right to send to friends"
+              gifName={`${
+                theme.theme == "dark" ? "D-SwipeRight" : "L-SwipeRight"
+              }`}
+            />
+          )}
           {status == "processing photo" && (
             <>
               <div className="absolute inset-0 flex items-center justify-center">
