@@ -17,8 +17,6 @@ import Gesture from "@/components/design/Gesture";
 import { speak } from "@/lib/speak";
 import { useTheme } from "next-themes";
 
-export const dynamic = "force-dynamic";
-
 const storagePath =
   "https://bmtbohuzvkdifffdwayv.supabase.co/storage/v1/object/public";
 
@@ -92,6 +90,11 @@ export default function PhotoProcessing({
   const [state, dispatch] = useReducer(photoProcessingReducer, initialState);
   const { status, caption } = state;
   const audioRef = useRef<HTMLAudioElement>(new Audio());
+
+  console.log({
+    status,
+    caption,
+  });
 
   const handler = useSwipeable({
     onSwipedRight: () => {
