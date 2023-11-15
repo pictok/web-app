@@ -10,7 +10,6 @@ import Image from "next/image";
 
 import { getCaption } from "@/lib/getCaption";
 import { formatCaption } from "@/lib/formatCaption";
-import { readCaption } from "@/lib/readCaption";
 import { getSound } from "@/lib/getSound";
 import { useSwipeable } from "react-swipeable";
 import { useRouter } from "next/navigation";
@@ -80,6 +79,7 @@ const photoProcessingReducer = (
       return state;
   }
 };
+import { getImageAsBase64 } from "@/lib/getImageAsBase64";
 
 export default function PhotoProcessing({
   searchParams: { photoBlobUrl },
@@ -145,13 +145,25 @@ export default function PhotoProcessing({
       if (imageUploadError) {
         throw imageUploadError;
       }
+
+      // convert blob to base64
+      const base64Image = await getImageAsBase64(blobData);
+
+      if (typeof base64Image !== "string") {
+        throw new Error("base64Image is not a string");
+      }
+
+      const res1 = await getCaption(base64Image);
+
+      const { data: caption } = await res1.json();
+
       //Get the photo url string
       const image_url = `${storagePath}/images/${data?.path}`;
 
       // get caption from photo public url
-      const res = await getCaption(image_url);
-      const captionData: { output: string } = await res.json();
-      const caption = formatCaption(String(captionData.output));
+      // const res = await getCaption(image_url);
+      // const captionData: { output: string } = await res.json();
+      // const caption = formatCaption(String(captionData.output));
 
       // get sound from caption
       const { output: sound } = await getSound(caption);
