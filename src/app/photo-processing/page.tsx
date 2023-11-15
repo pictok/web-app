@@ -16,6 +16,7 @@ import { useSwipeable } from "react-swipeable";
 import { useRouter } from "next/navigation";
 import { randomImageName } from "@/lib/randomImageName";
 import Gesture from "@/components/design/Gesture";
+import { getImageAsBase64 } from "@/lib/getImageAsBase64";
 
 export default function PhotoProcessing({
   searchParams: { photoBlobUrl },
@@ -103,6 +104,19 @@ export default function PhotoProcessing({
         return;
       }
 
+      // convert blob to base64
+      const base64Image = await getImageAsBase64(blobData);
+
+      if (typeof base64Image === "string") {
+        const res1 = await getCaption(base64Image);
+
+        const { data } = await res1.json();
+        const caption = data;
+        setCaption(caption);
+      } else {
+        throw new Error("base64Image is not a string");
+      }
+
       //Get the photo url string
       const photoString = data?.path;
       console.log(photoString);
@@ -111,12 +125,6 @@ export default function PhotoProcessing({
       const {
         data: { publicUrl: photoPublicUrl },
       } = await supabase.storage.from("images").getPublicUrl(photoString);
-
-      // get caption from photo public url
-      const res1 = await getCaption(photoPublicUrl);
-      const captionData = await res1.json();
-      const caption = formatCaption(String(captionData.output));
-      setCaption(caption);
 
       //use speech to text web api to read caption to the user
       // "speechSynthesis" in window
