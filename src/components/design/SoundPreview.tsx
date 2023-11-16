@@ -1,13 +1,11 @@
 "use client";
 
 import { useState } from "react";
-// import SendPhotoButton from "./SendPhotoButton";
 import { supabase } from "@/db/supabase";
 import { getCaption } from "@/lib/getCaption";
 import { getSound } from "@/lib/getSound";
 import ShareButton from "./ShareButton";
 import { readCaption } from "@/lib/readCaption";
-import { formatCaption } from "@/lib/formatCaption";
 import { Button } from "../ui/button";
 
 export default function SoundPreview({ image }: { image: string }) {
@@ -15,15 +13,13 @@ export default function SoundPreview({ image }: { image: string }) {
   const [isConverting, setIsConverting] = useState(false);
   const [shareUrl, setShareUrl] = useState("");
   const [caption, setCaption] = useState("");
-  // const [isSending, setIsSending] = useState(false);
 
   const handleConversionToSound = async () => {
     setIsConverting(true);
 
     // get caption from image url
-    const res1 = await getCaption(image);
-    const data = await res1.json();
-    const caption = formatCaption(String(data.output));
+    const { caption, error } = await getCaption(image);
+    if (error) console.log(error);
     setCaption(caption);
 
     //use speech to text web api to read caption to the user
