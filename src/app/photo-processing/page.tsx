@@ -16,6 +16,7 @@ import { randomName } from "@/lib/randomImageName";
 import Gesture from "@/components/design/Gesture";
 import { speak, synth } from "@/lib/speak";
 import { useTheme } from "next-themes";
+import { getStoryCaption } from "@/lib/getStoryCaption";
 
 const storagePath =
   "https://bmtbohuzvkdifffdwayv.supabase.co/storage/v1/object/public";
@@ -26,6 +27,7 @@ type ReducerState = {
     | "show tap gesture one"
     | "show swipe right gesture two"
     | "finished processing";
+  narrativeStory: string;
   caption: string;
 };
 
@@ -37,6 +39,7 @@ type ReducerAction =
   | {
       type: "gesture_one";
       status: "show tap gesture one";
+      narrativeStory: string;
       caption: string;
     }
   | {
@@ -50,6 +53,7 @@ type ReducerAction =
 
 const initialState: ReducerState = {
   status: "processing photo",
+  narrativeStory: "",
   caption: "",
 };
 
@@ -65,6 +69,7 @@ const photoProcessingReducer = (
       return {
         ...state,
         status: action.status,
+        narrativeStory: action.narrativeStory,
         caption: action.caption,
       };
 
@@ -88,7 +93,7 @@ export default function PhotoProcessing({
   const router = useRouter();
   const theme = useTheme();
   const [state, dispatch] = useReducer(photoProcessingReducer, initialState);
-  const { status, caption } = state;
+  const { status, narrativeStory, caption } = state;
   const audioRef = useRef<HTMLAudioElement>(new Audio());
   const bgmAudioRef = useRef<HTMLAudioElement>(
     new Audio("/sound/image-processing-bgm.mp3"),
@@ -96,6 +101,7 @@ export default function PhotoProcessing({
 
   console.log({
     status,
+    narrativeStory,
     caption,
   });
 
@@ -111,7 +117,7 @@ export default function PhotoProcessing({
         return;
       synth?.cancel();
       audioRef.current.pause();
-      speak(caption, async () => {
+      speak(narrativeStory, async () => {
         await audioRef.current.play();
         audioRef.current.onended = () => {
           if (status == "show tap gesture one") {
@@ -162,8 +168,11 @@ export default function PhotoProcessing({
         throw new Error("base64Image is not a string");
       }
 
-      const { caption, test } = await getCaption(base64Image);
-      console.log({ test });
+      //! const { caption, test } = await getCaption(base64Image);
+
+      //@ generate story and caption
+      const res = await getStoryCaption(base64Image);
+      const { narrativeStory, caption } = await res.json();
 
       //Get the photo url string
       const image_url = `${storagePath}/images/${data?.path}`;
@@ -195,6 +204,7 @@ export default function PhotoProcessing({
       dispatch({
         type: "gesture_one",
         status: "show tap gesture one",
+        narrativeStory,
         caption,
       });
       speak("Tap to listen");
