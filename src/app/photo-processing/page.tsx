@@ -137,6 +137,7 @@ export default function PhotoProcessing({
     const bgm = bgmAudioRef.current;
 
     const handleConversionToSound = async () => {
+      const t0 = performance.now();
       speak("Image processing is in progress. Please wait.", () => bgm.play());
       // wait 3 seconds
       const response = await fetch(photoBlobUrl);
@@ -151,9 +152,9 @@ export default function PhotoProcessing({
         .from("images")
         // We can upload imageName using either a Blob object or a File object
         .upload(imageName, blobData);
-      if (imageUploadError) {
-        throw imageUploadError;
-      }
+      // if (imageUploadError) {
+      //   throw imageUploadError;
+      // }
 
       // convert blob to base64
       const base64Image = await getImageAsBase64(blobData);
@@ -161,9 +162,20 @@ export default function PhotoProcessing({
       if (typeof base64Image !== "string") {
         throw new Error("base64Image is not a string");
       }
+      // const [{ data, error: imageUploadError }, { caption, test }] =
+      //   await Promise.all([
+      //     supabase.storage
+      //       .from("images")
+      //       // We can upload imageName using either a Blob object or a File object
+      //       .upload(imageName, blobData),
+      //     getCaption(base64Image),
+      //   ]);
+      if (imageUploadError) {
+        throw imageUploadError;
+      }
 
       const { caption, test } = await getCaption(base64Image);
-      console.log({ test });
+      // console.log({ test });
 
       //Get the photo url string
       const image_url = `${storagePath}/images/${data?.path}`;
@@ -190,7 +202,8 @@ export default function PhotoProcessing({
       }
       // // wait 3 seconds
       // await new Promise((resolve) => setTimeout(resolve, 5000));
-
+      const t1 = performance.now();
+      console.log(`Time it takes: ${(t1 - t0) / 1000} seconds.`);
       bgm.pause();
       dispatch({
         type: "gesture_one",
