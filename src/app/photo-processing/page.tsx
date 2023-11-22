@@ -148,10 +148,10 @@ export default function PhotoProcessing({
       const imageName =
         (await randomName()) + blobData.type.replace("image/", ".");
       //Save the photo to supabase storage
-      const { data, error: imageUploadError } = await supabase.storage
-        .from("images")
-        // We can upload imageName using either a Blob object or a File object
-        .upload(imageName, blobData);
+      // const { data, error: imageUploadError } = await supabase.storage
+      //   .from("images")
+      //   // We can upload imageName using either a Blob object or a File object
+      //   .upload(imageName, blobData);
       // if (imageUploadError) {
       //   throw imageUploadError;
       // }
@@ -162,20 +162,20 @@ export default function PhotoProcessing({
       if (typeof base64Image !== "string") {
         throw new Error("base64Image is not a string");
       }
-      // const [{ data, error: imageUploadError }, { caption, test }] =
-      //   await Promise.all([
-      //     supabase.storage
-      //       .from("images")
-      //       // We can upload imageName using either a Blob object or a File object
-      //       .upload(imageName, blobData),
-      //     getCaption(base64Image),
-      //   ]);
+      const [{ data, error: imageUploadError }, { caption, test }] =
+        await Promise.all([
+          supabase.storage
+            .from("images")
+            // We can upload imageName using either a Blob object or a File object
+            .upload(imageName, blobData),
+          getCaption(base64Image),
+        ]);
       if (imageUploadError) {
         throw imageUploadError;
       }
 
-      const { caption, test } = await getCaption(base64Image);
-      // console.log({ test });
+      // const { caption, test } = await getCaption(base64Image);
+      console.log({ test });
 
       //Get the photo url string
       const image_url = `${storagePath}/images/${data?.path}`;
