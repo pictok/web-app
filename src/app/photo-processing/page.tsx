@@ -197,6 +197,7 @@ export default function PhotoProcessing({
       if (imageAudioError) {
         throw imageAudioError;
       }
+      
       // // wait 3 seconds
       // await new Promise((resolve) => setTimeout(resolve, 5000));
 
