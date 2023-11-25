@@ -4,13 +4,13 @@ import Link from "next/link";
 import SecondaryButton from "@/components/design/SecondaryButton";
 import { ModeToggle } from "@/components/ui/mode-toggle";
 import TakePhotoButton from "@/components/design/TakePhotoButton";
-import LogoIcon from "@/components/icons/LogoIcon";
+import Logo from "@/components/design/Logo";
 
 export default function Home() {
   return (
     <main className="mx-auto max-w-sm space-y-10 px-2 py-5">
       <div className="flex items-center justify-between px-2">
-        <LogoIcon />
+        <Logo />
         <ModeToggle />
       </div>
       <div className="grid grid-cols-2 gap-2">
