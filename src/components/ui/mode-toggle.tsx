@@ -26,7 +26,12 @@ export function ModeToggle() {
         onChange={() => setTheme(isDark ? "light" : "dark")}
         aria-hidden
       />
-      <label htmlFor="darkmode-toggle" id="darkmode-toggle-label" aria-hidden>
+      <label
+        htmlFor="darkmode-toggle"
+        id="darkmode-toggle-label"
+        className="border border-[#C5E1F5] dark:border-[#F8F5F1]"
+        aria-hidden
+      >
         {isDark ? (
           <span className="sr-only">Light Mode</span>
         ) : (

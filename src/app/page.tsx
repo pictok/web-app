@@ -3,31 +3,21 @@ import Link from "next/link";
 
 import SecondaryButton from "@/components/design/SecondaryButton";
 import { ModeToggle } from "@/components/ui/mode-toggle";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import TakePhotoButton from "@/components/design/TakePhotoButton";
+import LogoIcon from "@/components/icons/LogoIcon";
 
 export default function Home() {
   return (
     <main className="mx-auto max-w-sm space-y-10 px-2 py-5">
-      <div className="flex items-center justify-between px-5">
-        <Avatar className="h-[123px] w-[123px] border-4 border-secondary">
-          <AvatarImage
-            className="object-cover"
-            src="/images/avatars/user.png"
-            alt="Jane Doe"
-          />
-          <AvatarFallback>Jane Doe</AvatarFallback>
-        </Avatar>
-        <div className="space-y-5">
-          <p className="text-xl font-semibold">Jane Doe</p>
-          <ModeToggle />
-        </div>
+      <div className="flex items-center justify-between px-2">
+        <LogoIcon />
+        <ModeToggle />
       </div>
       <div className="grid grid-cols-2 gap-2">
         <TakePhotoButton />
         <Link href="/inbox">
           <SecondaryButton className="relative flex h-auto w-full max-w-sm flex-col items-start justify-start gap-5 pb-3 pr-3 pt-10">
-            <h2 className="text-lg">Inbox</h2>
+            <h2 className="text-lg font-bold">Inbox</h2>
             <div
               aria-hidden
               className="relative z-10 ml-auto mt-auto h-16 w-16 overflow-hidden"
