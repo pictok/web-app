@@ -27,16 +27,22 @@ export function ModeToggle() {
   const isDark = theme === "dark" || systemDark;
 
   return (
-    <div>
+    <div aria-hidden>
       <input
         type="checkbox"
         id="darkmode-toggle"
         checked={isDark}
         onChange={() => setTheme(isDark ? "light" : "dark")}
+        aria-hidden
       />
-      <label htmlFor="darkmode-toggle" id="darkmode-toggle-label">
-        <SunIcon className="sun" />
-        <MoonIcon className="moon" />
+      <label htmlFor="darkmode-toggle" id="darkmode-toggle-label" aria-hidden>
+        {isDark ? (
+          <span className="sr-only">Light Mode</span>
+        ) : (
+          <span className="sr-only">Dark Mode</span>
+        )}
+        <SunIcon className="sun" aria-hidden />
+        <MoonIcon className="moon" aria-hidden />
       </label>
     </div>
   );
