@@ -5,12 +5,12 @@ import SecondaryButton from "@/components/design/SecondaryButton";
 import { ModeToggle } from "@/components/ui/mode-toggle";
 import TakePhotoButton from "@/components/design/TakePhotoButton";
 import Logo from "@/components/design/Logo";
-import PrimaryButton from "@/components/design/PrimaryButton";
 import RegularButton from "@/components/design/RegularButton";
+import Navbar from "@/components/design/Navbar";
 
 export default function Home() {
   return (
-    <main className="mx-auto max-w-sm space-y-10 px-2 py-5">
+    <main className="mx-auto flex h-full min-h-screen max-w-sm flex-col justify-around space-y-10 px-2 py-5">
       <div className="flex items-center justify-between px-2">
         <Logo />
         <ModeToggle />
@@ -85,7 +85,7 @@ export default function Home() {
           </RegularButton>
         </Link>
       </div>
-      {/* <Navbar /> */}
+      <Navbar />
     </main>
   );
 }
