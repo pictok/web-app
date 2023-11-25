@@ -32,11 +32,6 @@ export function ModeToggle() {
         className="border border-[#C5E1F5] dark:border-[#F8F5F1]"
         aria-hidden
       >
-        {isDark ? (
-          <span className="sr-only">Light Mode</span>
-        ) : (
-          <span className="sr-only">Dark Mode</span>
-        )}
         <SunIcon className="sun" aria-hidden />
         <MoonIcon className="moon" aria-hidden />
       </label>
