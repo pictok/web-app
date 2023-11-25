@@ -13,42 +13,31 @@ import {
 } from "@/components/ui/dropdown-menu";
 import SunIcon from "../icons/SunIcon";
 import MoonIcon from "../icons/MoonIcon";
+import { type } from "os";
 
 export function ModeToggle() {
   const { setTheme, theme } = useTheme();
 
+  const systemDark =
+    theme === "system" &&
+    typeof window !== "undefined" &&
+    window.matchMedia &&
+    window.matchMedia("(prefers-color-scheme: dark)").matches;
+
+  const isDark = theme === "dark" || systemDark;
+
   return (
-    <DropdownMenu>
-      <DropdownMenuTrigger asChild>
-        <Button variant="icon" size="icon">
-          <SunIcon className="h-[1.2rem] w-[1.2rem] rotate-0 scale-100 transition-all dark:-rotate-90 dark:scale-0" />
-          <MoonIcon className="absolute h-[1.2rem] w-[1.2rem] rotate-90 scale-0 transition-all dark:rotate-0 dark:scale-100" />
-          <span className="sr-only">Toggle theme</span>
-        </Button>
-      </DropdownMenuTrigger>
-      <DropdownMenuContent align="end">
-        <DropdownMenuItem onClick={() => setTheme("light")}>
-          Light
-        </DropdownMenuItem>
-        <DropdownMenuItem onClick={() => setTheme("dark")}>
-          Dark
-        </DropdownMenuItem>
-        <DropdownMenuItem onClick={() => setTheme("system")}>
-          System
-        </DropdownMenuItem>
-      </DropdownMenuContent>
-    </DropdownMenu>
-    // <div>
-    //   <input
-    //     type="checkbox"
-    //     id="darkmode-toggle"
-    //     checked={theme == "dark"}
-    //     onChange={() => setTheme(theme == "dark" ? "light" : "dark")}
-    //   />
-    //   <label htmlFor="darkmode-toggle" id="darkmode-toggle-label">
-    //     <SunIcon className="sun" />
-    //     <MoonIcon className="moon" />
-    //   </label>
-    // </div>
+    <div>
+      <input
+        type="checkbox"
+        id="darkmode-toggle"
+        checked={isDark}
+        onChange={() => setTheme(isDark ? "light" : "dark")}
+      />
+      <label htmlFor="darkmode-toggle" id="darkmode-toggle-label">
+        <SunIcon className="sun" />
+        <MoonIcon className="moon" />
+      </label>
+    </div>
   );
 }
