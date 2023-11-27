@@ -10,7 +10,7 @@ import Navbar from "@/components/design/Navbar";
 
 export default function Home() {
   return (
-    <main className="mx-auto flex h-full min-h-screen max-w-sm flex-col justify-around space-y-10 px-2 py-5">
+    <main className="mx-auto h-screen max-w-sm flex-col items-center justify-center space-y-10 px-2 py-5">
       <div className="flex items-center justify-between px-2">
         <Logo />
         <ModeToggle />
