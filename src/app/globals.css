@@ -110,7 +110,7 @@
     position: relative;
     display: block;
     background: linear-gradient(180deg, #feffc993 19%, #c5e1f598 100%);
-    border-radius: 200px;
+    border-radius: 9999px;
     box-shadow:
       inset 0px 5px 15px rgba(0, 0, 0, 0.205),
       inset 0px -5px 15px rgba(255, 255, 255, 0.082);
@@ -121,8 +121,8 @@
     width: 30px;
     height: 30px;
     position: absolute;
-    top: 5px;
-    right: 10px;
+    top: 4px;
+    right: 5px;
     background: #199dfc;
     border-radius: 180px;
     box-shadow:
@@ -134,13 +134,13 @@
     background: linear-gradient(180deg, #f8f5f1a8 20%, #89a4e2bd 100%);
   }
   #darkmode-toggle:checked + #darkmode-toggle-label:after {
-    left: 6px;
-    transform: translateX(5%);
+    left: 2px;
+    transform: translateX(2%);
     background: #6c96f5;
   }
 
   #darkmode-toggle-label:active:after {
-    width: 80px;
+    width: 85px;
   }
 
   #darkmode-toggle-label,
@@ -155,11 +155,11 @@
     z-index: 100;
   }
   #darkmode-toggle-label svg.sun {
-    left: 50px;
+    left: 53px;
     transition: 0.3s;
   }
   #darkmode-toggle-label svg.moon {
-    left: -1px;
+    left: -7px;
     transition: 0.3s;
     visibility: hidden;
   }

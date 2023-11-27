@@ -22,7 +22,7 @@ export default function RootLayout({
       <body className={jost.className}>
         <ThemeProvider
           attribute="class"
-          defaultTheme="light"
+          defaultTheme="system"
           disableTransitionOnChange
         >
           {children}

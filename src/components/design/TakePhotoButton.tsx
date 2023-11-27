@@ -27,7 +27,7 @@ export default function TakePhotoButton() {
         onClick={handleClick}
         className="relative flex h-auto w-full  max-w-sm flex-col items-start justify-start gap-5 pb-3 pr-3 pt-10"
       >
-        <h2 className="text-lg">Take Photo</h2>
+        <h2 className="text-lg font-bold">Take Photo</h2>
         <div
           aria-hidden
           className="relative z-10 ml-auto mt-auto h-16 w-16 overflow-hidden"
