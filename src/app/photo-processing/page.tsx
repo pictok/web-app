@@ -138,7 +138,6 @@ export default function PhotoProcessing({
 
     const handleConversionToSound = async () => {
       const t0 = performance.now();
-      speak("Image processing is in progress. Please wait.", () => bgm.play());
       // wait 3 seconds
       const response = await fetch(photoBlobUrl);
       // Blob object
@@ -169,6 +168,9 @@ export default function PhotoProcessing({
             // We can upload imageName using either a Blob object or a File object
             .upload(imageName, blobData),
           getCaption(base64Image),
+          speak("Image processing is in progress. Please wait.", () =>
+            bgm.play(),
+          ),
         ]);
       if (imageUploadError) {
         throw imageUploadError;
