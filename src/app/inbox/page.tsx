@@ -26,11 +26,11 @@ export default function Inbox() {
         if (currentImage instanceof HTMLImageElement) currentImage.click();
       }
     },
-    onSwipedRight: () => {
-      synth?.cancel();
-      audio?.pause();
-      push("/friends");
-    },
+    // onSwipedRight: () => {
+    //   synth?.cancel();
+    //   audio?.pause();
+    //   push("/friends");
+    // },
     trackMouse: true,
   });
 

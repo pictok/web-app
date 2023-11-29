@@ -4,7 +4,7 @@ import FriendList from "@/components/design/FriendList";
 import Searchbar from "@/components/design/Searchbar";
 import { useState } from "react";
 
-const defaultFriends = ["Amy Smith", "Jane Doe", "John Doe"];
+const defaultFriends = ["Isabella Bennett"];
 
 export default function FriendsPage() {
   const [friends, setFriends] = useState(defaultFriends);

@@ -12,7 +12,7 @@ export default function SendPhoto() {
     <main className="mx-auto max-w-sm space-y-10 px-2 py-5">
       <div className="relative flex items-center justify-center py-5">
         <BackButton />
-        <h1 className="text-3xl font-bold">Amy Smith</h1>
+        <h1 className="text-3xl font-bold">Isabella Bennett</h1>
       </div>
       <div className="flex items-center justify-between px-5">
         <Avatar className="mx-auto h-[163.7px] w-[163.7px] border-4 border-secondary">
@@ -20,7 +20,7 @@ export default function SendPhoto() {
             className="object-cover"
             src="/images/avatars/user2.png"
           />
-          <AvatarFallback>Jane Doe</AvatarFallback>
+          <AvatarFallback>Isabella Bennett</AvatarFallback>
         </Avatar>
       </div>
       <div>
@@ -31,7 +31,7 @@ export default function SendPhoto() {
             flex max-h-72 w-full max-w-sm flex-col items-start justify-start gap-5 space-y-10 border-none pb-0 pr-3 pt-10"
           >
             <h2 className="mx-auto text-2xl font-normal tracking-wide">
-              Send <span className="font-bold">Amy</span> a photo.
+              Send <span className="font-bold">Isabella</span> a photo.
             </h2>
             <div className="relative bottom-0 left-1/2 z-10 mt-auto h-16 w-16 -translate-x-1/2 overflow-hidden">
               <Image
