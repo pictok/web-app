@@ -19,6 +19,13 @@ export default function Inbox() {
   const [inbox, setInbox] = useState<any[]>([]);
   const { push } = useRouter();
   const handler = useSwipeable({
+    onTap: (event) => {
+      const { target: overlayDiv } = event.event;
+      if (overlayDiv instanceof HTMLElement) {
+        const currentImage = overlayDiv.nextElementSibling;
+        if (currentImage instanceof HTMLImageElement) currentImage.click();
+      }
+    },
     onSwipedRight: () => {
       synth?.cancel();
       audio?.pause();
