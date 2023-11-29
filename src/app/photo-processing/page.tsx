@@ -168,8 +168,6 @@ export default function PhotoProcessing({
         throw new Error("base64Image is not a string");
       }
 
-      //! const { caption, test } = await getCaption(base64Image);
-
       //@ generate story and caption
       const res = await getStoryCaption(base64Image);
       const { narrativeStory, caption } = await res.json();
