@@ -3,11 +3,24 @@ import { useEffect } from "react";
 import Image from "next/image";
 import { readCaption } from "@/lib/readCaption";
 import BackButton from "@/components/design/BackButton";
+import supabase from "@/db/supabase";
+import { useSearchParams } from "next/navigation";
 
 export default function Complete() {
+  const params = useSearchParams();
+  const image = params.get("image");
   useEffect(() => {
+    const sendPhoto = async () => {
+      const photo = {
+        image_url: image,
+        from_id: 1,
+        to_id: 2,
+      };
+      await supabase.from("inbox").insert([photo]);
+    };
     readCaption("Your photo has been sent successfully.");
-  }, []);
+    sendPhoto();
+  }, [image]);
 
   return (
     <main className="mx-auto max-w-sm  px-2 py-5">

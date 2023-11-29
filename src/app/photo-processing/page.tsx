@@ -89,6 +89,7 @@ export default function PhotoProcessing({
   const theme = useTheme();
   const [state, dispatch] = useReducer(photoProcessingReducer, initialState);
   const { status, story } = state;
+  const imageUrlRef = useRef("");
   const audioRef = useRef<HTMLAudioElement>(new Audio());
   const bgmAudioRef = useRef<HTMLAudioElement>(
     new Audio("/sound/image-processing-bgm.mp3"),
@@ -96,7 +97,10 @@ export default function PhotoProcessing({
 
   const handler = useSwipeable({
     onSwipedRight: () => {
-      if (status == "finished processing") router.push("/send-photo/friends");
+      const params = new URLSearchParams();
+      params.set("image", imageUrlRef.current);
+      if (status == "finished processing")
+        router.replace(`/send-photo/friends?${params.toString()}`);
     },
     onTap: () => {
       if (
@@ -174,6 +178,7 @@ export default function PhotoProcessing({
 
       //Get the photo url string
       const image_url = `${storagePath}/images/${data?.path}`;
+      imageUrlRef.current = image_url;
 
       // get sound from caption
       const { output: sound } = await getSound(caption);

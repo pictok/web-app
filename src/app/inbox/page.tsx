@@ -40,10 +40,10 @@ export default function Inbox() {
         .from("inbox")
         .select(
           `
-        audio_url,
-        caption,
-        image_url,
-        from: from_id ( name, avatar_url ),
+          *,
+          from: from_id (
+            name
+          )
         `,
         )
         .eq("to_id", 2)

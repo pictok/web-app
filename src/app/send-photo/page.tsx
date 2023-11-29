@@ -1,5 +1,3 @@
-import { ChevronLeft } from "lucide-react";
-
 import Image from "next/image";
 import Link from "next/link";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
@@ -7,7 +5,11 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import RegularButton from "@/components/design/RegularButton";
 import BackButton from "@/components/design/BackButton";
 
-export default function SendPhoto() {
+type SendPhotoProps = {
+  searchParams: { image: string };
+};
+export default function SendPhoto({ searchParams }: SendPhotoProps) {
+  const { image } = searchParams;
   return (
     <main className="mx-auto max-w-sm space-y-10 px-2 py-5">
       <div className="relative flex items-center justify-center py-5">
@@ -24,7 +26,7 @@ export default function SendPhoto() {
         </Avatar>
       </div>
       <div>
-        <Link href="/send-photo/complete">
+        <Link href={`/send-photo/complete?image=${image}`}>
           <RegularButton
             variant="right"
             className="navbar-gradient h- auto relative
