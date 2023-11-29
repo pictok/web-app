@@ -30,10 +30,10 @@ export async function POST(req: NextRequest, res: NextResponse) {
     ],
   });
 
-  //@ generating a concise one-sentence caption
+  //@ generating a caption based on the previous story
   const captionResponse = await openai.chat.completions.create({
     model: "gpt-4",
-    max_tokens: 40,
+    max_tokens: 100,
     temperature: 0.7,
     messages: [
       {
@@ -44,10 +44,9 @@ export async function POST(req: NextRequest, res: NextResponse) {
       { role: "user", content: storyResponse.choices[0].message.content },
     ],
   });
-  console.log("story: ****" + storyResponse.choices[0].message.content);
-  console.log("caption: ****" + captionResponse.choices[0].message.content);
+
   return NextResponse.json({
-    narrativeStory: storyResponse.choices[0].message.content,
+    story: storyResponse.choices[0].message.content,
     caption: captionResponse.choices[0].message.content,
   });
 }
