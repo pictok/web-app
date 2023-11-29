@@ -23,7 +23,7 @@ export default function Photos() {
     onTap: (event) => {
       const { target: overlayDiv } = event.event;
       if (overlayDiv instanceof HTMLElement) {
-        const currentImage = overlayDiv.nextElementSibling;
+        const currentImage = overlayDiv.nextElementSibling?.nextElementSibling;
         if (currentImage instanceof HTMLImageElement) currentImage.click();
       }
     },
@@ -33,8 +33,8 @@ export default function Photos() {
       const { target: overlayDiv } = event.event;
       if (overlayDiv instanceof HTMLElement) {
         const currentImage = overlayDiv.nextElementSibling;
-        if (currentImage instanceof HTMLImageElement) {
-          const image = currentImage.src;
+        if (currentImage instanceof HTMLInputElement) {
+          const image = currentImage.value;
           const photo = {
             image_url: image,
             from_id: 1,
@@ -113,6 +113,7 @@ export default function Photos() {
               className="absolute left-0 top-0 z-10 h-full w-full"
               {...handler}
             ></div>
+            <input type="hidden" value={item.image_url} />
             <Image
               src={item.image_url}
               fill
