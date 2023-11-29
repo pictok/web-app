@@ -1,15 +1,14 @@
 "use client";
 
-import { ChevronLeft } from "lucide-react";
 import { supabase } from "@/db/supabase";
 
-import Link from "next/link";
 import { useEffect, useState } from "react";
 import Image from "next/image";
 import { synth } from "@/lib/speak";
 import { useSwipeable } from "react-swipeable";
 import { useRouter } from "next/navigation";
 import { Avatar, AvatarImage } from "@/components/ui/avatar";
+import BackButton from "@/components/design/BackButton";
 
 const audio = typeof Audio !== "undefined" ? new Audio() : null;
 const speech =
@@ -65,11 +64,9 @@ export default function Inbox() {
   };
 
   return (
-    <main className="mx-auto max-h-screen max-w-lg overflow-hidden px-2">
+    <main className="mx-auto max-h-screen max-w-lg overflow-hidden">
       <div className="relative flex items-center justify-center py-5">
-        <Link href="/" className="absolute left-2">
-          <ChevronLeft aria-label="Go back" />
-        </Link>
+        <BackButton />
         <h1 className="text-3xl font-bold">Inbox</h1>
       </div>
 

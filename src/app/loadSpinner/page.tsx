@@ -1,17 +1,13 @@
 import LoadSpinnerSVG from "@/components/icons/LoadSpinnerSVG";
-import { ChevronLeft } from "lucide-react";
-
-import Link from "next/link";
 import Image from "next/image";
+import BackButton from "@/components/design/BackButton";
 
 export default function LoadSpinner() {
   return (
     <>
       <main className="mx-auto max-h-screen max-w-lg overflow-hidden px-2">
         <div className="relative flex items-center justify-center py-5">
-          <Link href="/" className="absolute left-2">
-            <ChevronLeft aria-label="Go back" />
-          </Link>
+          <BackButton />
           <h1 className="text-2xl font-bold">Photo</h1>
         </div>
 
