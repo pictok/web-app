@@ -14,29 +14,35 @@ export default function Navbar() {
     pathname.includes("/friends") || pathname.includes("/send-photo");
   return (
     <nav className="navbar-gradient flex w-full items-center justify-around rounded-full px-1 py-2">
-      <IconButton className="flex h-20 w-20 items-center justify-center bg-transparent dark:bg-transparent">
+      <IconButton className="flex h-20 w-20 items-center justify-center bg-transparent hover:bg-transparent dark:bg-transparent">
         <CameraIcon />
       </IconButton>
 
       <Link href="/">
         <IconButton
           className={cn("flex h-20 w-20 items-center justify-center", {
-            "bg-transparent": !isHome,
-            "dark:bg-transparent": !isHome,
+            "bg-transparent hover:bg-transparent dark:bg-transparent": !isHome,
           })}
         >
-          <HomeIcon />
+          <HomeIcon isHome={isHome} />
         </IconButton>
       </Link>
 
       <Link href="/friends">
         <IconButton
           className={cn("flex h-20 w-20 items-center justify-center", {
-            "bg-transparent": !isFriends,
-            "dark:bg-transparent": !isFriends,
+            "bg-transparent hover:bg-transparent dark:bg-transparent":
+              !isFriends,
           })}
         >
-          <FriendsIcon />
+          <FriendsIcon
+            className={cn(
+              "fill-[#505050] hover:bg-transparent dark:fill-[#FFFF]",
+              {
+                "fill-[#FFFF] dark:fill-[#FFFF]": isFriends,
+              },
+            )}
+          />
         </IconButton>
       </Link>
     </nav>
