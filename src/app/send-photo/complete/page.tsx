@@ -1,9 +1,8 @@
 "use client";
-import { ChevronLeft } from "lucide-react";
 import { useEffect } from "react";
 import Image from "next/image";
-import Link from "next/link";
 import { readCaption } from "@/lib/readCaption";
+import BackButton from "@/components/design/BackButton";
 
 export default function Complete() {
   useEffect(() => {
@@ -13,9 +12,7 @@ export default function Complete() {
   return (
     <main className="mx-auto max-w-sm  px-2 py-5">
       <div className="relative flex items-center justify-center py-5">
-        <Link href="/" className="absolute left-0">
-          <ChevronLeft aria-label="Go back" />
-        </Link>
+        <BackButton />
         <h1 className="text-3xl font-bold">Amy Smith</h1>
       </div>
       <div className="mt-28 flex items-center justify-center px-5">

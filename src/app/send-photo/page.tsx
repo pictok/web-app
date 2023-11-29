@@ -3,16 +3,15 @@ import { ChevronLeft } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import Navbar from "@/components/design/Navbar";
+
 import RegularButton from "@/components/design/RegularButton";
+import BackButton from "@/components/design/BackButton";
 
 export default function SendPhoto() {
   return (
     <main className="mx-auto max-w-sm space-y-10 px-2 py-5">
       <div className="relative flex items-center justify-center py-5">
-        <Link href="/friends" className="absolute left-0">
-          <ChevronLeft aria-label="Go back" />
-        </Link>
+        <BackButton />
         <h1 className="text-3xl font-bold">Amy Smith</h1>
       </div>
       <div className="flex items-center justify-between px-5">

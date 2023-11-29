@@ -6,8 +6,7 @@ import { useCallback, useState } from "react";
 import { useDropzone } from "react-dropzone";
 import { Button } from "../ui/button";
 import Logo from "./Logo";
-import { ChevronLeft } from "lucide-react";
-import Link from "next/link";
+import BackButton from "./BackButton";
 
 export default function FileUploader() {
   const router = useRouter();
@@ -53,9 +52,7 @@ export default function FileUploader() {
   return (
     <section className="container">
       <div className="relative mb-5 mt-3 flex items-center justify-center">
-        <Link href="/" className="absolute left-2">
-          <ChevronLeft aria-label="Go back" />
-        </Link>
+        <BackButton />
         <Logo />
       </div>
       <div
