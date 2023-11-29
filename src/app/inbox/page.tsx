@@ -37,8 +37,16 @@ export default function Inbox() {
   useEffect(() => {
     async function getInbox() {
       let { data, error } = await supabase
-        .from("image_audio")
-        .select("*")
+        .from("inbox")
+        .select(
+          `
+        audio_url,
+        caption,
+        image_url,
+        from: from_id ( name, avatar_url ),
+        `,
+        )
+        .eq("to_id", 2)
         .order("created_at", { ascending: false });
       if (error) {
         console.log("Error getting inbox", error);
@@ -111,7 +119,7 @@ export default function Inbox() {
               <Avatar>
                 <AvatarImage src="/images/avatars/user.png" />
               </Avatar>
-              <p className="text-xl text-white">From Amy</p>
+              <p className="text-xl text-white">From {item.from.name}</p>
             </div>
           </div>
         ))}
