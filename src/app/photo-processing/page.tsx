@@ -96,7 +96,7 @@ export default function PhotoProcessing({
 
   const handler = useSwipeable({
     onSwipedRight: () => {
-      if (status == "finished processing") router.push("/friends");
+      if (status == "finished processing") router.push("/send-photo/friends");
     },
     onTap: () => {
       if (
@@ -190,7 +190,7 @@ export default function PhotoProcessing({
 
       const { error: imageAudioError } = await supabase
         .from("image_audio")
-        .insert([{ image_url, audio_url, caption: story }]); //!change caption to story (caption:story) and save to db here
+        .insert([{ image_url, audio_url, caption: story, user_id: 1 }]); //!change caption to story (caption:story) and save to db here
 
       if (imageAudioError) {
         throw imageAudioError;
