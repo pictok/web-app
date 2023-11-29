@@ -10,9 +10,9 @@ import Navbar from "@/components/design/Navbar";
 
 export default function Home() {
   return (
-    <main className="mx-auto flex h-screen max-w-sm flex-col justify-between space-y-10 px-5">
+    <main className="mx-auto flex h-screen max-w-lg flex-col justify-between space-y-10 px-5">
       <div>
-        <div className="flex items-center justify-between px-2 py-5">
+        <div className="mb-5 flex items-center justify-between px-2 py-5">
           <Logo />
           <ModeToggle />
         </div>

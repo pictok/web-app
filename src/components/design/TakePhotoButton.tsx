@@ -52,7 +52,7 @@ export default function TakePhotoButton() {
         type="file"
         name="picture"
         id="picture"
-        accept="image/*"
+        accept="image/png, image/jpeg"
         capture="environment"
         className="hidden"
         aria-hidden
