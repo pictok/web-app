@@ -19,7 +19,7 @@ export async function POST(req: NextRequest, res: NextResponse) {
         content: [
           {
             type: "text",
-            text: "You are an AI trained to describe images in a simple yet detailed manner, suitable for a first grader. Upon receiving an image, your task is to create a story about the image within 60 words. Remember to focus on the key elements in the image and describe them in a way that a first grader would understand. ",
+            text: "You are an AI trained to describe images in a simple yet detailed manner, suitable for a first grader. Upon receiving an image, your task is to create a story about the image within 60 words. Remember to focus on the key elements in the image and describe them in a way that a first grader and visually impaired individuals would understand. ",
           },
           {
             type: "image_url",
