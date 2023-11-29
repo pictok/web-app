@@ -8,9 +8,9 @@ export default function Searchbar({
   searchFn: (query: string) => void;
 }) {
   return (
-    <div className="relative px-5">
+    <div className="relative">
       <Search
-        className="absolute left-1 top-6 z-10 ml-10 stroke-foreground"
+        className="absolute left-5 top-6 z-10 stroke-foreground"
         aria-hidden
       />
       <input
