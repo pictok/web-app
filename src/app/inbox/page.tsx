@@ -41,6 +41,11 @@ export default function Inbox() {
         .select(
           `
           *,
+          media: image_url (
+            image_url,
+            audio_url,
+            caption
+          ),
           from: from_id (
             name
           )
