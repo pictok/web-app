@@ -9,6 +9,7 @@ import Link from "next/link";
 import Image from "next/image";
 
 import { getCaption } from "@/lib/getCaption";
+import { getStoryCaption } from "@/lib/getStoryCaption";
 import { getSound } from "@/lib/getSound";
 import { useSwipeable } from "react-swipeable";
 import { useRouter } from "next/navigation";
@@ -16,7 +17,6 @@ import { randomName } from "@/lib/randomImageName";
 import Gesture from "@/components/design/Gesture";
 import { speak, synth } from "@/lib/speak";
 import { useTheme } from "next-themes";
-import { getStoryCaption } from "@/lib/getStoryCaption";
 
 const storagePath =
   "https://bmtbohuzvkdifffdwayv.supabase.co/storage/v1/object/public";
@@ -27,7 +27,6 @@ type ReducerState = {
     | "show tap gesture one"
     | "show swipe right gesture two"
     | "finished processing";
-  narrativeStory: string;
   caption: string;
 };
 
@@ -39,7 +38,6 @@ type ReducerAction =
   | {
       type: "gesture_one";
       status: "show tap gesture one";
-      narrativeStory: string;
       caption: string;
     }
   | {
@@ -53,7 +51,6 @@ type ReducerAction =
 
 const initialState: ReducerState = {
   status: "processing photo",
-  narrativeStory: "",
   caption: "",
 };
 
@@ -69,7 +66,6 @@ const photoProcessingReducer = (
       return {
         ...state,
         status: action.status,
-        narrativeStory: action.narrativeStory,
         caption: action.caption,
       };
 
@@ -93,7 +89,7 @@ export default function PhotoProcessing({
   const router = useRouter();
   const theme = useTheme();
   const [state, dispatch] = useReducer(photoProcessingReducer, initialState);
-  const { status, narrativeStory, caption } = state;
+  const { status, caption } = state;
   const audioRef = useRef<HTMLAudioElement>(new Audio());
   const bgmAudioRef = useRef<HTMLAudioElement>(
     new Audio("/sound/image-processing-bgm.mp3"),
@@ -101,7 +97,6 @@ export default function PhotoProcessing({
 
   console.log({
     status,
-    narrativeStory,
     caption,
   });
 
@@ -117,7 +112,8 @@ export default function PhotoProcessing({
         return;
       synth?.cancel();
       audioRef.current.pause();
-      speak(narrativeStory, async () => {
+      //! change caption to story
+      speak(caption, async () => {
         await audioRef.current.play();
         audioRef.current.onended = () => {
           if (status == "show tap gesture one") {
@@ -152,14 +148,6 @@ export default function PhotoProcessing({
       // to store the image in supabase storage
       const imageName =
         (await randomName()) + blobData.type.replace("image/", ".");
-      //Save the photo to supabase storage
-      // const { data, error: imageUploadError } = await supabase.storage
-      //   .from("images")
-      //   // We can upload imageName using either a Blob object or a File object
-      //   .upload(imageName, blobData);
-      // if (imageUploadError) {
-      //   throw imageUploadError;
-      // }
 
       // convert blob to base64
       const base64Image = await getImageAsBase64(blobData);
@@ -167,13 +155,16 @@ export default function PhotoProcessing({
       if (typeof base64Image !== "string") {
         throw new Error("base64Image is not a string");
       }
-      const [{ data, error: imageUploadError }, { caption, test }] =
+      //! change this to {story, caption}
+      const [{ data, error: imageUploadError }, { story, caption }] =
         await Promise.all([
           supabase.storage
             .from("images")
             // We can upload imageName using either a Blob object or a File object
             .upload(imageName, blobData),
-          getCaption(base64Image),
+
+          //! change to getStoryCaption(base64Image)
+          getStoryCaption(base64Image),
           speak("Image processing is in progress. Please wait.", () =>
             bgm.play(),
           ),
@@ -182,8 +173,8 @@ export default function PhotoProcessing({
         throw imageUploadError;
       }
 
-      // const { caption, test } = await getCaption(base64Image);
-      console.log({ test });
+      console.log("****Story****:" + { story });
+      console.log("****Caption****:" + { caption });
 
       //Get the photo url string
       const image_url = `${storagePath}/images/${data?.path}`;
@@ -203,12 +194,11 @@ export default function PhotoProcessing({
 
       const { error: imageAudioError } = await supabase
         .from("image_audio")
-        .insert([{ image_url, audio_url, caption }]);
+        .insert([{ image_url, audio_url, caption: story }]); //!change caption to story (caption:story) and save to db here
 
       if (imageAudioError) {
         throw imageAudioError;
       }
-      
       // // wait 3 seconds
       // await new Promise((resolve) => setTimeout(resolve, 5000));
       const t1 = performance.now();
@@ -217,7 +207,6 @@ export default function PhotoProcessing({
       dispatch({
         type: "gesture_one",
         status: "show tap gesture one",
-        narrativeStory,
         caption,
       });
       speak("Tap to listen");

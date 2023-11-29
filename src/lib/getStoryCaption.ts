@@ -1,9 +1,13 @@
+import supabase from "@/db/supabase";
+
 export async function getStoryCaption(image: string) {
-  return await fetch("/api/generate/storyAndCaption", {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
+  const { data, error } = await supabase.functions.invoke(
+    "convert-image-to-story",
+    {
+      body: { image },
     },
-    body: JSON.stringify({ image }),
-  });
+  );
+  const story: string = data?.story;
+  const caption: string = data?.caption;
+  return { story, caption, error };
 }
