@@ -8,7 +8,6 @@ import supabase from "@/db/supabase";
 import Link from "next/link";
 import Image from "next/image";
 
-import { getCaption } from "@/lib/getCaption";
 import { getStoryCaption } from "@/lib/getStoryCaption";
 import { getSound } from "@/lib/getSound";
 import { useSwipeable } from "react-swipeable";
@@ -27,7 +26,7 @@ type ReducerState = {
     | "show tap gesture one"
     | "show swipe right gesture two"
     | "finished processing";
-  caption: string;
+  story: string;
 };
 
 type ReducerAction =
@@ -38,7 +37,7 @@ type ReducerAction =
   | {
       type: "gesture_one";
       status: "show tap gesture one";
-      caption: string;
+      story: string;
     }
   | {
       type: "gesture_two";
@@ -51,7 +50,7 @@ type ReducerAction =
 
 const initialState: ReducerState = {
   status: "processing photo",
-  caption: "",
+  story: "",
 };
 
 const photoProcessingReducer = (
@@ -66,7 +65,7 @@ const photoProcessingReducer = (
       return {
         ...state,
         status: action.status,
-        caption: action.caption,
+        story: action.story,
       };
 
     case "gesture_two":
@@ -89,16 +88,11 @@ export default function PhotoProcessing({
   const router = useRouter();
   const theme = useTheme();
   const [state, dispatch] = useReducer(photoProcessingReducer, initialState);
-  const { status, caption } = state;
+  const { status, story } = state;
   const audioRef = useRef<HTMLAudioElement>(new Audio());
   const bgmAudioRef = useRef<HTMLAudioElement>(
     new Audio("/sound/image-processing-bgm.mp3"),
   );
-
-  console.log({
-    status,
-    caption,
-  });
 
   const handler = useSwipeable({
     onSwipedRight: () => {
@@ -113,7 +107,7 @@ export default function PhotoProcessing({
       synth?.cancel();
       audioRef.current.pause();
       //! change caption to story
-      speak(caption, async () => {
+      speak(story, async () => {
         await audioRef.current.play();
         audioRef.current.onended = () => {
           if (status == "show tap gesture one") {
@@ -173,8 +167,10 @@ export default function PhotoProcessing({
         throw imageUploadError;
       }
 
-      console.log("****Story****:" + { story });
-      console.log("****Caption****:" + { caption });
+      console.log("****Story****");
+      console.log({ story });
+      console.log("****Caption****");
+      console.log({ caption });
 
       //Get the photo url string
       const image_url = `${storagePath}/images/${data?.path}`;
@@ -207,7 +203,7 @@ export default function PhotoProcessing({
       dispatch({
         type: "gesture_one",
         status: "show tap gesture one",
-        caption,
+        story,
       });
       speak("Tap to listen");
       audio.src = sound;
@@ -234,7 +230,7 @@ export default function PhotoProcessing({
         <div className="relative h-[90vh] bg-muted" {...handler}>
           <Image
             src={photoBlobUrl}
-            alt={caption || "Image to be processed"}
+            alt={story || "Image to be processed"}
             fill
             className={`h-full object-contain`}
           />
