@@ -6,6 +6,7 @@ import HomeIcon from "../icons/HomeIcon";
 import IconButton from "./PrimaryIconButton";
 import { usePathname } from "next/navigation";
 import { cn } from "@/lib/utils";
+import CameraNavItem from "./CameraNavItem";
 
 export default function Navbar() {
   const pathname = usePathname();
@@ -14,10 +15,7 @@ export default function Navbar() {
     pathname.includes("/friends") || pathname.includes("/send-photo");
   return (
     <nav className="navbar-gradient flex w-full items-center justify-around rounded-full px-1 py-2">
-      <IconButton className="flex h-20 w-20 items-center justify-center bg-transparent hover:bg-transparent dark:bg-transparent">
-        <CameraIcon />
-      </IconButton>
-
+      <CameraNavItem />
       <Link href="/">
         <IconButton
           className={cn("flex h-20 w-20 items-center justify-center", {
