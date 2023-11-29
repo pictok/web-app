@@ -106,7 +106,7 @@ export default function Inbox() {
         )}
         {inbox.map((item) => (
           <div
-            key={item.id}
+            key={item.media.id}
             className="relative z-10 h-[90vh] w-full snap-center overflow-hidden bg-muted"
           >
             <div
@@ -116,8 +116,10 @@ export default function Inbox() {
             <Image
               src={item.image_url}
               fill
-              onClick={() => playAudio(item.audio_url, item.caption)}
-              alt={item.caption}
+              onClick={() =>
+                playAudio(item.media.audio_url, item.media.caption)
+              }
+              alt={item.media.caption}
               className="h-full object-contain"
             />
             <div className="absolute bottom-5 left-5 z-10 flex items-center gap-5">
