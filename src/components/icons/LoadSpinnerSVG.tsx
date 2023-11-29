@@ -22,7 +22,7 @@ export default function LoadSpinnerSVG() {
       <g fill="none">
         <g transform="translate(1 1)">
           <path
-            d="M 10.5 10.5 m -10.5 0a 10.5 10.5 0 1 0 21 0a"
+            d="M 10.5 10.5 m -10.5 0a 10.5 10.5 0 1 0 21 0"
             stroke="url(#gradient-1)"
             strokeWidth="2"
           />
@@ -37,7 +37,7 @@ export default function LoadSpinnerSVG() {
         </g>
         <g transform="translate(1 1)">
           <path
-            d="M 10.5 10.5 m -10.5 0a 10.5 10.5 0 1 0 21 0a"
+            d="M 10.5 10.5 m -10.5 0a 10.5 10.5 0 1 0 21 0"
             stroke="url(#gradient-2)"
             strokeWidth="2"
           />
