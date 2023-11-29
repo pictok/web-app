@@ -26,7 +26,7 @@ export default function SendPhoto({ searchParams }: SendPhotoProps) {
         </Avatar>
       </div>
       <div>
-        <Link href={`/send-photo/complete?image=${image}`}>
+        <Link replace href={`/send-photo/complete?image=${image}`}>
           <RegularButton
             variant="right"
             className="navbar-gradient h- auto relative

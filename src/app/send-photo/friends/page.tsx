@@ -28,7 +28,7 @@ export default function FriendsPage() {
       <Searchbar searchFn={filterFriends} />
       <div className="mt-5 space-y-10 px-2">
         {friends.map((friend) => (
-          <Link key={friend} href={`/send-photo?image=${image}`}>
+          <Link replace key={friend} href={`/send-photo?image=${image}`}>
             <FriendListItem friend={friend} />
           </Link>
         ))}

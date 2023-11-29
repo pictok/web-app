@@ -19,7 +19,7 @@ export default function Complete() {
       await supabase.from("inbox").insert([photo]);
     };
     readCaption("Your photo has been sent successfully.");
-    sendPhoto();
+    if (image) sendPhoto();
   }, [image]);
 
   return (

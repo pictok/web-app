@@ -17,7 +17,8 @@ const speech =
     : null;
 export default function Photos() {
   const [photos, setPhotos] = useState<any[]>([]);
-  const { push } = useRouter();
+  const { replace } = useRouter();
+
   const handler = useSwipeable({
     onTap: (event) => {
       const { target: overlayDiv } = event.event;
@@ -26,10 +27,23 @@ export default function Photos() {
         if (currentImage instanceof HTMLImageElement) currentImage.click();
       }
     },
-    onSwipedRight: () => {
+    onSwipedRight: async (event) => {
       synth?.cancel();
       audio?.pause();
-      push("/friends");
+      const { target: overlayDiv } = event.event;
+      if (overlayDiv instanceof HTMLElement) {
+        const currentImage = overlayDiv.nextElementSibling;
+        if (currentImage instanceof HTMLImageElement) {
+          const image = currentImage.src;
+          const photo = {
+            image_url: image,
+            from_id: 1,
+            to_id: 2,
+          };
+          await supabase.from("inbox").insert([photo]);
+          replace("/send-photo/complete");
+        }
+      }
     },
     trackMouse: true,
   });
