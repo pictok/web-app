@@ -11,7 +11,7 @@ export default function Searchbar({
     <div className="relative px-5">
       <Search
         className="absolute left-1 top-6 z-10 ml-10 stroke-foreground"
-        arial-hidden
+        aria-hidden
       />
       <input
         type="text"

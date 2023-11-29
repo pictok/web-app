@@ -1,12 +1,16 @@
 "use client";
 import BackButton from "@/components/design/BackButton";
-import FriendList from "@/components/design/FriendList";
+import FriendListItem from "@/components/design/FriendListItem";
 import Searchbar from "@/components/design/Searchbar";
+import Link from "next/link";
+import { useSearchParams } from "next/navigation";
 import { useState } from "react";
 
 const defaultFriends = ["Isabella Bennett"];
 
 export default function FriendsPage() {
+  const params = useSearchParams();
+  const image = params.get("image");
   const [friends, setFriends] = useState(defaultFriends);
   const filterFriends = (query: string) => {
     if (query === "") return setFriends(defaultFriends);
@@ -22,7 +26,13 @@ export default function FriendsPage() {
         <h1 className="text-3xl font-bold">Friends</h1>
       </div>
       <Searchbar searchFn={filterFriends} />
-      <FriendList friends={friends} />
+      <div className="mt-5 space-y-10 px-2">
+        {friends.map((friend) => (
+          <Link replace key={friend} href={`/send-photo?image=${image}`}>
+            <FriendListItem friend={friend} />
+          </Link>
+        ))}
+      </div>
     </main>
   );
 }

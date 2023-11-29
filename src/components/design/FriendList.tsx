@@ -5,7 +5,7 @@ export default function FriendList({ friends }: { friends: string[] }) {
   return (
     <div className="mt-5 space-y-10 px-2">
       {friends.map((friend) => (
-        <Link key={friend} href={"/send-photo"}>
+        <Link key={friend} href={"/photos"}>
           <FriendListItem friend={friend} />
         </Link>
       ))}
