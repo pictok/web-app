@@ -143,7 +143,7 @@ export default function PhotoProcessing({
     const bgm = bgmAudioRef.current;
 
     const handleConversionToSound = async () => {
-      speak("Image processing is in progress. Please wait.", () => bgm.play());
+      const t0 = performance.now();
       // wait 3 seconds
       const response = await fetch(photoBlobUrl);
       // Blob object
@@ -153,13 +153,13 @@ export default function PhotoProcessing({
       const imageName =
         (await randomName()) + blobData.type.replace("image/", ".");
       //Save the photo to supabase storage
-      const { data, error: imageUploadError } = await supabase.storage
-        .from("images")
-        // We can upload imageName using either a Blob object or a File object
-        .upload(imageName, blobData);
-      if (imageUploadError) {
-        throw imageUploadError;
-      }
+      // const { data, error: imageUploadError } = await supabase.storage
+      //   .from("images")
+      //   // We can upload imageName using either a Blob object or a File object
+      //   .upload(imageName, blobData);
+      // if (imageUploadError) {
+      //   throw imageUploadError;
+      // }
 
       // convert blob to base64
       const base64Image = await getImageAsBase64(blobData);
@@ -167,10 +167,23 @@ export default function PhotoProcessing({
       if (typeof base64Image !== "string") {
         throw new Error("base64Image is not a string");
       }
+      const [{ data, error: imageUploadError }, { caption, test }] =
+        await Promise.all([
+          supabase.storage
+            .from("images")
+            // We can upload imageName using either a Blob object or a File object
+            .upload(imageName, blobData),
+          getCaption(base64Image),
+          speak("Image processing is in progress. Please wait.", () =>
+            bgm.play(),
+          ),
+        ]);
+      if (imageUploadError) {
+        throw imageUploadError;
+      }
 
-      //@ generate story and caption
-      const res = await getStoryCaption(base64Image);
-      const { narrativeStory, caption } = await res.json();
+      // const { caption, test } = await getCaption(base64Image);
+      console.log({ test });
 
       //Get the photo url string
       const image_url = `${storagePath}/images/${data?.path}`;
@@ -198,7 +211,8 @@ export default function PhotoProcessing({
       
       // // wait 3 seconds
       // await new Promise((resolve) => setTimeout(resolve, 5000));
-
+      const t1 = performance.now();
+      console.log(`Time it takes: ${(t1 - t0) / 1000} seconds.`);
       bgm.pause();
       dispatch({
         type: "gesture_one",

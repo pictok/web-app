@@ -7,6 +7,9 @@ import Link from "next/link";
 import { useEffect, useState } from "react";
 import Image from "next/image";
 import { synth } from "@/lib/speak";
+import { useSwipeable } from "react-swipeable";
+import { useRouter } from "next/navigation";
+import { Avatar, AvatarImage } from "@/components/ui/avatar";
 
 const audio = typeof Audio !== "undefined" ? new Audio() : null;
 const speech =
@@ -15,6 +18,15 @@ const speech =
     : null;
 export default function Inbox() {
   const [inbox, setInbox] = useState<any[]>([]);
+  const { push } = useRouter();
+  const handler = useSwipeable({
+    onSwipedRight: () => {
+      synth?.cancel();
+      audio?.pause();
+      push("/friends");
+    },
+    trackMouse: true,
+  });
 
   useEffect(() => {
     async function getInbox() {
@@ -70,14 +82,18 @@ export default function Inbox() {
       >
         {inbox.length === 0 && (
           <div className="relative flex h-[90vh] w-full">
-            <p className="text-2xl font-bold">No items in inbox</p>
+            <p className="text-center text-2xl font-bold">No items in inbox</p>
           </div>
         )}
         {inbox.map((item) => (
           <div
             key={item.id}
-            className="relative h-[90vh] w-full snap-center overflow-hidden bg-muted"
+            className="relative z-10 h-[90vh] w-full snap-center overflow-hidden bg-muted"
           >
+            <div
+              className="absolute left-0 top-0 z-10 h-full w-full bg-gradient-to-b from-transparent via-transparent to-black"
+              {...handler}
+            ></div>
             <Image
               src={item.image_url}
               fill
@@ -85,6 +101,12 @@ export default function Inbox() {
               alt={item.caption}
               className="h-full object-contain"
             />
+            <div className="absolute bottom-5 left-5 z-10 flex items-center gap-5">
+              <Avatar>
+                <AvatarImage src="/images/avatars/user.png" />
+              </Avatar>
+              <p className="text-xl text-white">From Amy</p>
+            </div>
           </div>
         ))}
       </div>

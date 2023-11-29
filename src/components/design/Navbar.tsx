@@ -11,11 +11,11 @@ export default function Navbar() {
         <CameraIcon />
       </Link>
       <Link href="/">
-        <IconButton className="h-20 w-20">
+        <IconButton className="flex h-20 w-20 items-center justify-center">
           <HomeIcon />
         </IconButton>
       </Link>
-      <Link href="/">
+      <Link href="/friends">
         <FriendsIcon />
       </Link>
     </nav>
