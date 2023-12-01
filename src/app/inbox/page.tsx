@@ -48,6 +48,7 @@ export default function Inbox() {
             caption
           ),
           from: from_id (
+            avatar,
             name
           )
         `,
@@ -125,7 +126,7 @@ export default function Inbox() {
             />
             <div className="absolute bottom-5 left-5 z-10 flex items-center gap-5">
               <Avatar>
-                <AvatarImage src="/images/avatars/user1.png" />
+                <AvatarImage src={item.from.avatar} className="object-cover" />
               </Avatar>
               <p className="text-xl text-white">From {item.from.name}</p>
             </div>
