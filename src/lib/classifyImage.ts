@@ -1,3 +1,4 @@
+// May switching to gpt-4 vision in the future
 import { replicate } from "./replicate";
 
 const model =

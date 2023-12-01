@@ -4,6 +4,7 @@ type ImageWithSoundProps = {
   image_url: string;
   audio_url: string;
   caption: string;
+  className?: string;
 };
 
 export default function ImageWithSound({

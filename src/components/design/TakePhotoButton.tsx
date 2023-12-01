@@ -25,18 +25,24 @@ export default function TakePhotoButton() {
     <>
       <PrimaryButton
         onClick={handleClick}
-        className="relative flex h-auto w-full  max-w-sm flex-col items-start justify-start gap-5 pb-3 pr-3 pt-10"
+        className="group relative flex h-[225.48px] w-full max-w-sm flex-col items-start justify-start gap-5 pb-3 pr-3 pt-10"
       >
-        <h2 className="text-lg">Take Photo</h2>
+        <h2 className="text-xl font-semibold">Take Photo</h2>
         <div
           aria-hidden
-          className="relative z-10 ml-auto mt-auto h-16 w-16 overflow-hidden"
+          className="absolute bottom-1 right-2  z-10 ml-auto mt-auto h-[112.5px] w-[100.88px] overflow-hidden"
         >
-          <Image src="/images/assets/Camera.png" fill={true} alt="Image icon" />
+          <Image
+            aria-hidden
+            src="/images/assets/Camera.png"
+            fill={true}
+            alt="Camera icon"
+            quality={100}
+          />
         </div>
         <div
           aria-hidden
-          className="weird-circle absolute bottom-0 right-0 h-[100px] w-[100px] overflow-hidden rounded-br-3xl bg-primary-variant"
+          className="weird-circle absolute bottom-0 right-0 h-[140px] w-[140px] overflow-hidden rounded-br-3xl bg-primary-variant"
         ></div>
       </PrimaryButton>
 
@@ -46,7 +52,7 @@ export default function TakePhotoButton() {
         type="file"
         name="picture"
         id="picture"
-        accept="image/*"
+        accept="image/png, image/jpeg"
         capture="environment"
         className="hidden"
         aria-hidden

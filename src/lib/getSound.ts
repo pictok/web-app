@@ -4,6 +4,6 @@ export async function getSound(caption: string) {
   const { data, error } = await supabase.functions.invoke("caption-to-sound", {
     body: { caption },
   });
-  const output = data?.output;
+  const output: string = data?.output;
   return { output, error };
 }

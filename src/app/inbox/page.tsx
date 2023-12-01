@@ -1,48 +1,135 @@
 "use client";
-import Image from "next/image";
-import { ChevronLeft } from "lucide-react";
-import {supabase} from "@/db/supabase";
 
+import { supabase } from "@/db/supabase";
 
-
-import Link from "next/link";
 import { useEffect, useState } from "react";
+import Image from "next/image";
+import { synth } from "@/lib/speak";
+import { useSwipeable } from "react-swipeable";
+import { useRouter } from "next/navigation";
+import { Avatar, AvatarImage } from "@/components/ui/avatar";
+import BackButton from "@/components/design/BackButton";
+import { getCurrentUser } from "@/db/auth/getCurrentUser";
 
-export default  function Inbox() {
+const audio = typeof Audio !== "undefined" ? new Audio() : null;
+const speech =
+  typeof SpeechSynthesisUtterance !== "undefined"
+    ? new SpeechSynthesisUtterance()
+    : null;
+export default function Inbox() {
   const [inbox, setInbox] = useState<any[]>([]);
-
+  const handler = useSwipeable({
+    onTap: (event) => {
+      const { target: overlayDiv } = event.event;
+      if (overlayDiv instanceof HTMLElement) {
+        const currentImage = overlayDiv.nextElementSibling;
+        if (currentImage instanceof HTMLImageElement) currentImage.click();
+      }
+    },
+    // onSwipedRight: () => {
+    //   synth?.cancel();
+    //   audio?.pause();
+    //   push("/friends");
+    // },
+    trackMouse: true,
+  });
 
   useEffect(() => {
     async function getInbox() {
-      let { data, error } = await supabase.from("image_audio").select('*')
-  if (!data) {
-  console.log(error);
-  return;
+      const { user, error: userError } = await getCurrentUser();
+      let { data, error } = await supabase
+        .from("inbox")
+        .select(
+          `
+          *,
+          media: image_url (
+            image_url,
+            audio_url,
+            caption
+          ),
+          from: from_id (
+            avatar,
+            name
+          )
+        `,
+        )
+        .eq("to_id", user.id)
+        .order("created_at", { ascending: false });
+      if (error) {
+        console.log("Error getting inbox", error);
+        return;
+      }
+      if (!data) {
+        console.log("No data found");
+        return;
+      }
+      setInbox(data);
     }
-    setInbox(data);
-  }
-  getInbox();
-    
+
+    getInbox();
+    return () => {
+      synth?.cancel();
+      audio?.pause();
+    };
   }, []);
 
+  const playAudio = (audio_url: string, caption: string) => {
+    if (!audio || !speech) return;
+    synth?.cancel();
+    audio.pause();
+    speech.text = caption;
+    synth?.speak(speech);
+    speech.onend = () => {
+      audio.src = audio_url;
+      audio.play();
+    };
+  };
 
   return (
-    <main className="mx-auto max-h-screen max-w-lg overflow-hidden px-2">
+    <main className="mx-auto max-h-screen max-w-lg overflow-hidden">
       <div className="relative flex items-center justify-center py-5">
-        <Link href="/" className="absolute left-2">
-          <ChevronLeft />
-        </Link>
-        <h1 className="text-3xl font-bold">Inbox</h1>
+        <BackButton />
+        <h1 className="text-3xl font-bold">Your Inbox</h1>
       </div>
 
-      <div className="h-[90vh] snap-y snap-mandatory overflow-y-scroll">
+      <div
+        onScroll={() => {
+          synth?.cancel();
+          audio?.pause();
+        }}
+        className="h-[90vh] snap-y snap-mandatory overflow-y-auto"
+      >
+        {inbox.length === 0 && (
+          <div className="relative flex h-[90vh] w-full items-center justify-center">
+            <p className="text-center text-2xl font-bold">
+              You have no items in your inbox.
+            </p>
+          </div>
+        )}
         {inbox.map((item) => (
-          <div key={item.id} className="relative h-[90vh] w-full snap-center overflow-hidden bg-muted">
-            <img 
-            src={item.image_url}
-            alt="Palm trees on a beach"
-            className="object-cover"
+          <div
+            key={item.media.id}
+            className="relative z-10 h-[90vh] w-full snap-center overflow-hidden bg-muted"
+          >
+            <div
+              className="absolute left-0 top-0 z-10 h-full w-full bg-gradient-to-b from-transparent via-transparent to-black"
+              {...handler}
+            ></div>
+            <Image
+              src={item.image_url}
+              fill
+              onClick={() =>
+                playAudio(item.media.audio_url, item.media.caption)
+              }
+              alt={item.media.caption}
+              className="h-full object-contain"
             />
+            <div className="absolute bottom-5 left-5 z-10 flex items-center gap-5">
+              <Avatar>
+                <AvatarImage src={item.from.avatar} className="object-cover" />
+              </Avatar>
+              <p className="text-xl text-white">From {item.from.name}</p>
+            </div>
           </div>
         ))}
       </div>

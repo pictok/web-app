@@ -2,85 +2,93 @@ import Image from "next/image";
 import Link from "next/link";
 
 import SecondaryButton from "@/components/design/SecondaryButton";
-import { ModeToggle } from "@/components/ui/mode-toggle";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import TakePhotoButton from "@/components/design/TakePhotoButton";
+import RegularButton from "@/components/design/RegularButton";
+import Navbar from "@/components/design/Navbar";
+import HomeHeader from "@/components/design/HomeHeader";
 
 export default function Home() {
   return (
-    <main className="mx-auto max-w-sm space-y-10 px-2 py-5">
-      <div className="flex items-center justify-between px-5">
-        <Avatar className="h-[123px] w-[123px] border-4 border-secondary">
-          <AvatarImage
-            className="object-cover"
-            src="/images/avatars/user.png"
-          />
-          <AvatarFallback>Jane Doe</AvatarFallback>
-        </Avatar>
-        <div className="space-y-5">
-          <p className="text-xl font-semibold">Jane Doe</p>
-          <ModeToggle />
+    <main className="mx-auto flex h-screen max-w-lg flex-col justify-between px-5">
+      <div>
+        <HomeHeader />
+        <div className="mt-10 grid grid-cols-2 gap-2 gap-y-5">
+          <TakePhotoButton />
+          <Link href="/inbox">
+            <SecondaryButton className="relative flex h-[225.48px] w-full max-w-sm flex-col items-start justify-start gap-5 pb-3 pr-3 pt-10">
+              <h2 className="text-xl font-semibold">Inbox</h2>
+              <div
+                aria-hidden
+                className="absolute bottom-1 right-2  z-10 ml-auto mt-auto h-[110px] w-[113px] overflow-hidden"
+              >
+                <Image
+                  aria-hidden
+                  src="/images/assets/inbox.png"
+                  fill
+                  alt="Inbox icon"
+                  quality={100}
+                />
+              </div>
+              <div
+                aria-hidden
+                className="weird-circle absolute bottom-0 right-0 h-[140px] w-[140px] overflow-hidden bg-secondary-variant"
+              ></div>
+            </SecondaryButton>
+          </Link>
+          <Link href="/tutorial">
+            <RegularButton
+              variant="left"
+              className="relative flex h-[225.48px] w-full max-w-sm flex-col items-start justify-start gap-5 pb-3 pr-3 pt-10"
+            >
+              <h2 className="text-xl font-semibold">Tutorial</h2>
+              <div
+                aria-hidden
+                className="absolute -bottom-2 -right-6  z-10 h-[140.63px] w-[144.12px] overflow-hidden"
+              >
+                <Image
+                  aria-hidden
+                  src="/images/assets/lightbulb.png"
+                  fill
+                  alt="Lightbulb icon"
+                  className="z-10"
+                  quality={100}
+                />
+              </div>
+              <div
+                aria-hidden
+                className="weird-circle absolute bottom-0 right-0 h-[130px] w-[130px] overflow-hidden rounded-br-3xl bg-primary-variant"
+              ></div>
+            </RegularButton>
+          </Link>
+          <Link href="/friends">
+            <RegularButton
+              variant="right"
+              className="relative flex h-[225.48px] w-full max-w-sm flex-col items-start justify-start gap-5 pb-3 pr-3 pt-10"
+            >
+              <h2 className="text-xl font-semibold">Friends</h2>
+              <div
+                aria-hidden
+                className="absolute -bottom-3 -right-3  z-10  h-[151.07px] w-[138.71px] overflow-hidden"
+              >
+                <Image
+                  src="/images/assets/headphone.png"
+                  fill
+                  alt="Headphone icon"
+                  className="z-10"
+                  quality={100}
+                />
+              </div>
+              <div
+                aria-hidden
+                className="weird-circle absolute bottom-0 right-0 h-[140px] w-[140px] overflow-hidden bg-secondary-variant"
+              ></div>
+            </RegularButton>
+          </Link>
         </div>
       </div>
-      <div className="grid grid-cols-2 gap-2">
-        <TakePhotoButton />
-        <Link href="/inbox">
-          <SecondaryButton className="relative flex h-auto w-full max-w-sm flex-col items-start justify-start gap-5 pb-3 pr-3 pt-10">
-            <h2 className="text-lg">Inbox</h2>
-            <div
-              aria-hidden
-              className="relative z-10 ml-auto mt-auto h-16 w-16 overflow-hidden"
-            >
-              <Image
-                src="/images/assets/inbox.png"
-                fill={true}
-                alt="Inbox icon"
-              />
-            </div>
-            <div
-              aria-hidden
-              className="weird-circle absolute bottom-0 right-0 h-[100px] w-[100px] overflow-hidden bg-secondary-variant"
-            ></div>
-          </SecondaryButton>
-        </Link>
+      <div className="pb-5">
+        <Navbar />
       </div>
-      {/* <div className="space-y-5">
-        <RegularButton className="relative flex h-auto w-full justify-start pb-0 pl-5 pr-3 pt-5 text-left">
-          <div className="pb-5">
-            <h3 className="text-lg">Explore</h3>
-            <p className="font-normal">Explore photos with sounds</p>
-          </div>
-          <div className="absolute right-0 top-2 h-[90px] w-[90px]  overflow-hidden">
-            <Image
-              src="/images/assets/headphone.png"
-              fill={true}
-              alt="Headphone icon"
-              className="z-10"
-            />
-          </div>
-          <div className="weird-circle2 absolute bottom-[-2px] right-[-2px] h-[92px] w-[100px] overflow-hidden rounded-tr-3xl bg-primary-variant"></div>
-        </RegularButton>
-        <RegularButton
-          variant="right"
-          className="relative flex h-auto w-full justify-start pb-0 pl-5 pr-3 pt-5 text-left"
-        >
-          <div className="pb-5">
-            <h3 className="text-lg">Tutorial</h3>
-            <p className="font-normal">Learn how to use the app</p>
-          </div>
-          <div className="absolute right-[-10px] top-[5px] h-[85px] w-[95px] overflow-hidden">
-            <Image
-              src="/images/assets/lightbulb.png"
-              fill={true}
-              alt="Lightbulb icon"
-              className="z-10"
-            />
-          </div>
-          <div className="weird-circle2 absolute bottom-[-2px] right-[-2px] h-[92px] w-[100px] overflow-hidden rounded-tr-3xl bg-secondary-variant"></div>
-        </RegularButton>
-      </div> */}
-
-      {/* <Navbar /> */}
     </main>
   );
 }
