@@ -21,15 +21,13 @@ export default function Home() {
             <Avatar className="h-16 w-16 border-4 border-secondary">
               <Image
                 className="object-cover"
-                src="/images/avatars/user2.jpg"
-                alt="Isabella Bennett"
+                src="/images/avatars/user1.png"
+                alt="Amy Smith"
                 width={164}
                 height={164}
               />
             </Avatar>
-            <span className="text-xl font-semibold sm:text-2xl">
-              Isabella Bennett
-            </span>
+            <span className="text-xl font-semibold sm:text-2xl">Amy</span>
           </div>
           <div className="pb-5">
             <ModeToggle />
