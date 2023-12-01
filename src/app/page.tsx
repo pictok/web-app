@@ -7,14 +7,33 @@ import TakePhotoButton from "@/components/design/TakePhotoButton";
 import Logo from "@/components/design/Logo";
 import RegularButton from "@/components/design/RegularButton";
 import Navbar from "@/components/design/Navbar";
+import { Avatar } from "@/components/ui/avatar";
 
 export default function Home() {
   return (
-    <main className="mx-auto flex h-screen max-w-lg flex-col justify-between space-y-10 px-5">
+    <main className="mx-auto flex h-screen max-w-lg flex-col justify-between px-5">
       <div>
-        <div className="mb-5 flex items-center justify-between px-2 py-5">
+        <div className="mb-5 flex items-center justify-between px-2">
           <Logo />
-          <ModeToggle />
+        </div>
+        <div className="flex items-center justify-between px-2 pb-10">
+          <div className="flex items-center gap-2">
+            <Avatar className="h-16 w-16 border-4 border-secondary">
+              <Image
+                className="object-cover"
+                src="/images/avatars/user2.jpg"
+                alt="Isabella Bennett"
+                width={164}
+                height={164}
+              />
+            </Avatar>
+            <span className="text-xl font-semibold sm:text-2xl">
+              Isabella Bennett
+            </span>
+          </div>
+          <div className="pb-5">
+            <ModeToggle />
+          </div>
         </div>
         <div className="grid grid-cols-2 gap-2 gap-y-5">
           <TakePhotoButton />
