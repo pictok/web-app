@@ -1,6 +1,5 @@
 import BackButton from "@/components/design/BackButton";
 import Navbar from "@/components/design/Navbar";
-import PrimaryButton from "@/components/design/PrimaryButton";
 import SecondaryButton from "@/components/design/SecondaryButton";
 import { LockKeyholeIcon, MailIcon } from "lucide-react";
 
