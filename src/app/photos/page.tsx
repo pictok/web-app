@@ -7,7 +7,6 @@ import Image from "next/image";
 import { synth } from "@/lib/speak";
 import { useSwipeable } from "react-swipeable";
 import { useRouter } from "next/navigation";
-import { Avatar, AvatarImage } from "@/components/ui/avatar";
 import BackButton from "@/components/design/BackButton";
 
 const audio = typeof Audio !== "undefined" ? new Audio() : null;
