@@ -9,6 +9,7 @@ import { getCurrentUser } from "@/db/auth/getCurrentUser";
 import supabase from "@/db/supabase";
 import LoadSpinnerSVG from "../icons/LoadSpinnerSVG";
 import { Loader2Icon } from "lucide-react";
+import { Skeleton } from "../ui/skeleton";
 
 type User = {
   name: string;
@@ -38,7 +39,7 @@ export default function HomeHeader() {
   }, []);
   return (
     <>
-      <div className="mb-5 flex items-center justify-between px-2">
+      <div className="flex items-center justify-between px-2">
         <Logo />
         {!isLoading && !currentUser && <ModeToggle />}
         {isLoading && (
@@ -47,9 +48,20 @@ export default function HomeHeader() {
           </div>
         )}
       </div>
+      {isLoading && (
+        <div className="flex items-center justify-between">
+          <div className="my-5 flex items-center gap-2">
+            <Skeleton className="h-16 w-16 rounded-full" />
+            <Skeleton className="h-5 w-16" />
+          </div>
+          <div>
+            <Skeleton className="h-10 w-32 rounded-full" />
+          </div>
+        </div>
+      )}
 
       {!isLoading && currentUser && (
-        <div className="flex justify-between">
+        <div className="item flex justify-between">
           <div className="my-5 flex items-center gap-2">
             <Avatar className="h-16 w-16 border-4 border-secondary">
               <Image
