@@ -12,8 +12,13 @@ export default function TutorialPage() {
         </div>
       </div>
       <div>
-        <video src="/video/Tutorial.mp4" width="320" height="240" autoPlay>
-          This is where the video should be
+        <video
+          src="/video/Tutorial.mp4"
+          className="mb-4 max-h-[calc(100vh-8rem)] w-full rounded-lg object-cover"
+          autoPlay
+          controls
+        >
+          Your browser does not support the video
         </video>
       </div>
       <div className="mb-5">
