@@ -33,8 +33,6 @@ export async function getFriends() {
     return { friends: null, error: friendsError };
   }
 
-  console.log(data);
-
   const friends = data.map(
     (item: { friend: { id: any; name: any; avatar: any } }) => ({
       id: item.friend.id,
