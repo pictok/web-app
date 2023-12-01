@@ -24,6 +24,9 @@ export default function TutorialPage() {
       <div className="mb-5">
         <Navbar />
       </div>
+      <div>
+        <h1>Test</h1>
+      </div>
     </main>
   );
 }
