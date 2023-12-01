@@ -2,37 +2,16 @@ import Image from "next/image";
 import Link from "next/link";
 
 import SecondaryButton from "@/components/design/SecondaryButton";
-import { ModeToggle } from "@/components/ui/mode-toggle";
 import TakePhotoButton from "@/components/design/TakePhotoButton";
-import Logo from "@/components/design/Logo";
 import RegularButton from "@/components/design/RegularButton";
 import Navbar from "@/components/design/Navbar";
-import { Avatar } from "@/components/ui/avatar";
+import HomeHeader from "@/components/design/HomeHeader";
 
 export default function Home() {
   return (
     <main className="mx-auto flex h-screen max-w-lg flex-col justify-between px-5">
       <div>
-        <div className="mb-5 flex items-center justify-between px-2">
-          <Logo />
-        </div>
-        <div className="flex items-center justify-between px-2 pb-10">
-          <div className="flex items-center gap-2">
-            <Avatar className="h-16 w-16 border-4 border-secondary">
-              <Image
-                className="object-cover"
-                src="/images/avatars/user1.png"
-                alt="Amy Smith"
-                width={164}
-                height={164}
-              />
-            </Avatar>
-            <span className="text-xl font-semibold sm:text-2xl">Amy</span>
-          </div>
-          <div className="pb-5">
-            <ModeToggle />
-          </div>
-        </div>
+        <HomeHeader />
         <div className="grid grid-cols-2 gap-2 gap-y-5">
           <TakePhotoButton />
           <Link href="/inbox">
