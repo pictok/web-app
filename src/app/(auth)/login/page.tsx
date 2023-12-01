@@ -1,10 +1,8 @@
 import BackButton from "@/components/design/BackButton";
+import DemoButton from "@/components/design/DemoButton";
 import Navbar from "@/components/design/Navbar";
 import PrimaryButton from "@/components/design/PrimaryButton";
-import SecondaryButton from "@/components/design/SecondaryButton";
-import { Avatar } from "@/components/ui/avatar";
 import { LockKeyholeIcon, MailIcon } from "lucide-react";
-import Image from "next/image";
 
 export default function Login() {
   return (
@@ -56,31 +54,8 @@ export default function Login() {
         </div>
       </div>
       <div className="flex flex-col gap-2">
-        <PrimaryButton className="w-full space-x-2 py-8 text-xl">
-          <span>Demo as Amy</span>
-          <Avatar className="h-12 w-12 border-4 border-secondary">
-            <Image
-              className="object-cover"
-              src="/images/avatars/user1.png"
-              alt="Amy Smith"
-              width={164}
-              height={164}
-            />
-          </Avatar>
-        </PrimaryButton>
-
-        <SecondaryButton className="w-full space-x-2 py-8 text-xl">
-          <span>Demo as Isabella</span>
-          <Avatar className="h-12 w-12 border-4 border-primary">
-            <Image
-              className="object-cover"
-              src="/images/avatars/user2.jpg"
-              alt="Isabella Bennett"
-              width={164}
-              height={164}
-            />
-          </Avatar>
-        </SecondaryButton>
+        <DemoButton type="user1" />
+        <DemoButton type="user2" />
       </div>
       <div>
         <Navbar />
