@@ -2,14 +2,19 @@
 import BackButton from "@/components/design/BackButton";
 import Navbar from "@/components/design/Navbar";
 import { useState } from "react";
+import { useRouter } from "next/navigation";
 
 export default function TutorialPage() {
   // State to mange if the video has played
   const [hasPlayed, setHasPlayed] = useState(false);
 
+  const router = useRouter();
+
   // handle for when the video has ends
   const handleVideoEnd = () => {
+    // Use the router if it's available
     setHasPlayed(true);
+    router.push("/");
   };
 
   return (
