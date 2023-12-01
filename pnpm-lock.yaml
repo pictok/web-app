@@ -53,6 +53,7 @@ dependencies:
   '@supabase/supabase-js':
     specifier: ^2.38.1
     version: 2.38.1
+
   ai:
     specifier: ^2.2.23
     version: 2.2.23(react@18.2.0)(solid-js@1.8.5)(svelte@4.2.3)(vue@3.3.8)
@@ -62,6 +63,9 @@ dependencies:
   clsx:
     specifier: ^2.0.0
     version: 2.0.0
+  easy-speech:
+    specifier: ^2.1.1
+    version: 2.1.1
   formidable:
     specifier: ^3.5.1
     version: 3.5.1
@@ -2070,6 +2074,11 @@ packages:
     dependencies:
       esutils: 2.0.3
     dev: true
+
+  /easy-speech@2.1.1:
+    resolution: {integrity: sha512-/Nh2SxkQc3aIdrCnagDbuaUAxuZuSVrEI00Jp1Kg8aQaD04socTjVDsyKZ/yw483q1nZC3CQ9IB7vMCnSY2LTQ==}
+    engines: {node: '>= 14.x'}
+    dev: false
 
   /electron-to-chromium@1.4.554:
     resolution: {integrity: sha512-Q0umzPJjfBrrj8unkONTgbKQXzXRrH7sVV7D9ea2yBV3Oaogz991yhbpfvo2LMNkJItmruXTEzVpP9cp7vaIiQ==}

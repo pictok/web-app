@@ -177,6 +177,7 @@ export default function PhotoProcessing({
       console.log("****Caption****");
       console.log({ caption });
 
+
       //Get the photo url string
       const image_url = `${storagePath}/images/${data?.path}`;
       imageUrlRef.current = image_url;
