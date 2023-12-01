@@ -11,6 +11,11 @@ export default function TutorialPage() {
           <h1 className="text-3xl font-bold">Tutorial</h1>
         </div>
       </div>
+      <div>
+        <video src="/video/Tutorial.mp4" width="320" height="240" autoPlay>
+          This is where the video should be
+        </video>
+      </div>
       <div className="mb-5">
         <Navbar />
       </div>
