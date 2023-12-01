@@ -2,16 +2,20 @@
 
 import supabase from "@/db/supabase";
 import { useRouter } from "next/navigation";
+import { useEffect } from "react";
 
 export default function SignOut() {
   const { replace } = useRouter();
-  const signOut = async () => {
-    const { error } = await supabase.auth.signOut();
-    if (error) {
-      console.log(error);
-    }
-    replace("/");
-  };
-  signOut();
+  useEffect(() => {
+    const signOut = async () => {
+      const { error } = await supabase.auth.signOut();
+      if (error) {
+        console.log(error);
+      }
+      replace("/");
+    };
+    signOut();
+  }, [replace]);
+
   return <></>;
 }
