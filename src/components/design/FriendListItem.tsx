@@ -7,7 +7,7 @@ export default function FriendListItem({ friend }: { friend: string }) {
       <Avatar className="h-20 w-20 border-4 border-secondary drop-shadow-sm">
         <AvatarImage
           className="object-cover"
-          src="/images/avatars/user2.png"
+          src="/images/avatars/user2.jpg"
           alt="Amy Smith"
         />
         <AvatarFallback>{friend}</AvatarFallback>
