@@ -1,3 +1,4 @@
+
 export async function readCaption(caption: string) {
   return new Promise((resolve, reject) => {
     const speech = new SpeechSynthesisUtterance();
