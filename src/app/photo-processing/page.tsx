@@ -79,6 +79,7 @@ const photoProcessingReducer = (
 };
 import { getImageAsBase64 } from "@/lib/getImageAsBase64";
 import BackButton from "@/components/design/BackButton";
+import { getCurrentUser } from "@/db/auth/getCurrentUser";
 
 export default function PhotoProcessing({
   searchParams: { photoBlobUrl },
@@ -192,16 +193,16 @@ export default function PhotoProcessing({
         throw SoundUploadError;
       }
       const audio_url = `${storagePath}/audio/${audioData?.path}`;
-
+      const { user } = await getCurrentUser();
       const { error: imageAudioError } = await supabase
         .from("image_audio")
-        .insert([{ image_url, audio_url, caption: story, user_id: 1 }]); //!change caption to story (caption:story) and save to db here
+        .insert([
+          { image_url, audio_url, caption: story, user_id: user.id || 1 },
+        ]);
 
       if (imageAudioError) {
         throw imageAudioError;
       }
-      // // wait 3 seconds
-      // await new Promise((resolve) => setTimeout(resolve, 5000));
       const t1 = performance.now();
       console.log(`Time it takes: ${(t1 - t0) / 1000} seconds.`);
       bgm.pause();

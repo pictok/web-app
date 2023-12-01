@@ -2,20 +2,34 @@
 import BackButton from "@/components/design/BackButton";
 import FriendList from "@/components/design/FriendList";
 import Navbar from "@/components/design/Navbar";
-import Searchbar from "@/components/design/Searchbar";
-import { useState } from "react";
+import { getFriends } from "@/db/auth/getCurrentFriends";
+import { useEffect, useState } from "react";
 
-const defaultFriends = ["Isabella Bennett"];
+export type Friend = {
+  id: string;
+  name: string;
+  avatar: string;
+};
 
 export default function FriendsPage() {
-  const [friends, setFriends] = useState(defaultFriends);
-  const filterFriends = (query: string) => {
-    if (query === "") return setFriends(defaultFriends);
-    const filteredFriends = friends.filter((friend) =>
-      friend.toLowerCase().includes(query.toLowerCase()),
-    );
-    setFriends(filteredFriends);
-  };
+  const [friends, setFriends] = useState<Friend[] | null>();
+  // const filterFriends = (query: string) => {
+  //   if (query === "") return setFriends(defaultFriends);
+  //   const filteredFriends = friends.filter((friend) =>
+  //     friend.toLowerCase().includes(query.toLowerCase()),
+  //   );
+  //   setFriends(filteredFriends);
+  // };
+  useEffect(() => {
+    async function fetchFriends() {
+      const { friends, error } = await getFriends();
+      if (error) {
+        console.error(error);
+      }
+      setFriends(friends);
+    }
+    fetchFriends();
+  }, []);
   return (
     <main className="mx-auto flex min-h-screen max-w-lg flex-col justify-between px-5">
       <div>
@@ -23,8 +37,8 @@ export default function FriendsPage() {
           <BackButton />
           <h1 className="text-3xl font-bold">Friends</h1>
         </div>
-        <Searchbar searchFn={filterFriends} />
-        <FriendList friends={friends} />
+        {/* <Searchbar searchFn={filterFriends} /> */}
+        {friends && <FriendList friends={friends} />}
       </div>
       <div className="mb-5">
         <Navbar />

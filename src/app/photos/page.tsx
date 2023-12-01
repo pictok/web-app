@@ -6,8 +6,9 @@ import { useEffect, useState } from "react";
 import Image from "next/image";
 import { synth } from "@/lib/speak";
 import { useSwipeable } from "react-swipeable";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import BackButton from "@/components/design/BackButton";
+import { getCurrentUser } from "@/db/auth/getCurrentUser";
 
 const audio = typeof Audio !== "undefined" ? new Audio() : null;
 const speech =
@@ -17,6 +18,8 @@ const speech =
 export default function Photos() {
   const [photos, setPhotos] = useState<any[]>([]);
   const { replace } = useRouter();
+  const params = useSearchParams();
+  const friendId = Number(params.get("friend"));
 
   const handler = useSwipeable({
     onTap: (event) => {
@@ -33,14 +36,21 @@ export default function Photos() {
       if (overlayDiv instanceof HTMLElement) {
         const currentImage = overlayDiv.nextElementSibling;
         if (currentImage instanceof HTMLInputElement) {
+          const { user, error } = await getCurrentUser();
+          if (error) {
+            console.error(error);
+            return;
+          }
           const image = currentImage.value;
           const photo = {
             image_url: image,
-            from_id: 1,
-            to_id: 2,
+            from_id: user.id,
+            to_id: friendId,
           };
           await supabase.from("inbox").insert([photo]);
-          replace("/send-photo/complete");
+          const params = new URLSearchParams();
+          params.set("friend", `${friendId}`);
+          replace(`/send-photo/complete?${params.toString()}`);
         }
       }
     },
@@ -49,10 +59,15 @@ export default function Photos() {
 
   useEffect(() => {
     async function getInbox() {
-      let { data, error } = await supabase
+      const { user, error: userError } = await getCurrentUser();
+      if (userError) {
+        console.error(userError);
+        return;
+      }
+      const { data, error } = await supabase
         .from("image_audio")
         .select("*")
-        .eq("user_id", 1)
+        .eq("user_id", user.id)
         .order("created_at", { ascending: false });
       if (error) {
         console.log("Error getting inbox", error);

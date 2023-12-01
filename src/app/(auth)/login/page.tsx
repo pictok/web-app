@@ -12,7 +12,7 @@ export default function Login() {
           <BackButton />
           <h1 className="text-3xl font-bold">Login</h1>
         </div>
-        <form className="mt-20 flex flex-col gap-10 py-5">
+        {/* <form className="mt-20 flex flex-col gap-10 py-5">
           <p className="text-center">
             Please enter your email address and password to log in.
           </p>
@@ -43,16 +43,16 @@ export default function Login() {
               Login
             </PrimaryButton>
           </div>
-        </form>
+        </form> */}
       </div>
-      <div className="relative">
+      {/* <div className="relative">
         <div className="absolute inset-0 flex items-center">
           <span className="w-full border-t border-muted-foreground" />
         </div>
         <div className="relative flex justify-center text-xs uppercase">
           <span className="bg-background px-2 text-muted-foreground">Or</span>
         </div>
-      </div>
+      </div> */}
       <div className="flex gap-5">
         <DemoButton type="user1" />
         <DemoButton type="user2" />
