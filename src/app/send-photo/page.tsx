@@ -20,7 +20,7 @@ export default function SendPhoto({ searchParams }: SendPhotoProps) {
         <Avatar className="mx-auto h-[163.7px] w-[163.7px] border-4 border-secondary">
           <AvatarImage
             className="object-cover"
-            src="/images/avatars/user2.png"
+            src="/images/avatars/user2.jpg"
           />
           <AvatarFallback>Isabella Bennett</AvatarFallback>
         </Avatar>
