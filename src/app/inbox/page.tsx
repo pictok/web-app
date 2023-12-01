@@ -9,6 +9,7 @@ import { useSwipeable } from "react-swipeable";
 import { useRouter } from "next/navigation";
 import { Avatar, AvatarImage } from "@/components/ui/avatar";
 import BackButton from "@/components/design/BackButton";
+import { getCurrentUser } from "@/db/auth/getCurrentUser";
 
 const audio = typeof Audio !== "undefined" ? new Audio() : null;
 const speech =
@@ -17,7 +18,6 @@ const speech =
     : null;
 export default function Inbox() {
   const [inbox, setInbox] = useState<any[]>([]);
-  const { push } = useRouter();
   const handler = useSwipeable({
     onTap: (event) => {
       const { target: overlayDiv } = event.event;
@@ -36,6 +36,7 @@ export default function Inbox() {
 
   useEffect(() => {
     async function getInbox() {
+      const { user, error: userError } = await getCurrentUser();
       let { data, error } = await supabase
         .from("inbox")
         .select(
@@ -51,7 +52,7 @@ export default function Inbox() {
           )
         `,
         )
-        .eq("to_id", 2)
+        .eq("to_id", user.id)
         .order("created_at", { ascending: false });
       if (error) {
         console.log("Error getting inbox", error);
