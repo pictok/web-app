@@ -31,10 +31,10 @@ export default function DemoButton({ type }: DemoButtonProps) {
     return (
       <PrimaryButton
         onClick={() => signIn(user1)}
-        className="w-full space-x-2 py-8 text-xl"
+        className="w-full space-x-2 py-16 text-xl"
       >
         <span>Demo as Amy</span>
-        <Avatar className="h-12 w-12 border-4 border-secondary">
+        <Avatar className="h-20 w-20 border-4 border-secondary">
           <Image
             className="object-cover"
             src="/images/avatars/user1.png"
@@ -49,10 +49,10 @@ export default function DemoButton({ type }: DemoButtonProps) {
   return (
     <SecondaryButton
       onClick={() => signIn(user2)}
-      className="w-full space-x-2 py-8 text-xl"
+      className="w-full space-x-2 py-16 text-xl"
     >
       <span>Demo as Isabella</span>
-      <Avatar className="h-12 w-12 border-4 border-primary">
+      <Avatar className="h-20 w-20 border-4 border-primary">
         <Image
           className="object-cover"
           src="/images/avatars/user2.jpg"
