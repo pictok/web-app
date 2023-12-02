@@ -137,6 +137,14 @@ export default function PhotoProcessing({
     const audio = audioRef.current;
     // const bgm = bgmAudioRef.current;
     const bgm = new Audio("/sound/image-processing-bgm.mp3");
+    const utterance = new SpeechSynthesisUtterance(
+      "Image processing is in progress, please wait.",
+    );
+    synth?.speak(utterance);
+
+    utterance.onend = () => {
+      bgm.play();
+    };
 
     const handleConversionToSound = async () => {
       const t0 = performance.now();
@@ -156,6 +164,7 @@ export default function PhotoProcessing({
         throw new Error("base64Image is not a string");
       }
       //! change this to {story, caption}
+
       const [{ data, error: imageUploadError }, { story, caption }] =
         await Promise.all([
           supabase.storage
@@ -165,9 +174,6 @@ export default function PhotoProcessing({
 
           //! change to getStoryCaption(base64Image)
           getStoryCaption(base64Image),
-          speak("Image processing is in progress. Please wait.", () =>
-            bgm.play(),
-          ),
         ]);
       if (imageUploadError) {
         throw imageUploadError;
