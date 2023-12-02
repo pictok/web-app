@@ -92,9 +92,9 @@ export default function PhotoProcessing({
   const { status, story } = state;
   const imageUrlRef = useRef("");
   const audioRef = useRef<HTMLAudioElement>(new Audio());
-  const bgmAudioRef = useRef<HTMLAudioElement>(
-    new Audio("/sound/image-processing-bgm.mp3"),
-  );
+  // const bgmAudioRef = useRef<HTMLAudioElement>(
+  //   new Audio("/sound/image-processing-bgm.mp3"),
+  // );
 
   const handler = useSwipeable({
     onSwipedRight: () => {
@@ -135,7 +135,8 @@ export default function PhotoProcessing({
 
   useEffect(() => {
     const audio = audioRef.current;
-    const bgm = bgmAudioRef.current;
+    // const bgm = bgmAudioRef.current;
+    const bgm = new Audio("/sound/image-processing-bgm.mp3");
 
     const handleConversionToSound = async () => {
       const t0 = performance.now();
@@ -176,7 +177,6 @@ export default function PhotoProcessing({
       console.log({ story });
       console.log("****Caption****");
       console.log({ caption });
-
 
       //Get the photo url string
       const image_url = `${storagePath}/images/${data?.path}`;
