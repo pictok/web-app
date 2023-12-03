@@ -12,7 +12,7 @@ export default function Home() {
     <main className="mx-auto flex h-screen max-w-lg flex-col justify-between px-5">
       <div>
         <HomeHeader />
-        <div className="mt-10 grid grid-cols-2 gap-2 gap-y-5">
+        <div className="mb-5 mt-2 grid grid-cols-2 gap-2 gap-y-5">
           <TakePhotoButton />
           <Link href="/inbox">
             <SecondaryButton className="relative flex h-[225.48px] w-full max-w-sm flex-col items-start justify-start gap-5 pb-3 pr-3 pt-10">
