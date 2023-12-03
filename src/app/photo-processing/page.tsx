@@ -111,6 +111,8 @@ export default function PhotoProcessing({
   const theme = useTheme();
   const [state, dispatch] = useReducer(photoProcessingReducer, initialState);
   const [synth, setSynth] = useState<SpeechSynthesis | null>(null);
+  const t0Ref = useRef<number>();
+  const t1Ref = useRef<number>();
 
   const { status, imageUrl, caption, story } = state;
 
@@ -137,23 +139,23 @@ export default function PhotoProcessing({
         synth?.cancel();
         if (audioRef.current) {
           audioRef.current.pause();
-          //! change caption to story
-          speak(story, async () => {
-            if (!audioRef.current) return;
-            await audioRef.current.play();
-            audioRef.current.onended = () => {
-              if (status == "show tap gesture one") {
-                dispatch({
-                  status: "show swipe right gesture two",
-                });
-                speak("Swipe right to send to friends", () => {
-                  dispatch({
-                    status: "finished processing",
-                  });
-                });
-              }
+
+          const utterance = new SpeechSynthesisUtterance(story);
+          synth?.speak(utterance);
+          utterance.onend = () => {
+            dispatch({
+              status: "show swipe right gesture two",
+            });
+            const utterance = new SpeechSynthesisUtterance(
+              "Swipe right to send to friends",
+            );
+            synth?.speak(utterance);
+            utterance.onend = () => {
+              dispatch({
+                status: "finished processing",
+              });
             };
-          });
+          };
         }
       }
     },
@@ -182,25 +184,17 @@ export default function PhotoProcessing({
       }
     };
 
-    if (
-      status == "finished processing" ||
-      status == "show tap gesture one" ||
-      status == "show swipe right gesture two"
-    ) {
-      bgmRef.current?.pause();
-    } else {
-      playLoadingMusic();
-    }
-
+    playLoadingMusic();
     return () => {
       synth?.cancel();
       bgmRef.current?.pause();
     };
-  }, [synth, status]);
+  }, [synth]);
 
   // This useEffect is for uploading the photo to supabase storage
   useEffect(() => {
     const uploadImageToSupabase = async () => {
+      t0Ref.current = performance.now();
       try {
         const response = await fetch(photoBlobUrl);
         // Blob object
@@ -345,10 +339,15 @@ export default function PhotoProcessing({
         }
 
         audioRef.current = new Audio(audio_url);
-
+        t1Ref.current = performance.now();
+        if (t1Ref.current && t0Ref.current) {
+          const timeTaken = (t1Ref.current - t0Ref.current) / 1000;
+          console.log("Time taken to generate sound: ", timeTaken);
+        }
         dispatch({
           status: "show tap gesture one",
         });
+        bgmRef.current?.pause();
       } catch (e) {
         console.error(e);
       }
@@ -399,16 +398,7 @@ export default function PhotoProcessing({
               </div>
               <div className="absolute inset-0 flex items-center justify-center">
                 <h1 className="text-4xl text-black dark:text-white">
-                  {status == "uploading photo to supabase" &&
-                    "Uploading photo..."}
-                  {(status === "finished uploading photo to supabase" ||
-                    status === "converting photo to story") &&
-                    "Converting photo to story..."}
-
-                  {(status == "finished converting photo to story" ||
-                    status == "converting story to sound caption" ||
-                    status == "finish converting story to sound caption") &&
-                    "Generating sound..."}
+                  Processing...
                 </h1>
               </div>
             </>
