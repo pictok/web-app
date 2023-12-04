@@ -2,7 +2,7 @@
 
 import { supabase } from "@/db/supabase";
 
-import { useEffect, useRef, useState } from "react";
+import { useContext, useEffect, useRef, useState } from "react";
 import Image from "next/image";
 import { synth } from "@/lib/speak";
 import { useSwipeable } from "react-swipeable";
@@ -11,6 +11,7 @@ import { Avatar, AvatarImage } from "@/components/ui/avatar";
 import BackButton from "@/components/design/BackButton";
 import { getCurrentUser } from "@/db/auth/getCurrentUser";
 import { getInbox } from "@/lib/getInbox";
+import { useRealtime } from "@/providers/RealtimeProvider";
 
 const audio = typeof Audio !== "undefined" ? new Audio() : null;
 const speech =
@@ -19,9 +20,11 @@ const speech =
     : null;
 export default function Inbox() {
   const [inbox, setInbox] = useState<any[]>([]);
+  const { setNumberOfUnreadImages } = useRealtime();
 
   // Clear the number of unread images in local storage
   localStorage.removeItem("unreadImages");
+  setNumberOfUnreadImages(0);
 
   const handler = useSwipeable({
     onTap: (event) => {
