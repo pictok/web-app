@@ -86,7 +86,7 @@ export default function Inbox() {
     return () => {
       supabase.removeChannel(channel);
     };
-  }, []);
+  }, [currentUser?.id]);
 
   const playAudio = (audio_url: string, caption: string) => {
     if (!audio || !speech) return;
