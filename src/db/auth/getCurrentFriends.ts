@@ -1,17 +1,41 @@
-import supabase from "../supabase";
-import { getCurrentUser } from "./getCurrentUser";
+import { createServerClient } from "@supabase/ssr";
+import { ReadonlyRequestCookies } from "next/dist/server/web/spec-extension/adapters/request-cookies";
+import { supabaseKey, supabaseUrl } from "../supabase";
 
-export async function getFriends() {
-  const { user, error: userError } = await getCurrentUser();
+export async function getFriends(cookieStore: ReadonlyRequestCookies) {
+  const supabase = createServerClient(supabaseUrl, supabaseKey, {
+    cookies: {
+      get(name: string) {
+        return cookieStore.get(name)?.value;
+      },
+    },
+  });
+  const { data, error } = await supabase.auth.getSession();
+
+  if (error) {
+    console.error(error);
+    return;
+  }
+
+  if (!data || !data.session) {
+    return;
+  }
+
+  const { data: user, error: userError } = await supabase
+    .from("profile")
+    .select("*")
+    .eq("user_id", data.session.user.id)
+    .single();
+
   if (userError) {
     console.log("Error getting current user", userError);
-    return { friends: null, error: userError };
+    return;
   }
   if (!user) {
     console.log("No current user");
-    return { friends: null, error: userError };
+    return;
   }
-  const { data, error: friendsError }: { data: any; error: any } =
+  const { data: friends, error: friendsError }: { data: any; error: any } =
     await supabase
       .from("friend")
       .select(
@@ -26,20 +50,19 @@ export async function getFriends() {
       .eq("user_id", user.id);
   if (friendsError) {
     console.log("Error getting friends", friendsError);
-    return { friends: null, error: friendsError };
+    return;
   }
   if (!data) {
     console.log("No friends");
-    return { friends: null, error: friendsError };
+    return;
   }
 
-  const friends = data.map(
+  const friendsResult = friends.map(
     (item: { friend: { id: any; name: any; avatar: any } }) => ({
       id: item.friend.id,
       name: item.friend.name,
       avatar: item.friend.avatar,
     }),
   );
-
-  return { friends, error: null };
+  return friendsResult;
 }

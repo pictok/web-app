@@ -1,19 +1,15 @@
 import { createServerClient } from "@supabase/ssr";
 import { ReadonlyRequestCookies } from "next/dist/server/web/spec-extension/adapters/request-cookies";
-import { supabaseUrl } from "../supabase";
+import { supabaseKey, supabaseUrl } from "../supabase";
 
 export const getCurrentUser = async (cookieStore: ReadonlyRequestCookies) => {
-  const supabase = createServerClient(
-    supabaseUrl,
-    process.env.NEXT_PUBLIC_SUPABASE_KEY!,
-    {
-      cookies: {
-        get(name: string) {
-          return cookieStore.get(name)?.value;
-        },
+  const supabase = createServerClient(supabaseUrl, supabaseKey, {
+    cookies: {
+      get(name: string) {
+        return cookieStore.get(name)?.value;
       },
     },
-  );
+  });
 
   const { data, error } = await supabase.auth.getSession();
 
