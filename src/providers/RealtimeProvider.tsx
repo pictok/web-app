@@ -47,7 +47,7 @@ export const RealtimeProvider = ({
           table: "inbox",
         },
         (payload) => {
-          if (payload.new.to_id !== currentUser.id) return;
+          if (payload.new.to_id !== currentUser?.id) return;
           // Store the number of unread images in local storage
           localStorage.setItem(
             "unreadImages",
