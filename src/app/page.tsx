@@ -21,7 +21,10 @@ export default function Home() {
                   <span className="relative text-2xl">2</span>
                 </span>
               </span>
-              <h2 className="text-xl font-semibold">Inbox</h2>
+              <div className="flex w-full items-center justify-between text-xl">
+                <h2 className="font-semibold">Inbox</h2>
+                <p className="mr-6 font-normal">(2 Unread)</p>
+              </div>
               <div
                 aria-hidden
                 className="absolute bottom-1 right-2  z-10 ml-auto mt-auto h-[110px] w-[113px] overflow-hidden"
