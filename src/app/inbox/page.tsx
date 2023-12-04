@@ -25,6 +25,7 @@ export default function Inbox() {
   useEffect(() => {
     async function updateInboxReadStatus() {
       setNumberOfUnreadImages(0);
+      // Update all inbox items to read
       const { error } = await supabase
         .from("inbox")
         .update({ read: true })
@@ -76,8 +77,14 @@ export default function Inbox() {
         },
         async (payload) => {
           if (payload.new.to_id !== currentUser?.id) return;
+          // Update all inbox items to read
+          const { error } = await supabase
+            .from("inbox")
+            .update({ read: true })
+            .eq("to_id", currentUser?.id);
           const data = await getInbox(payload.new.to_id);
           if (!data) return;
+          setNumberOfUnreadImages(0);
           setInbox(data);
         },
       )
@@ -86,7 +93,7 @@ export default function Inbox() {
     return () => {
       supabase.removeChannel(channel);
     };
-  }, [currentUser?.id]);
+  }, [currentUser?.id, setNumberOfUnreadImages]);
 
   const playAudio = (audio_url: string, caption: string) => {
     if (!audio || !speech) return;
