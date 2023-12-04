@@ -6,6 +6,7 @@ import TakePhotoButton from "@/components/design/TakePhotoButton";
 import RegularButton from "@/components/design/RegularButton";
 import Navbar from "@/components/design/Navbar";
 import HomeHeader from "@/components/design/HomeHeader";
+import RealtimeInbox from "./realtime-inbox";
 
 export default function Home() {
   return (
@@ -16,14 +17,9 @@ export default function Home() {
           <TakePhotoButton />
           <Link href="/inbox">
             <SecondaryButton className="relative flex h-[225.48px] w-full max-w-sm flex-col items-start justify-start gap-5 pb-3 pr-3 pt-10">
-              <span className="absolute -right-3 -top-3 flex h-10 w-10">
-                <span className="relative inline-flex h-10 w-10 items-center justify-center rounded-full bg-primary">
-                  <span className="relative text-2xl">2</span>
-                </span>
-              </span>
               <div className="flex w-full items-center justify-between text-xl">
                 <h2 className="font-semibold">Inbox</h2>
-                <p className="mr-6 font-normal">(2 Unread)</p>
+                <RealtimeInbox />
               </div>
               <div
                 aria-hidden
