@@ -19,6 +19,10 @@ const speech =
     : null;
 export default function Inbox() {
   const [inbox, setInbox] = useState<any[]>([]);
+
+  // Clear the number of unread images in local storage
+  localStorage.removeItem("unreadImages");
+
   const handler = useSwipeable({
     onTap: (event) => {
       const { target: overlayDiv } = event.event;
