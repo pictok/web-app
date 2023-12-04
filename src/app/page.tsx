@@ -16,6 +16,11 @@ export default function Home() {
           <TakePhotoButton />
           <Link href="/inbox">
             <SecondaryButton className="relative flex h-[225.48px] w-full max-w-sm flex-col items-start justify-start gap-5 pb-3 pr-3 pt-10">
+              <span className="absolute -right-3 -top-3 flex h-10 w-10">
+                <span className="relative inline-flex h-10 w-10 items-center justify-center rounded-full bg-primary">
+                  <span className="relative text-2xl">2</span>
+                </span>
+              </span>
               <h2 className="text-xl font-semibold">Inbox</h2>
               <div
                 aria-hidden
