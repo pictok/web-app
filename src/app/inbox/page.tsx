@@ -22,9 +22,20 @@ export default function Inbox() {
   const [inbox, setInbox] = useState<any[]>([]);
   const { setNumberOfUnreadImages } = useRealtime();
 
-  // Clear the number of unread images in local storage
-  localStorage.removeItem("unreadImages");
-  setNumberOfUnreadImages(0);
+  useEffect(() => {
+    async function updateInboxReadStatus() {
+      // Clear the number of unread images in local storage
+      localStorage.removeItem("unreadImages");
+      setNumberOfUnreadImages(0);
+      const { user, error: userError } = await getCurrentUser();
+      if (userError) return;
+      const { error } = await supabase
+        .from("inbox")
+        .update({ read: true })
+        .eq("to_id", user.id);
+    }
+    updateInboxReadStatus();
+  }, [setNumberOfUnreadImages]);
 
   const handler = useSwipeable({
     onTap: (event) => {

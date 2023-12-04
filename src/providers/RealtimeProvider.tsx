@@ -20,17 +20,20 @@ export const RealtimeProvider = ({
   children: React.ReactNode;
 }) => {
   const [currentUser, setCurrentUser] = useState<any>();
-  const [numberOfUnreadImages, setNumberOfUnreadImages] = useState(() => {
-    const numberOfUnreadImages = localStorage.getItem("unreadImages");
-    return numberOfUnreadImages ? Number(numberOfUnreadImages) : 0;
-  });
+  const [numberOfUnreadImages, setNumberOfUnreadImages] = useState(0);
 
   useEffect(() => {
-    async function getUser() {
+    async function getUserAndUnreadImages() {
       const { user, error: userError } = await getCurrentUser();
+      if (userError) return;
       setCurrentUser(user);
+      const { count } = await supabase
+        .from("inbox")
+        .select("*", { count: "exact" })
+        .match({ to_id: user.id, read: false });
+      setNumberOfUnreadImages(count ?? 0);
     }
-    getUser();
+    getUserAndUnreadImages();
   }, []);
 
   useEffect(() => {
