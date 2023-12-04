@@ -29,7 +29,8 @@ export const RealtimeProvider = ({
   useEffect(() => {
     async function getUserAndUnreadImages() {
       if (!currentUser?.id) {
-        const user = JSON.parse(localStorage.getItem("currentUser") ?? "{}");
+        const user = JSON.parse(localStorage.getItem("currentUser") ?? "");
+        if (!user) return;
         setCurrentUser(user);
       }
       const { count } = await supabase
@@ -51,16 +52,13 @@ export const RealtimeProvider = ({
           schema: "public",
           table: "inbox",
         },
-        (payload) => {
+        async (payload) => {
           if (payload.new.to_id !== currentUser?.id) return;
-          // Store the number of unread images in local storage
-          localStorage.setItem(
-            "unreadImages",
-            (Number(numberOfUnreadImages) + 1).toString(),
-          );
-          setNumberOfUnreadImages(
-            (numberOfUnreadImages) => numberOfUnreadImages + 1,
-          );
+          const { count } = await supabase
+            .from("inbox")
+            .select("*", { count: "exact" })
+            .match({ to_id: currentUser?.id, read: false });
+          setNumberOfUnreadImages(count ?? 0);
         },
       )
       .subscribe();

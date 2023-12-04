@@ -20,22 +20,18 @@ const speech =
     : null;
 export default function Inbox() {
   const [inbox, setInbox] = useState<any[]>([]);
-  const { setNumberOfUnreadImages } = useRealtime();
+  const { setNumberOfUnreadImages, currentUser } = useRealtime();
 
   useEffect(() => {
     async function updateInboxReadStatus() {
-      // Clear the number of unread images in local storage
-      localStorage.removeItem("unreadImages");
       setNumberOfUnreadImages(0);
-      const { user, error: userError } = await getCurrentUser();
-      if (userError) return;
       const { error } = await supabase
         .from("inbox")
         .update({ read: true })
-        .eq("to_id", user.id);
+        .eq("to_id", currentUser?.id);
     }
     updateInboxReadStatus();
-  }, [setNumberOfUnreadImages]);
+  }, [setNumberOfUnreadImages, currentUser?.id]);
 
   const handler = useSwipeable({
     onTap: (event) => {
@@ -55,8 +51,7 @@ export default function Inbox() {
 
   useEffect(() => {
     async function getUserInbox() {
-      const { user, error: userError } = await getCurrentUser();
-      const data = await getInbox(user.id);
+      const data = await getInbox(currentUser?.id);
       if (!data) return;
       setInbox(data);
     }
@@ -66,7 +61,7 @@ export default function Inbox() {
       synth?.cancel();
       audio?.pause();
     };
-  }, []);
+  }, [currentUser?.id]);
 
   // Supabase Realtime
   useEffect(() => {
@@ -80,6 +75,7 @@ export default function Inbox() {
           table: "inbox",
         },
         async (payload) => {
+          if (payload.new.to_id !== currentUser?.id) return;
           const data = await getInbox(payload.new.to_id);
           if (!data) return;
           setInbox(data);
