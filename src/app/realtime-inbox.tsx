@@ -3,13 +3,23 @@
 import { useEffect, useState } from "react";
 
 import supabase from "@/db/supabase";
+import { getCurrentUser } from "@/db/auth/getCurrentUser";
 
 export default function RealtimeInbox() {
+  const [currentUser, setCurrentUser] = useState<any>();
   const [numberOfUnreadImages, setNumberOfUnreadImages] = useState(() => {
     const numberOfUnreadImages = localStorage.getItem("unreadImages");
     console.log("numberOfUnreadImages", numberOfUnreadImages);
     return numberOfUnreadImages ? Number(numberOfUnreadImages) : 0;
   });
+
+  useEffect(() => {
+    async function getUser() {
+      const { user, error: userError } = await getCurrentUser();
+      setCurrentUser(user);
+    }
+    getUser();
+  }, []);
 
   useEffect(() => {
     const channel = supabase
@@ -22,6 +32,7 @@ export default function RealtimeInbox() {
           table: "inbox",
         },
         (payload) => {
+          if (payload.new.to_id !== currentUser.id) return;
           // Store the number of unread images in local storage
           localStorage.setItem(
             "unreadImages",
