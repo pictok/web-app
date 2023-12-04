@@ -2,7 +2,7 @@
 
 import { supabase } from "@/db/supabase";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import Image from "next/image";
 import { synth } from "@/lib/speak";
 import { useSwipeable } from "react-swipeable";
@@ -10,6 +10,7 @@ import { useRouter } from "next/navigation";
 import { Avatar, AvatarImage } from "@/components/ui/avatar";
 import BackButton from "@/components/design/BackButton";
 import { getCurrentUser } from "@/db/auth/getCurrentUser";
+import { getInbox } from "@/lib/inbox";
 
 const audio = typeof Audio !== "undefined" ? new Audio() : null;
 const speech =
@@ -35,41 +36,41 @@ export default function Inbox() {
   });
 
   useEffect(() => {
-    async function getInbox() {
+    async function getUserInbox() {
       const { user, error: userError } = await getCurrentUser();
-      let { data, error } = await supabase
-        .from("inbox")
-        .select(
-          `
-          *,
-          media: image_url (
-            image_url,
-            audio_url,
-            caption
-          ),
-          from: from_id (
-            avatar,
-            name
-          )
-        `,
-        )
-        .eq("to_id", user.id)
-        .order("created_at", { ascending: false });
-      if (error) {
-        console.log("Error getting inbox", error);
-        return;
-      }
-      if (!data) {
-        console.log("No data found");
-        return;
-      }
+      const data = await getInbox(user.id);
+      if (!data) return;
       setInbox(data);
     }
 
-    getInbox();
+    getUserInbox();
     return () => {
       synth?.cancel();
       audio?.pause();
+    };
+  }, []);
+
+  // Supabase Realtime
+  useEffect(() => {
+    const channel = supabase
+      .channel("realtime inbox")
+      .on(
+        "postgres_changes",
+        {
+          event: "INSERT",
+          schema: "public",
+          table: "inbox",
+        },
+        async (payload) => {
+          const data = await getInbox(payload.new.to_id);
+          if (!data) return;
+          setInbox(data);
+        },
+      )
+      .subscribe();
+
+    return () => {
+      supabase.removeChannel(channel);
     };
   }, []);
 
