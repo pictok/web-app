@@ -10,7 +10,7 @@ import { useRouter } from "next/navigation";
 import { Avatar, AvatarImage } from "@/components/ui/avatar";
 import BackButton from "@/components/design/BackButton";
 import { getCurrentUser } from "@/db/auth/getCurrentUser";
-import { getInbox } from "@/lib/inbox";
+import { getInbox } from "@/lib/getInbox";
 
 const audio = typeof Audio !== "undefined" ? new Audio() : null;
 const speech =
