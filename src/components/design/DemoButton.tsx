@@ -31,6 +31,7 @@ export default function DemoButton({ type }: DemoButtonProps) {
     // Once signed in, fetch this current user
     const { user: currentUser, error: userError } = await getCurrentUser();
     if (userError) return;
+    localStorage.setItem("currentUser", JSON.stringify(currentUser));
     setCurrentUser(currentUser);
     replace("/");
   };

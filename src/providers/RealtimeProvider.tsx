@@ -28,6 +28,10 @@ export const RealtimeProvider = ({
 
   useEffect(() => {
     async function getUserAndUnreadImages() {
+      if (!currentUser?.id) {
+        const user = JSON.parse(localStorage.getItem("currentUser") ?? "{}");
+        setCurrentUser(user);
+      }
       const { count } = await supabase
         .from("inbox")
         .select("*", { count: "exact" })
