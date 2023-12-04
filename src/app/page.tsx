@@ -1,6 +1,5 @@
 import Image from "next/image";
 import Link from "next/link";
-
 import SecondaryButton from "@/components/design/SecondaryButton";
 import TakePhotoButton from "@/components/design/TakePhotoButton";
 import RegularButton from "@/components/design/RegularButton";
@@ -8,7 +7,7 @@ import Navbar from "@/components/design/Navbar";
 import HomeHeader from "@/components/design/HomeHeader";
 import RealtimeInbox from "./realtime-inbox";
 
-export default function Home() {
+export default async function Home() {
   return (
     <main className="mx-auto flex h-screen max-w-lg flex-col justify-between px-5">
       <div>
