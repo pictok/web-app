@@ -7,11 +7,15 @@ import supabase from "@/db/supabase";
 type RealtimeContextType = {
   numberOfUnreadImages: number;
   setNumberOfUnreadImages: React.Dispatch<React.SetStateAction<number>>;
+  currentUser: any;
+  setCurrentUser: React.Dispatch<React.SetStateAction<any>>;
 };
 
 const realtimeContext = createContext<RealtimeContextType>({
   numberOfUnreadImages: 0,
   setNumberOfUnreadImages: () => {},
+  currentUser: null,
+  setCurrentUser: () => {},
 });
 
 export const RealtimeProvider = ({
@@ -24,17 +28,14 @@ export const RealtimeProvider = ({
 
   useEffect(() => {
     async function getUserAndUnreadImages() {
-      const { user, error: userError } = await getCurrentUser();
-      if (userError) return;
-      setCurrentUser(user);
       const { count } = await supabase
         .from("inbox")
         .select("*", { count: "exact" })
-        .match({ to_id: user.id, read: false });
+        .match({ to_id: currentUser?.id, read: false });
       setNumberOfUnreadImages(count ?? 0);
     }
     getUserAndUnreadImages();
-  }, []);
+  }, [currentUser?.id]);
 
   useEffect(() => {
     const channel = supabase
@@ -70,6 +71,8 @@ export const RealtimeProvider = ({
       value={{
         numberOfUnreadImages,
         setNumberOfUnreadImages,
+        currentUser,
+        setCurrentUser,
       }}
     >
       {children}
