@@ -1,20 +1,22 @@
 "use client";
 
 import { useRealtime } from "@/providers/RealtimeProvider";
-import { useEffect, useRef } from "react";
+import { useEffect, useMemo, useRef } from "react";
 
 export default function RealtimeInbox() {
   const { numberOfUnreadImages } = useRealtime();
+  const notification = useMemo(() => new Audio("/sound/notification.mp3"), []);
 
   useEffect(() => {
-    const notification = new Audio("/sound/notification.mp3");
     if (numberOfUnreadImages > 0) {
       notification.play();
     }
     return () => {
       notification.pause();
+      notification.currentTime = 0;
+      notification.load();
     };
-  }, [numberOfUnreadImages]);
+  }, [numberOfUnreadImages, notification]);
 
   return (
     <>
