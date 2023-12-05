@@ -1,22 +1,25 @@
 import Image from "next/image";
 import Link from "next/link";
-
 import SecondaryButton from "@/components/design/SecondaryButton";
 import TakePhotoButton from "@/components/design/TakePhotoButton";
 import RegularButton from "@/components/design/RegularButton";
 import Navbar from "@/components/design/Navbar";
 import HomeHeader from "@/components/design/HomeHeader";
+import RealtimeInbox from "./realtime-inbox";
 
-export default function Home() {
+export default async function Home() {
   return (
     <main className="mx-auto flex h-screen max-w-lg flex-col justify-between px-5">
       <div>
         <HomeHeader />
-        <div className="mt-10 grid grid-cols-2 gap-2 gap-y-5">
+        <div className="mb-5 mt-2 grid grid-cols-2 gap-2 gap-y-5">
           <TakePhotoButton />
           <Link href="/inbox">
             <SecondaryButton className="relative flex h-[225.48px] w-full max-w-sm flex-col items-start justify-start gap-5 pb-3 pr-3 pt-10">
-              <h2 className="text-xl font-semibold">Inbox</h2>
+              <div className="flex w-full items-center justify-between text-xl">
+                <h2 className="font-semibold">Inbox</h2>
+                <RealtimeInbox />
+              </div>
               <div
                 aria-hidden
                 className="absolute bottom-1 right-2  z-10 ml-auto mt-auto h-[110px] w-[113px] overflow-hidden"

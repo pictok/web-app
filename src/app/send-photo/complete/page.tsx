@@ -1,45 +1,84 @@
-"use client";
-import { useEffect, useState } from "react";
 import Image from "next/image";
-import { readCaption } from "@/lib/readCaption";
+import { cookies } from "next/headers";
+
 import BackButton from "@/components/design/BackButton";
-import supabase from "@/db/supabase";
-import { useSearchParams } from "next/navigation";
+import { supabaseKey, supabaseUrl } from "@/db/supabase";
+
 import Navbar from "@/components/design/Navbar";
-import { getCurrentUser } from "@/db/auth/getCurrentUser";
-import { getUser } from "@/db/auth/getUser";
-import { Friend } from "@/app/friends/page";
 
-export default function Complete() {
-  const params = useSearchParams();
-  const [friend, setFriend] = useState<Friend | null>(null);
+import { createServerClient } from "@supabase/ssr";
+import { notFound, redirect } from "next/navigation";
+import ImageProcessingComplete from "./imageProcessingComplete";
 
-  const image = params.get("image");
-  const friendId = Number(params.get("friend"));
+export default async function Complete({
+  searchParams,
+}: {
+  searchParams: { image: string; friend: string };
+}) {
+  const friendId = Number(searchParams.friend);
+  const image = searchParams.image;
 
-  useEffect(() => {
-    readCaption("Your photo has been sent successfully.");
-  }, []);
+  const cookieStore = cookies();
+  const supabase = createServerClient(supabaseUrl, supabaseKey, {
+    cookies: {
+      get(name: string) {
+        return cookieStore.get(name)?.value;
+      },
+    },
+  });
 
-  useEffect(() => {
-    getUser(friendId).then((data) => setFriend(data.user));
-  }, [friendId]);
+  const { data: friend, error: friendError } = await supabase
+    .from("profile")
+    .select("*")
+    .eq("id", friendId)
+    .single();
 
-  useEffect(() => {
-    const sendPhoto = async () => {
-      const { user } = await getCurrentUser();
-      const photo = {
-        image_url: image,
-        from_id: user.id || 1,
-        to_id: friendId,
-      };
-      await supabase.from("inbox").insert([photo]);
-    };
-    if (image) sendPhoto();
-  }, [image, friendId]);
+  if (friendError) {
+    console.log("Error getting user", friendError);
+    return;
+  }
+  if (!friend) {
+    console.log("No friend exist");
+    notFound();
+  }
+
+  const { data, error: authError } = await supabase.auth.getSession();
+
+  if (authError) {
+    console.error(authError);
+    return;
+  }
+
+  if (!data || !data.session) {
+    console.log("No current user");
+    redirect("/login");
+  }
+
+  const { data: user, error: userError } = await supabase
+    .from("profile")
+    .select("*")
+    .eq("user_id", data.session.user.id)
+    .single();
+
+  if (userError) {
+    console.log("Error getting current user");
+    return;
+  }
+  if (!user) {
+    console.log("No current user");
+    redirect("/login");
+  }
+
+  const photo = {
+    image_url: image,
+    from_id: user.id || 1,
+    to_id: friend.id,
+  };
+  await supabase.from("inbox").insert([photo]);
 
   return (
     <main className="mx-auto flex min-h-screen max-w-lg flex-col justify-between px-5 py-5">
+      <ImageProcessingComplete />
       <div>
         <div className="relative flex items-center justify-center py-5">
           <BackButton />

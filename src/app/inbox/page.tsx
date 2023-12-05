@@ -2,7 +2,7 @@
 
 import { supabase } from "@/db/supabase";
 
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useRef, useState } from "react";
 import Image from "next/image";
 import { synth } from "@/lib/speak";
 import { useSwipeable } from "react-swipeable";
@@ -10,6 +10,8 @@ import { useRouter } from "next/navigation";
 import { Avatar, AvatarImage } from "@/components/ui/avatar";
 import BackButton from "@/components/design/BackButton";
 import { getCurrentUser } from "@/db/auth/getCurrentUser";
+import { getInbox } from "@/lib/getInbox";
+import { useRealtime } from "@/providers/RealtimeProvider";
 
 const audio = typeof Audio !== "undefined" ? new Audio() : null;
 const speech =
@@ -18,6 +20,20 @@ const speech =
     : null;
 export default function Inbox() {
   const [inbox, setInbox] = useState<any[]>([]);
+  const { setNumberOfUnreadImages, currentUser } = useRealtime();
+
+  useEffect(() => {
+    async function updateInboxReadStatus() {
+      setNumberOfUnreadImages(0);
+      // Update all inbox items to read
+      const { error } = await supabase
+        .from("inbox")
+        .update({ read: true })
+        .eq("to_id", currentUser?.id);
+    }
+    updateInboxReadStatus();
+  }, [setNumberOfUnreadImages, currentUser?.id]);
+
   const handler = useSwipeable({
     onTap: (event) => {
       const { target: overlayDiv } = event.event;
@@ -35,43 +51,49 @@ export default function Inbox() {
   });
 
   useEffect(() => {
-    async function getInbox() {
-      const { user, error: userError } = await getCurrentUser();
-      let { data, error } = await supabase
-        .from("inbox")
-        .select(
-          `
-          *,
-          media: image_url (
-            image_url,
-            audio_url,
-            caption
-          ),
-          from: from_id (
-            avatar,
-            name
-          )
-        `,
-        )
-        .eq("to_id", user.id)
-        .order("created_at", { ascending: false });
-      if (error) {
-        console.log("Error getting inbox", error);
-        return;
-      }
-      if (!data) {
-        console.log("No data found");
-        return;
-      }
+    async function getUserInbox() {
+      const data = await getInbox(currentUser?.id);
+      if (!data) return;
       setInbox(data);
     }
 
-    getInbox();
+    getUserInbox();
     return () => {
       synth?.cancel();
       audio?.pause();
     };
-  }, []);
+  }, [currentUser?.id]);
+
+  // Supabase Realtime
+  useEffect(() => {
+    const channel = supabase
+      .channel("realtime inbox")
+      .on(
+        "postgres_changes",
+        {
+          event: "INSERT",
+          schema: "public",
+          table: "inbox",
+        },
+        async (payload) => {
+          if (payload.new.to_id !== currentUser?.id) return;
+          // Update all inbox items to read
+          const { error } = await supabase
+            .from("inbox")
+            .update({ read: true })
+            .eq("to_id", currentUser?.id);
+          const data = await getInbox(payload.new.to_id);
+          if (!data) return;
+          setNumberOfUnreadImages(0);
+          setInbox(data);
+        },
+      )
+      .subscribe();
+
+    return () => {
+      supabase.removeChannel(channel);
+    };
+  }, [currentUser?.id, setNumberOfUnreadImages]);
 
   const playAudio = (audio_url: string, caption: string) => {
     if (!audio || !speech) return;

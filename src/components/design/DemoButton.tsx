@@ -6,6 +6,8 @@ import PrimaryButton from "./PrimaryButton";
 import SecondaryButton from "./SecondaryButton";
 import supabase from "@/db/supabase";
 import { useRouter } from "next/navigation";
+import { useRealtime } from "@/providers/RealtimeProvider";
+import { getCurrentUser } from "@/db/auth/getCurrentUser";
 
 type DemoButtonProps = {
   type: "user1" | "user2";
@@ -23,8 +25,14 @@ const user2 = {
 
 export default function DemoButton({ type }: DemoButtonProps) {
   const { replace } = useRouter();
+  const { setCurrentUser } = useRealtime();
   const signIn = async (user: typeof user1 | typeof user2) => {
     await supabase.auth.signInWithPassword(user);
+    // Once signed in, fetch this current user
+    const { user: currentUser, error: userError } = await getCurrentUser();
+    if (userError) return;
+    localStorage.setItem("currentUser", JSON.stringify(currentUser));
+    setCurrentUser(currentUser);
     replace("/");
   };
   if (type === "user1") {
