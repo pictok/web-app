@@ -7,7 +7,7 @@ export default function RealtimeInbox() {
   const { numberOfUnreadImages } = useRealtime();
 
   useEffect(() => {
-    const notification = new Audio("/sounds/notification.mp3");
+    const notification = new Audio("/sound/notification.mp3");
     if (numberOfUnreadImages > 0) {
       notification.play();
     }
