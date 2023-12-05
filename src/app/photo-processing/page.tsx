@@ -11,7 +11,6 @@ import { useSwipeable } from "react-swipeable";
 import { useRouter } from "next/navigation";
 import { randomName } from "@/lib/randomImageName";
 import Gesture from "@/components/design/Gesture";
-import { speak } from "@/lib/speak";
 import { useTheme } from "next-themes";
 
 import BackButton from "@/components/design/BackButton";
@@ -34,6 +33,7 @@ type ReducerState = {
   story: string;
   imageUrl: string;
   caption: string;
+  audioUrl: string;
 };
 
 type ReducerAction =
@@ -60,6 +60,7 @@ type ReducerAction =
     }
   | {
       status: "show tap gesture one";
+      audioUrl: string;
     }
   | {
       status: "show swipe right gesture two";
@@ -73,6 +74,7 @@ const initialState: ReducerState = {
   story: "",
   imageUrl: "",
   caption: "",
+  audioUrl: "",
 };
 
 const photoProcessingReducer = (
@@ -114,10 +116,7 @@ export default function PhotoProcessing({
   const t0Ref = useRef<number>();
   const t1Ref = useRef<number>();
 
-  const { status, imageUrl, caption, story } = state;
-
-  const bgmRef = useRef<HTMLAudioElement | null>();
-  const audioRef = useRef<HTMLAudioElement | null>();
+  const { status, imageUrl, caption, story, audioUrl } = state;
 
   const isProcessing =
     status == "uploading photo to supabase" ||
@@ -137,12 +136,13 @@ export default function PhotoProcessing({
     onTap: () => {
       if (status == "finished processing" || status == "show tap gesture one") {
         synth?.cancel();
-        if (audioRef.current) {
-          audioRef.current.pause();
 
-          const utterance = new SpeechSynthesisUtterance(story);
-          synth?.speak(utterance);
-          utterance.onend = () => {
+        const utterance = new SpeechSynthesisUtterance(story);
+        synth?.speak(utterance);
+        utterance.onend = () => {
+          const sound = new Audio(audioUrl);
+          sound.play();
+          sound.onended = () => {
             dispatch({
               status: "show swipe right gesture two",
             });
@@ -156,7 +156,8 @@ export default function PhotoProcessing({
               });
             };
           };
-        }
+          sound.remove();
+        };
       }
     },
     trackMouse: true,
@@ -168,8 +169,8 @@ export default function PhotoProcessing({
 
   // This useEffect is for playing the loading music
   useEffect(() => {
-    bgmRef.current = new Audio("/sound/image-processing-bgm.mp3");
-    bgmRef.current.volume = 0.3;
+    const bgm = new Audio("/sound/image-processing-bgm.mp3");
+    bgm.volume = 0.2;
     const speak = (text: string) => {
       if (synth) {
         const utterance = new SpeechSynthesisUtterance(text);
@@ -180,16 +181,23 @@ export default function PhotoProcessing({
     const playLoadingMusic = () => {
       const utterance = speak("Image processing in progress please wait");
       if (utterance) {
-        utterance.onend = () => bgmRef.current?.play();
+        utterance.onend = () => bgm.play();
       }
     };
+
+    if (audioUrl) {
+      bgm.pause();
+      bgm.remove();
+      return;
+    }
 
     playLoadingMusic();
     return () => {
       synth?.cancel();
-      bgmRef.current?.pause();
+      bgm.pause();
+      bgm.remove();
     };
-  }, [synth]);
+  }, [synth, audioUrl]);
 
   // This useEffect is for uploading the photo to supabase storage
   useEffect(() => {
@@ -338,7 +346,6 @@ export default function PhotoProcessing({
           throw imageAudioError;
         }
 
-        audioRef.current = new Audio(audio_url);
         t1Ref.current = performance.now();
         if (t1Ref.current && t0Ref.current) {
           const timeTaken = (t1Ref.current - t0Ref.current) / 1000;
@@ -346,10 +353,10 @@ export default function PhotoProcessing({
         }
         dispatch({
           status: "show tap gesture one",
+          audioUrl: audio_url,
         });
         const utterance = new SpeechSynthesisUtterance("Tap to listen");
         synth?.speak(utterance);
-        bgmRef.current?.pause();
       } catch (e) {
         console.error(e);
       }
