@@ -16,7 +16,7 @@ export default async function Home() {
           <TakePhotoButton />
           <Link href="/inbox">
             <SecondaryButton className="relative flex h-[225.48px] w-full max-w-sm flex-col items-start justify-start gap-5 pb-3 pr-3 pt-10">
-              <div className="flex w-full items-center justify-between text-xl">
+              <div className="flex w-full flex-col text-left text-xl md:flex-row md:items-center md:justify-between">
                 <h2 className="font-semibold">Inbox</h2>
                 <RealtimeInbox />
               </div>
