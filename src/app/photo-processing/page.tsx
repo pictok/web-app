@@ -347,6 +347,8 @@ export default function PhotoProcessing({
         dispatch({
           status: "show tap gesture one",
         });
+        const utterance = new SpeechSynthesisUtterance("Tap to listen");
+        synth?.speak(utterance);
         bgmRef.current?.pause();
       } catch (e) {
         console.error(e);
@@ -354,7 +356,7 @@ export default function PhotoProcessing({
     };
     if (status === "finish converting story to sound caption")
       generateSoundFromCaption();
-  }, [status, caption, imageUrl, story]);
+  }, [status, caption, imageUrl, story, synth]);
 
   return (
     <main className="mx-auto max-h-screen max-w-lg overflow-hidden px-2">
