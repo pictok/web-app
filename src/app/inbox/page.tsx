@@ -60,36 +60,6 @@ export default function Inbox() {
     trackMouse: true,
   });
 
-  // Supabase Realtime
-  useEffect(() => {
-    const channel = supabase
-      .channel("realtime inbox")
-      .on(
-        "postgres_changes",
-        {
-          event: "INSERT",
-          schema: "public",
-          table: "inbox",
-        },
-        async (payload) => {
-          if (payload.new.to_id !== currentUser?.id) return;
-          // Update all inbox items to read
-          await supabase
-            .from("inbox")
-            .update({ read: true })
-            .eq("to_id", currentUser?.id);
-          const data = await getInbox(payload.new.to_id);
-          if (!data) return;
-          setInbox(data);
-        },
-      )
-      .subscribe();
-
-    return () => {
-      supabase.removeChannel(channel);
-    };
-  }, [currentUser?.id]);
-
   const playAudio = (audio_url: string, caption: string) => {
     if (!audio || !speech) return;
     synth?.cancel();
