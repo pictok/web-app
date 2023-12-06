@@ -104,6 +104,8 @@ const photoProcessingReducer = (
   }
 };
 
+const audio = typeof Audio !== "undefined" ? new Audio() : null;
+
 export default function PhotoProcessing({
   searchParams: { photoBlobUrl },
 }: {
@@ -146,23 +148,25 @@ export default function PhotoProcessing({
         const utterance = new SpeechSynthesisUtterance(story);
         synth?.speak(utterance);
         utterance.onend = () => {
-          const sound = new Audio(audioUrl);
-          sound.play();
-          sound.onended = () => {
-            dispatch({
-              status: "show swipe right gesture two",
-            });
-            const utterance = new SpeechSynthesisUtterance(
-              "Swipe right to send to friends",
-            );
-            synth?.speak(utterance);
-            utterance.onend = () => {
+          if (audio) {
+            audio.src = audioUrl;
+            audio.play();
+
+            audio.onended = () => {
               dispatch({
-                status: "finished processing",
+                status: "show swipe right gesture two",
               });
+              const utterance = new SpeechSynthesisUtterance(
+                "Swipe right to send to friends",
+              );
+              synth?.speak(utterance);
+              utterance.onend = () => {
+                dispatch({
+                  status: "finished processing",
+                });
+              };
             };
-          };
-          sound.remove();
+          }
         };
       }
     },
