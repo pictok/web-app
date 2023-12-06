@@ -2,7 +2,15 @@ import { createServerClient } from "@supabase/ssr";
 import { ReadonlyRequestCookies } from "next/dist/server/web/spec-extension/adapters/request-cookies";
 import { supabaseKey, supabaseUrl } from "../supabase";
 
-export const getCurrentUser = async (cookieStore: ReadonlyRequestCookies) => {
+export type User = {
+  id: number;
+  user_id: string;
+  avatar: string;
+  name: string;
+};
+export const getCurrentUser = async (
+  cookieStore: ReadonlyRequestCookies,
+): Promise<User | undefined> => {
   const supabase = createServerClient(supabaseUrl, supabaseKey, {
     cookies: {
       get(name: string) {
@@ -30,11 +38,11 @@ export const getCurrentUser = async (cookieStore: ReadonlyRequestCookies) => {
 
   if (userError) {
     console.log("Error getting current user", userError);
-    return { user: null, error: userError };
+    return;
   }
   if (!user) {
     console.log("No current user");
-    return { user: null, error: userError };
+    return;
   }
 
   return user;

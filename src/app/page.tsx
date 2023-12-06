@@ -63,6 +63,7 @@ export default async function Home() {
               ></div>
             </RegularButton>
           </Link>
+
           <Link href="/friends">
             <RegularButton
               variant="right"

@@ -4,6 +4,7 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 
 import RegularButton from "@/components/design/RegularButton";
 import BackButton from "@/components/design/BackButton";
+import Navbar from "@/components/design/Navbar";
 
 type SendPhotoProps = {
   searchParams: { image: string };
@@ -47,7 +48,7 @@ export default function SendPhoto({ searchParams }: SendPhotoProps) {
         </Link>
       </div>
 
-      {/* <Navbar /> */}
+      <Navbar />
     </main>
   );
 }
