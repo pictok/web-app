@@ -12,7 +12,7 @@ export default async function Profile() {
   const cookieStore = cookies();
   const user = await getCurrentUser(cookieStore);
   return (
-    <main className="mx-auto max-w-sm px-2 py-5">
+    <main className="mx-auto max-w-lg px-2 py-5">
       <div className="relative flex items-center justify-center py-5 pb-10">
         <BackButton />
         <h1 className="text-3xl font-bold">My Profile</h1>
@@ -32,7 +32,7 @@ export default async function Profile() {
       </div>
       <div className="my-10 flex flex-col gap-5">
         <Link href="/friends">
-          <RegularButton className="relative  flex h-[139px]  w-[364px] justify-start pb-0 pl-5 pr-3 pt-5 text-left">
+          <RegularButton className="relative  flex h-[139px]  w-full justify-start pb-0 pl-5 pr-3 pt-5 text-left">
             <div className="pb-5">
               <h3 className="text-lg">My Friends</h3>
               <p className="mt-2 font-normal">View your list of friends</p>
@@ -52,7 +52,7 @@ export default async function Profile() {
         <Link href="/photos">
           <RegularButton
             variant="right"
-            className="relative flex h-[139px]  w-[364px] justify-start pb-0 pl-5 pr-3 pt-5 text-left"
+            className="relative flex h-[139px]  w-full justify-start pb-0 pl-5 pr-3 pt-5 text-left"
           >
             <div className="pb-5">
               <h3 className="text-lg">Photos</h3>
@@ -71,7 +71,7 @@ export default async function Profile() {
           </RegularButton>
         </Link>
       </div>
-      <div className="mt-auto">
+      <div className="mx-auto">
         <Navbar />
       </div>
     </main>
