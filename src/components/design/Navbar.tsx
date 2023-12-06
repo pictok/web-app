@@ -10,7 +10,7 @@ import CameraNavItem from "./CameraNavItem";
 
 export default function Navbar() {
   const pathname = usePathname();
-  const isHome = pathname === "/";
+  const isHome = pathname === "/" || pathname === "/profile";
   const isFriends =
     pathname.includes("/friends") || pathname.includes("/send-photo");
   return (

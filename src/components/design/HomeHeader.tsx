@@ -4,6 +4,7 @@ import Logo from "./Logo";
 import { ModeToggle } from "../ui/mode-toggle";
 import { cookies } from "next/headers";
 import { getCurrentUser } from "@/db/auth/auth";
+import Link from "next/link";
 
 export default async function HomeHeader() {
   const cookieStore = cookies();
@@ -14,20 +15,22 @@ export default async function HomeHeader() {
       <div className="flex flex-col">
         <Logo />
         <div className="item flex justify-between">
-          <div className="my-5 flex items-center gap-2">
-            <Avatar className="h-16 w-16 border-4 border-secondary">
-              <Image
-                className="object-cover"
-                src={user.avatar}
-                alt={user.name}
-                width={164}
-                height={164}
-              />
-            </Avatar>
-            <span className="text-xl font-semibold sm:text-2xl">
-              {user.name}
-            </span>
-          </div>
+          <Link href="/profile">
+            <div className="my-5 flex items-center gap-2">
+              <Avatar className="h-16 w-16 border-4 border-secondary">
+                <Image
+                  className="object-cover"
+                  src={user.avatar}
+                  alt={user.name}
+                  width={164}
+                  height={164}
+                />
+              </Avatar>
+              <span className="text-xl font-semibold sm:text-2xl">
+                {user.name}
+              </span>
+            </div>
+          </Link>
           <div>
             <ModeToggle />
           </div>
