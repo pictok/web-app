@@ -24,6 +24,7 @@ export default function RootLayout({
     <html lang="en" suppressHydrationWarning>
       <Head>
         <link rel="manifest" href="/manifest.json" />
+        <meta name="theme-color" content="#199DFC" />
       </Head>
       <body className={jost.className}>
         <RealtimeProvider>

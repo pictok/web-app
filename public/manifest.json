@@ -1,7 +1,7 @@
 {
   "name": "PicTok",
   "description": "A simple PWA for PicTok",
-  "theme_color": "#FFFFFF",
+  "theme_color": "#199DFC",
   "background_color": "#FFFFFF",
   "start_url": "/",
   "display": "standalone",
