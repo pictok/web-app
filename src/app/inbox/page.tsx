@@ -2,16 +2,14 @@
 
 import { supabase } from "@/db/supabase";
 
-import { useContext, useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import Image from "next/image";
 import { synth } from "@/lib/speak";
 import { useSwipeable } from "react-swipeable";
-import { useRouter } from "next/navigation";
 import { Avatar, AvatarImage } from "@/components/ui/avatar";
 import BackButton from "@/components/design/BackButton";
 import { getCurrentUser } from "@/db/auth/getCurrentUser";
 import { getInbox } from "@/lib/getInbox";
-import { useRealtime } from "@/providers/RealtimeProvider";
 
 const audio = typeof Audio !== "undefined" ? new Audio() : null;
 const speech =
@@ -20,19 +18,36 @@ const speech =
     : null;
 export default function Inbox() {
   const [inbox, setInbox] = useState<any[]>([]);
-  const { setNumberOfUnreadImages, currentUser } = useRealtime();
+  const [currentUser, setCurrentUser] = useState<any>();
 
   useEffect(() => {
-    async function updateInboxReadStatus() {
-      setNumberOfUnreadImages(0);
-      // Update all inbox items to read
-      const { error } = await supabase
+    const fetchCurrentUserInbox = async () => {
+      const { user } = await getCurrentUser();
+      setCurrentUser(user);
+      const data = await getInbox(user?.id);
+      setInbox(data || []);
+      await supabase
         .from("inbox")
         .update({ read: true })
-        .eq("to_id", currentUser?.id);
-    }
-    updateInboxReadStatus();
-  }, [setNumberOfUnreadImages, currentUser?.id]);
+        .eq("to_id", user?.id);
+    };
+    fetchCurrentUserInbox();
+    return () => {
+      synth?.cancel();
+      audio?.pause();
+    };
+  }, []);
+
+  // useEffect(() => {
+  //   async function updateInboxReadStatus() {
+  //     // Update all inbox items to read
+  //     await supabase
+  //       .from("inbox")
+  //       .update({ read: true })
+  //       .eq("to_id", currentUser?.id);
+  //   }
+  //   updateInboxReadStatus();
+  // }, [currentUser?.id]);
 
   const handler = useSwipeable({
     onTap: (event) => {
@@ -42,58 +57,8 @@ export default function Inbox() {
         if (currentImage instanceof HTMLImageElement) currentImage.click();
       }
     },
-    // onSwipedRight: () => {
-    //   synth?.cancel();
-    //   audio?.pause();
-    //   push("/friends");
-    // },
     trackMouse: true,
   });
-
-  useEffect(() => {
-    async function getUserInbox() {
-      const data = await getInbox(currentUser?.id);
-      if (!data) return;
-      setInbox(data);
-    }
-
-    getUserInbox();
-    return () => {
-      synth?.cancel();
-      audio?.pause();
-    };
-  }, [currentUser?.id]);
-
-  // Supabase Realtime
-  useEffect(() => {
-    const channel = supabase
-      .channel("realtime inbox")
-      .on(
-        "postgres_changes",
-        {
-          event: "INSERT",
-          schema: "public",
-          table: "inbox",
-        },
-        async (payload) => {
-          if (payload.new.to_id !== currentUser?.id) return;
-          // Update all inbox items to read
-          const { error } = await supabase
-            .from("inbox")
-            .update({ read: true })
-            .eq("to_id", currentUser?.id);
-          const data = await getInbox(payload.new.to_id);
-          if (!data) return;
-          setNumberOfUnreadImages(0);
-          setInbox(data);
-        },
-      )
-      .subscribe();
-
-    return () => {
-      supabase.removeChannel(channel);
-    };
-  }, [currentUser?.id, setNumberOfUnreadImages]);
 
   const playAudio = (audio_url: string, caption: string) => {
     if (!audio || !speech) return;

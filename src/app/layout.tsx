@@ -4,6 +4,9 @@ import { ThemeProvider } from "@/components/theme-provider";
 import { RealtimeProvider } from "@/providers/RealtimeProvider";
 import { Jost } from "next/font/google";
 import { Toaster } from "@/components/ui/toaster";
+import { cookies } from "next/headers";
+import { CookieOptions, createServerClient } from "@supabase/ssr";
+import { supabaseKey, supabaseUrl } from "@/db/supabase";
 
 const jost = Jost({ subsets: ["latin"] });
 
@@ -23,16 +26,16 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <body className={jost.className}>
-        <RealtimeProvider>
-          <ThemeProvider
-            attribute="class"
-            defaultTheme="system"
-            disableTransitionOnChange
-          >
-            {children}
-          </ThemeProvider>
-          <Toaster />
-        </RealtimeProvider>
+        {/* <RealtimeProvider> */}
+        <ThemeProvider
+          attribute="class"
+          defaultTheme="system"
+          disableTransitionOnChange
+        >
+          {children}
+        </ThemeProvider>
+        <Toaster />
+        {/* </RealtimeProvider> */}
       </body>
     </html>
   );
