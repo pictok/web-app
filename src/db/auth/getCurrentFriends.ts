@@ -19,7 +19,7 @@ export async function getFriends(cookieStore: ReadonlyRequestCookies) {
   }
 
   if (!data || !data.session) {
-    return;
+    redirect("/login");
   }
 
   const { data: user, error: userError } = await supabase
