@@ -33,3 +33,8 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# all other ignore list
+sw.*
+workbox-*
+swe-worker-*
