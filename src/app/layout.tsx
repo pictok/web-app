@@ -4,7 +4,6 @@ import { ThemeProvider } from "@/components/theme-provider";
 import { RealtimeProvider } from "@/providers/RealtimeProvider";
 import { Jost } from "next/font/google";
 import { Toaster } from "@/components/ui/toaster";
-import Head from "next/head";
 
 const jost = Jost({ subsets: ["latin"] });
 
@@ -13,6 +12,7 @@ export const metadata: Metadata = {
   title: "Pictok",
   description:
     "Pictok is a platform for the visually impaired to share photos.",
+  themeColor: "#199DFC",
 };
 
 export default function RootLayout({
@@ -22,10 +22,6 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en" suppressHydrationWarning>
-      <Head>
-        <link rel="manifest" href="/manifest.json" />
-        <meta name="theme-color" content="#199DFC" />
-      </Head>
       <body className={jost.className}>
         <RealtimeProvider>
           <ThemeProvider
