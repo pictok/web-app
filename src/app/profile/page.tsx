@@ -19,10 +19,10 @@ export default async function Profile() {
       </div>
       <div className="px-5 pb-5">
         <Avatar className="mx-auto h-[163.7px] w-[163.7px] border-4 border-secondary">
-          <AvatarImage className="object-cover" src={user.avatar} />
+          <AvatarImage className="object-cover" src={user?.avatar} />
         </Avatar>
       </div>
-      <h1 className="pb-0 text-center text-3xl font-bold">{user.name}</h1>
+      <h1 className="pb-0 text-center text-3xl font-bold">{user?.name}</h1>
       <div className="flex justify-center">
         <Link href="/sign-out">
           <Button variant="secondary" className="mt-3 text-sm text-foreground">
