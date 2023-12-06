@@ -10,6 +10,7 @@ import { Avatar, AvatarImage } from "@/components/ui/avatar";
 import BackButton from "@/components/design/BackButton";
 import { getCurrentUser } from "@/db/auth/getCurrentUser";
 import { getInbox } from "@/lib/getInbox";
+import { revalidateHome } from "./action";
 
 const audio = typeof Audio !== "undefined" ? new Audio() : null;
 const speech =
@@ -30,6 +31,7 @@ export default function Inbox() {
         .from("inbox")
         .update({ read: true })
         .eq("to_id", user?.id);
+      await revalidateHome();
     };
     fetchCurrentUserInbox();
     return () => {
