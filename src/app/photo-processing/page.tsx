@@ -105,6 +105,7 @@ const photoProcessingReducer = (
 };
 
 const audio = typeof Audio !== "undefined" ? new Audio() : null;
+const bgm = typeof Audio !== "undefined" ? new Audio() : null;
 
 export default function PhotoProcessing({
   searchParams: { photoBlobUrl },
@@ -179,8 +180,10 @@ export default function PhotoProcessing({
 
   // This useEffect is for playing the loading music
   useEffect(() => {
-    const bgm = new Audio("/sound/image-processing-bgm.mp3");
-    bgm.volume = 0.2;
+    if (bgm) {
+      bgm.src = "/sound/image-processing-bgm.mp3";
+      bgm.volume = 0.2;
+    }
     const speak = (text: string) => {
       if (synth) {
         const utterance = new SpeechSynthesisUtterance(text);
@@ -191,21 +194,25 @@ export default function PhotoProcessing({
     const playLoadingMusic = () => {
       const utterance = speak("Image processing in progress please wait");
       if (utterance) {
-        utterance.onend = () => bgm.play();
+        utterance.onend = () => {
+          if (bgm) bgm.play();
+        };
       }
     };
 
     if (audioUrl) {
-      bgm.pause();
-      bgm.remove();
+      if (bgm) {
+        bgm.pause();
+      }
       return;
     }
 
     playLoadingMusic();
     return () => {
       synth?.cancel();
-      bgm.pause();
-      bgm.remove();
+      if (bgm) {
+        bgm.pause();
+      }
     };
   }, [synth, audioUrl]);
 
