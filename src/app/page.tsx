@@ -5,9 +5,37 @@ import TakePhotoButton from "@/components/design/TakePhotoButton";
 import RegularButton from "@/components/design/RegularButton";
 import Navbar from "@/components/design/Navbar";
 import HomeHeader from "@/components/design/HomeHeader";
+import { createServerClient } from "@supabase/ssr";
+import { supabaseKey, supabaseUrl } from "@/db/supabase";
+import { cookies } from "next/headers";
 import RealtimeInbox from "./realtime-inbox";
 
 export default async function Home() {
+  let numberOfUnreadImages = 0;
+  const cookieStore = await cookies();
+  const supabase = createServerClient(supabaseUrl, supabaseKey, {
+    cookies: {
+      get(name: string) {
+        return cookieStore.get(name)?.value;
+      },
+    },
+  });
+  const { data } = await supabase.auth.getSession();
+
+  const { data: user } = await supabase
+    .from("profile")
+    .select("*")
+    .eq("user_id", data.session?.user.id)
+    .single();
+
+  const { count } = await supabase
+    .from("inbox")
+    .select("*", { count: "exact" })
+    .match({ to_id: user?.id, read: false });
+  if (count) {
+    numberOfUnreadImages = count;
+  }
+
   return (
     <main className="mx-auto flex h-screen max-w-lg flex-col justify-between px-5">
       <div>
@@ -18,7 +46,11 @@ export default async function Home() {
             <SecondaryButton className="relative flex h-[225.48px] w-full max-w-sm flex-col items-start justify-start gap-5 pb-3 pr-3 pt-10">
               <div className="flex w-full flex-col text-left text-xl md:flex-row md:items-center md:justify-between">
                 <h2 className="font-semibold">Inbox</h2>
-                <RealtimeInbox />
+
+                <RealtimeInbox
+                  userId={user?.id}
+                  numberOfUnreadImages={numberOfUnreadImages}
+                />
               </div>
               <div
                 aria-hidden

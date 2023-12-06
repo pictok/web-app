@@ -5,8 +5,8 @@ import BackButton from "@/components/design/BackButton";
 import Navbar from "@/components/design/Navbar";
 import RegularButton from "@/components/design/RegularButton";
 import { Avatar, AvatarImage } from "@/components/ui/avatar";
-import { Button } from "@/components/ui/button";
 import { getCurrentUser } from "@/db/auth/auth";
+import SignOutButton from "./signout-button";
 
 export default async function Profile() {
   const cookieStore = cookies();
@@ -24,11 +24,7 @@ export default async function Profile() {
       </div>
       <h1 className="pb-0 text-center text-3xl font-bold">{user?.name}</h1>
       <div className="flex justify-center">
-        <Link href="/sign-out">
-          <Button variant="secondary" className="mt-3 text-sm text-foreground">
-            Sign out
-          </Button>
-        </Link>
+        <SignOutButton />
       </div>
       <div className="my-10 flex flex-col gap-5">
         <Link href="/friends">

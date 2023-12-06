@@ -4,10 +4,7 @@ import Image from "next/image";
 import { Avatar } from "../ui/avatar";
 import PrimaryButton from "./PrimaryButton";
 import SecondaryButton from "./SecondaryButton";
-import supabase from "@/db/supabase";
-import { useRouter } from "next/navigation";
-import { useRealtime } from "@/providers/RealtimeProvider";
-import { getCurrentUser } from "@/db/auth/getCurrentUser";
+import signIn from "@/app/(auth)/login/actions";
 
 type DemoButtonProps = {
   type: "user1" | "user2";
@@ -24,21 +21,10 @@ const user2 = {
 };
 
 export default function DemoButton({ type }: DemoButtonProps) {
-  const { replace } = useRouter();
-  const { setCurrentUser } = useRealtime();
-  const signIn = async (user: typeof user1 | typeof user2) => {
-    await supabase.auth.signInWithPassword(user);
-    // Once signed in, fetch this current user
-    const { user: currentUser, error: userError } = await getCurrentUser();
-    if (userError) return;
-    localStorage.setItem("currentUser", JSON.stringify(currentUser));
-    setCurrentUser(currentUser);
-    replace("/");
-  };
   if (type === "user1") {
     return (
       <PrimaryButton
-        onClick={() => signIn(user1)}
+        onClick={async () => await signIn(user1)}
         className="w-full space-x-2 py-16 text-xl"
       >
         <span>Demo as Amy</span>
@@ -56,7 +42,7 @@ export default function DemoButton({ type }: DemoButtonProps) {
   }
   return (
     <SecondaryButton
-      onClick={() => signIn(user2)}
+      onClick={async () => await signIn(user2)}
       className="w-full space-x-2 py-16 text-xl"
     >
       <span>Demo as Isabella</span>
