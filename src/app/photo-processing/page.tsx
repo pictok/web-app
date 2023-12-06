@@ -110,14 +110,20 @@ export default function PhotoProcessing({
   searchParams: { photoBlobUrl: string };
 }) {
   const router = useRouter();
-  const theme = useTheme();
+  const { theme } = useTheme();
   const [state, dispatch] = useReducer(photoProcessingReducer, initialState);
   const [synth, setSynth] = useState<SpeechSynthesis | null>(null);
   const t0Ref = useRef<number>();
   const t1Ref = useRef<number>();
 
   const { status, imageUrl, caption, story, audioUrl } = state;
+  const systemDark =
+    theme === "system" &&
+    typeof window !== "undefined" &&
+    window.matchMedia &&
+    window.matchMedia("(prefers-color-scheme: dark)").matches;
 
+  const isDark = theme === "dark" || systemDark;
   const isProcessing =
     status == "uploading photo to supabase" ||
     status == "finished uploading photo to supabase" ||
@@ -386,15 +392,13 @@ export default function PhotoProcessing({
           {status == "show tap gesture one" && (
             <Gesture
               message="Tap to listen"
-              gifName={`${theme.theme == "dark" ? "D-Tap" : "L-Tap"}`}
+              gifName={`${isDark ? "D-Tap" : "L-Tap"}`}
             />
           )}
           {status == "show swipe right gesture two" && (
             <Gesture
               message="Swipe right to send to friends"
-              gifName={`${
-                theme.theme == "dark" ? "D-SwipeRight" : "L-SwipeRight"
-              }`}
+              gifName={`${isDark ? "D-SwipeRight" : "L-SwipeRight"}`}
             />
           )}
 
