@@ -1,7 +1,6 @@
 "use client";
 
 import { createContext, useContext, useEffect, useState } from "react";
-import { getCurrentUser } from "@/db/auth/getCurrentUser";
 import supabase from "@/db/supabase";
 
 type RealtimeContextType = {

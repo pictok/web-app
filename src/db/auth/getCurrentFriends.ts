@@ -1,6 +1,7 @@
 import { createServerClient } from "@supabase/ssr";
 import { ReadonlyRequestCookies } from "next/dist/server/web/spec-extension/adapters/request-cookies";
 import { supabaseKey, supabaseUrl } from "../supabase";
+import { redirect } from "next/navigation";
 
 export async function getFriends(cookieStore: ReadonlyRequestCookies) {
   const supabase = createServerClient(supabaseUrl, supabaseKey, {
@@ -33,7 +34,7 @@ export async function getFriends(cookieStore: ReadonlyRequestCookies) {
   }
   if (!user) {
     console.log("No current user");
-    return;
+    redirect("/login");
   }
   const { data: friends, error: friendsError }: { data: any; error: any } =
     await supabase
