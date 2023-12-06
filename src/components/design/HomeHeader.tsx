@@ -2,10 +2,14 @@ import Image from "next/image";
 import { Avatar } from "../ui/avatar";
 import Logo from "./Logo";
 import { ModeToggle } from "../ui/mode-toggle";
-import { User } from "@/db/auth/auth";
+import { cookies } from "next/headers";
+import { getCurrentUser } from "@/db/auth/auth";
 import Link from "next/link";
 
-export default async function HomeHeader({ user }: { user?: User }) {
+export default async function HomeHeader() {
+  const cookieStore = cookies();
+  const user = await getCurrentUser(cookieStore);
+
   if (user) {
     return (
       <div className="flex flex-col">

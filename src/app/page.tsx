@@ -6,16 +6,12 @@ import RegularButton from "@/components/design/RegularButton";
 import Navbar from "@/components/design/Navbar";
 import HomeHeader from "@/components/design/HomeHeader";
 import RealtimeInbox from "./realtime-inbox";
-import { getCurrentUser } from "@/db/auth/auth";
-import { cookies } from "next/headers";
 
 export default async function Home() {
-  const cookieStore = cookies();
-  const user = await getCurrentUser(cookieStore);
   return (
     <main className="mx-auto flex h-screen max-w-lg flex-col justify-between px-5">
       <div>
-        <HomeHeader user={user} />
+        <HomeHeader />
         <div className="mb-5 mt-2 grid grid-cols-2 gap-2 gap-y-5">
           <TakePhotoButton />
           <Link href="/inbox">
@@ -67,57 +63,31 @@ export default async function Home() {
               ></div>
             </RegularButton>
           </Link>
-          {user ? (
-            <Link href="/friends">
-              <RegularButton
-                variant="right"
-                className="relative flex h-[225.48px] w-full max-w-sm flex-col items-start justify-start gap-5 pb-3 pr-3 pt-10"
+
+          <Link href="/friends">
+            <RegularButton
+              variant="right"
+              className="relative flex h-[225.48px] w-full max-w-sm flex-col items-start justify-start gap-5 pb-3 pr-3 pt-10"
+            >
+              <h2 className="text-xl font-semibold">Friends</h2>
+              <div
+                aria-hidden
+                className="absolute -bottom-3 -right-3  z-10  h-[151.07px] w-[138.71px] overflow-hidden"
               >
-                <h2 className="text-xl font-semibold">Friends</h2>
-                <div
-                  aria-hidden
-                  className="absolute -bottom-3 -right-3  z-10  h-[151.07px] w-[138.71px] overflow-hidden"
-                >
-                  <Image
-                    src="/images/assets/headphone.png"
-                    fill
-                    alt="Headphone icon"
-                    className="z-10"
-                    quality={100}
-                  />
-                </div>
-                <div
-                  aria-hidden
-                  className="weird-circle absolute bottom-0 right-0 h-[140px] w-[140px] overflow-hidden bg-secondary-variant"
-                ></div>
-              </RegularButton>
-            </Link>
-          ) : (
-            <Link href="/login">
-              <RegularButton
-                variant="right"
-                className="relative flex h-[225.48px] w-full max-w-sm flex-col items-start justify-start gap-5 pb-3 pr-3 pt-10"
-              >
-                <h2 className="text-xl font-semibold">Login</h2>
-                <div
-                  aria-hidden
-                  className="absolute bottom-2 right-3  z-10  h-[100px] w-[100px] overflow-hidden"
-                >
-                  <Image
-                    src="/images/assets/message.png"
-                    fill
-                    alt="Headphone icon"
-                    className="z-10"
-                    quality={100}
-                  />
-                </div>
-                <div
-                  aria-hidden
-                  className="weird-circle absolute bottom-0 right-0 h-[140px] w-[140px] overflow-hidden bg-secondary-variant"
-                ></div>
-              </RegularButton>
-            </Link>
-          )}
+                <Image
+                  src="/images/assets/headphone.png"
+                  fill
+                  alt="Headphone icon"
+                  className="z-10"
+                  quality={100}
+                />
+              </div>
+              <div
+                aria-hidden
+                className="weird-circle absolute bottom-0 right-0 h-[140px] w-[140px] overflow-hidden bg-secondary-variant"
+              ></div>
+            </RegularButton>
+          </Link>
         </div>
       </div>
       <div className="pb-5">
