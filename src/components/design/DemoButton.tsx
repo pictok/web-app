@@ -4,7 +4,7 @@ import Image from "next/image";
 import { Avatar } from "../ui/avatar";
 import PrimaryButton from "./PrimaryButton";
 import SecondaryButton from "./SecondaryButton";
-import signIn from "@/app/(auth)/login/actions";
+import supabase from "@/db/supabase";
 
 type DemoButtonProps = {
   type: "user1" | "user2";
@@ -21,6 +21,10 @@ const user2 = {
 };
 
 export default function DemoButton({ type }: DemoButtonProps) {
+  const signIn = async (user: typeof user1 | typeof user2) => {
+    await supabase.auth.signInWithPassword(user);
+    window.location.replace("/");
+  };
   if (type === "user1") {
     return (
       <PrimaryButton
